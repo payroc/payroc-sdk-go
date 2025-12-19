@@ -1,0 +1,18 @@
+# Specify files that shouldn't be modified by Fern
+core/request_option.go
+core/sentry_integration.go
+option/request_option.go
+
+client/client.go
+core/inferred_auth.go
+core/oauth.go
+
+README.md
+go.mod
+go.sum
+.gitignore
+CONTRIBUTING.md
+LICENSE
+scripts
+readme_examples_test.go
+test_integration
