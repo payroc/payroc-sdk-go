@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	getAttachmentRequestFieldAttachmentId = big.NewInt(1 << 0)
+	retrieveAttachmentsRequestFieldAttachmentId = big.NewInt(1 << 0)
 )
 
-type GetAttachmentRequest struct {
+type RetrieveAttachmentsRequest struct {
 	// Unique identifier of the attachment
 	AttachmentId string `json:"-" url:"-"`
 
@@ -23,18 +23,18 @@ type GetAttachmentRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetAttachmentRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *RetrieveAttachmentsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetAttachmentId sets the AttachmentId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAttachmentRequest) SetAttachmentId(attachmentId string) {
-	g.AttachmentId = attachmentId
-	g.require(getAttachmentRequestFieldAttachmentId)
+func (r *RetrieveAttachmentsRequest) SetAttachmentId(attachmentId string) {
+	r.AttachmentId = attachmentId
+	r.require(retrieveAttachmentsRequestFieldAttachmentId)
 }
 
 var (

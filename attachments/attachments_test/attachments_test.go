@@ -96,7 +96,7 @@ func TestAttachmentsUploadToProcessingAccountWithWireMock(
 	VerifyRequestCount(t, "TestAttachmentsUploadToProcessingAccountWithWireMock", "POST", "/processing-accounts/38765/attachments", nil, 1)
 }
 
-func TestAttachmentsGetAttachmentWithWireMock(
+func TestAttachmentsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -107,17 +107,17 @@ func TestAttachmentsGetAttachmentWithWireMock(
 	client := client.NewPayrocClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &payroc.GetAttachmentRequest{
+	request := &payroc.RetrieveAttachmentsRequest{
 		AttachmentId: "12876",
 	}
-	_, invocationErr := client.Attachments.GetAttachment(
+	_, invocationErr := client.Attachments.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestAttachmentsGetAttachmentWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestAttachmentsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestAttachmentsGetAttachmentWithWireMock", "GET", "/attachments/12876", nil, 1)
+	VerifyRequestCount(t, "TestAttachmentsRetrieveWithWireMock", "GET", "/attachments/12876", nil, 1)
 }
