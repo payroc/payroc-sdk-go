@@ -77,7 +77,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentlinks.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -132,7 +132,7 @@ func (r *RawClient) Share(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentlinks.ErrorCodes),
 		},
 	)
 	if err != nil {

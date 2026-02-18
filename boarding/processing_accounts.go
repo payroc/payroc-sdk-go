@@ -78,7 +78,7 @@ type CreateTerminalOrder struct {
 	// Object that contains the shipping details for the terminal order. If you don't provide a shipping address, we use the Doing Business As (DBA) address of the processing account.
 	Shipping *CreateTerminalOrderShipping `json:"shipping,omitempty" url:"-"`
 	// Array of order items. Provide a minimum of 1 order item and a maximum of 10 order items.
-	OrderItems []*papisdkgo.OrderItem `json:"orderItems,omitempty" url:"-"`
+	OrderItems []*papisdkgo.OrderItem `json:"orderItems" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -124,6 +124,27 @@ func (c *CreateTerminalOrder) SetShipping(shipping *CreateTerminalOrderShipping)
 func (c *CreateTerminalOrder) SetOrderItems(orderItems []*papisdkgo.OrderItem) {
 	c.OrderItems = orderItems
 	c.require(createTerminalOrderFieldOrderItems)
+}
+
+func (c *CreateTerminalOrder) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateTerminalOrder
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateTerminalOrder(body)
+	return nil
+}
+
+func (c *CreateTerminalOrder) MarshalJSON() ([]byte, error) {
+	type embed CreateTerminalOrder
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

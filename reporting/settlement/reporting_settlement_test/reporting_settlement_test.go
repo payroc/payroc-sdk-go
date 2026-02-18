@@ -12,6 +12,7 @@ import (
 	reporting "github.com/payroc/payroc-sdk-go/reporting"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestReportingSettlementListBatchesWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListReportingSettlementBatchesRequest{
 		Before: payroc.String(
@@ -99,11 +106,13 @@ func TestReportingSettlementListBatchesWithWireMock(
 func TestReportingSettlementRetrieveBatchWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.RetrieveBatchSettlementRequest{
 		BatchId: 1,
@@ -123,11 +132,13 @@ func TestReportingSettlementRetrieveBatchWithWireMock(
 func TestReportingSettlementListTransactionsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListReportingSettlementTransactionsRequest{
 		Before: payroc.String(
@@ -167,11 +178,13 @@ func TestReportingSettlementListTransactionsWithWireMock(
 func TestReportingSettlementRetrieveTransactionWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.RetrieveTransactionSettlementRequest{
 		TransactionId: 1,
@@ -191,11 +204,13 @@ func TestReportingSettlementRetrieveTransactionWithWireMock(
 func TestReportingSettlementListAuthorizationsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListReportingSettlementAuthorizationsRequest{
 		Before: payroc.String(
@@ -234,11 +249,13 @@ func TestReportingSettlementListAuthorizationsWithWireMock(
 func TestReportingSettlementRetrieveAuthorizationWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.RetrieveAuthorizationSettlementRequest{
 		AuthorizationId: 1,
@@ -258,11 +275,13 @@ func TestReportingSettlementRetrieveAuthorizationWithWireMock(
 func TestReportingSettlementListDisputesWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListReportingSettlementDisputesRequest{
 		Before: payroc.String(
@@ -296,11 +315,13 @@ func TestReportingSettlementListDisputesWithWireMock(
 func TestReportingSettlementListDisputesStatusesWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListDisputesStatusesSettlementRequest{
 		DisputeId: 1,
@@ -320,11 +341,13 @@ func TestReportingSettlementListDisputesStatusesWithWireMock(
 func TestReportingSettlementListAchDepositsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListReportingSettlementAchDepositsRequest{
 		Before: payroc.String(
@@ -358,11 +381,13 @@ func TestReportingSettlementListAchDepositsWithWireMock(
 func TestReportingSettlementRetrieveAchDepositWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.RetrieveAchDepositSettlementRequest{
 		AchDepositId: 1,
@@ -382,11 +407,13 @@ func TestReportingSettlementRetrieveAchDepositWithWireMock(
 func TestReportingSettlementListAchDepositFeesWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &reporting.ListReportingSettlementAchDepositFeesRequest{
 		Before: payroc.String(

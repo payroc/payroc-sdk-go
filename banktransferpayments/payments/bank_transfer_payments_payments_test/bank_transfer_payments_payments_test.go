@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestBankTransferPaymentsPaymentsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &banktransferpayments.ListPaymentsRequest{
 		ProcessingTerminalId: "1234001",
@@ -122,11 +129,13 @@ func TestBankTransferPaymentsPaymentsListWithWireMock(
 func TestBankTransferPaymentsPaymentsCreateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &banktransferpayments.BankTransferPaymentRequest{
 		IdempotencyKey:       "8e03978e-40d5-43e8-bc93-6894a57f9324",
@@ -139,11 +148,11 @@ func TestBankTransferPaymentsPaymentsCreateWithWireMock(
 				"Large Pepperoni Pizza",
 			),
 			Amount: payroc.Int64(
-				4999,
+				int64(4999),
 			),
 			Currency: payroc.CurrencyUsd.Ptr(),
 			Breakdown: &payroc.BankTransferRequestBreakdown{
-				Subtotal: 4347,
+				Subtotal: int64(4347),
 				Tip: &payroc.Tip{
 					Type: payroc.TipTypePercentage,
 					Percentage: payroc.Float64(
@@ -203,11 +212,13 @@ func TestBankTransferPaymentsPaymentsCreateWithWireMock(
 func TestBankTransferPaymentsPaymentsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &banktransferpayments.RetrievePaymentsRequest{
 		PaymentId: "M2MJOG6O2Y",
@@ -227,11 +238,13 @@ func TestBankTransferPaymentsPaymentsRetrieveWithWireMock(
 func TestBankTransferPaymentsPaymentsRepresentWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &banktransferpayments.Representment{
 		PaymentId:      "M2MJOG6O2Y",

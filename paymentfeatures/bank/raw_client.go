@@ -70,7 +70,7 @@ func (r *RawClient) Verify(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentfeatures.ErrorCodes),
 		},
 	)
 	if err != nil {

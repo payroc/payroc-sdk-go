@@ -4,7 +4,6 @@ package fundingactivity
 
 import (
 	context "context"
-	payroc "github.com/payroc/payroc-sdk-go"
 	core "github.com/payroc/payroc-sdk-go/core"
 	funding "github.com/payroc/payroc-sdk-go/funding"
 	internal "github.com/payroc/payroc-sdk-go/internal"
@@ -74,7 +73,7 @@ func (r *RawClient) RetrieveBalance(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -130,7 +129,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {

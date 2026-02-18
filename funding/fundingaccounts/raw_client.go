@@ -74,7 +74,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -126,7 +126,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -178,7 +178,7 @@ func (r *RawClient) Update(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Request:         request,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -228,7 +228,7 @@ func (r *RawClient) Delete(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {

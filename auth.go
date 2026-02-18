@@ -55,6 +55,27 @@ func (r *RetrieveTokenAuthRequest) SetClientSecret(clientSecret string) {
 	r.require(retrieveTokenAuthRequestFieldClientSecret)
 }
 
+func (r *RetrieveTokenAuthRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveTokenAuthRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RetrieveTokenAuthRequest(body)
+	return nil
+}
+
+func (r *RetrieveTokenAuthRequest) MarshalJSON() ([]byte, error) {
+	type embed RetrieveTokenAuthRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	getTokenResponseFieldAccessToken = big.NewInt(1 << 0)
 	getTokenResponseFieldTokenType   = big.NewInt(1 << 1)

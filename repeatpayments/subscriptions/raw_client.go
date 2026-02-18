@@ -77,7 +77,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -132,7 +132,7 @@ func (r *RawClient) Create(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -185,7 +185,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -241,7 +241,7 @@ func (r *RawClient) PartiallyUpdate(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -294,7 +294,7 @@ func (r *RawClient) Deactivate(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -347,7 +347,7 @@ func (r *RawClient) Reactivate(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -403,7 +403,7 @@ func (r *RawClient) Pay(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		},
 	)
 	if err != nil {

@@ -25,10 +25,14 @@ type BankTransferUnreferencedRefund struct {
 	IdempotencyKey string `json:"-" url:"-"`
 	// Unique identifier that we assigned to the terminal.
 	ProcessingTerminalId string                             `json:"processingTerminalId" url:"-"`
-	Order                *papisdkgo.BankTransferRefundOrder `json:"order,omitempty" url:"-"`
+	Order                *papisdkgo.BankTransferRefundOrder `json:"order" url:"-"`
 	Customer             *papisdkgo.BankTransferCustomer    `json:"customer,omitempty" url:"-"`
-	// Object that contains information about how the merchant refunds the customer.
-	RefundMethod *BankTransferUnreferencedRefundRefundMethod `json:"refundMethod,omitempty" url:"-"`
+	// Polymorphic object that contains payment details for the refund.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`secureToken` - Secure token details
+	RefundMethod *BankTransferUnreferencedRefundRefundMethod `json:"refundMethod" url:"-"`
 	// Array of customField objects.
 	CustomFields []*papisdkgo.CustomField `json:"customFields,omitempty" url:"-"`
 
@@ -83,6 +87,27 @@ func (b *BankTransferUnreferencedRefund) SetRefundMethod(refundMethod *BankTrans
 func (b *BankTransferUnreferencedRefund) SetCustomFields(customFields []*papisdkgo.CustomField) {
 	b.CustomFields = customFields
 	b.require(bankTransferUnreferencedRefundFieldCustomFields)
+}
+
+func (b *BankTransferUnreferencedRefund) UnmarshalJSON(data []byte) error {
+	type unmarshaler BankTransferUnreferencedRefund
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BankTransferUnreferencedRefund(body)
+	return nil
+}
+
+func (b *BankTransferUnreferencedRefund) MarshalJSON() ([]byte, error) {
+	type embed BankTransferUnreferencedRefund
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -291,6 +316,27 @@ func (b *BankTransferReferencedRefund) SetDescription(description string) {
 	b.require(bankTransferReferencedRefundFieldDescription)
 }
 
+func (b *BankTransferReferencedRefund) UnmarshalJSON(data []byte) error {
+	type unmarshaler BankTransferReferencedRefund
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BankTransferReferencedRefund(body)
+	return nil
+}
+
+func (b *BankTransferReferencedRefund) MarshalJSON() ([]byte, error) {
+	type embed BankTransferReferencedRefund
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	retrieveRefundsRequestFieldRefundId = big.NewInt(1 << 0)
 )
@@ -389,7 +435,11 @@ func (r *ReverseRefundRefundsRequest) SetRefundId(refundId string) {
 	r.require(reverseRefundRefundsRequestFieldRefundId)
 }
 
-// Object that contains information about how the merchant refunds the customer.
+// Polymorphic object that contains payment details for the refund.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`secureToken` - Secure token details
 type BankTransferUnreferencedRefundRefundMethod struct {
 	Type        string
 	Ach         *papisdkgo.AchPayload

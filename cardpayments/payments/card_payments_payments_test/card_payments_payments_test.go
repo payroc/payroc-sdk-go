@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestCardPaymentsPaymentsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.ListPaymentsRequest{
 		ProcessingTerminalId: payroc.String(
@@ -131,11 +138,13 @@ func TestCardPaymentsPaymentsListWithWireMock(
 func TestCardPaymentsPaymentsCreateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.PaymentRequest{
 		IdempotencyKey:       "8e03978e-40d5-43e8-bc93-6894a57f9324",
@@ -152,7 +161,7 @@ func TestCardPaymentsPaymentsCreateWithWireMock(
 				"Large Pepperoni Pizza",
 			),
 			Amount: payroc.Int64(
-				4999,
+				int64(4999),
 			),
 			Currency: payroc.CurrencyUsd.Ptr(),
 		},
@@ -230,11 +239,13 @@ func TestCardPaymentsPaymentsCreateWithWireMock(
 func TestCardPaymentsPaymentsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.RetrievePaymentsRequest{
 		PaymentId: "M2MJOG6O2Y",
@@ -254,11 +265,13 @@ func TestCardPaymentsPaymentsRetrieveWithWireMock(
 func TestCardPaymentsPaymentsAdjustWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.PaymentAdjustment{
 		PaymentId:      "M2MJOG6O2Y",
@@ -269,7 +282,7 @@ func TestCardPaymentsPaymentsAdjustWithWireMock(
 			},
 			&cardpayments.PaymentAdjustmentAdjustmentsItem{
 				Order: &payroc.OrderAdjustment{
-					Amount: 4999,
+					Amount: int64(4999),
 				},
 			},
 		},
@@ -289,11 +302,13 @@ func TestCardPaymentsPaymentsAdjustWithWireMock(
 func TestCardPaymentsPaymentsCaptureWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.PaymentCapture{
 		PaymentId:      "M2MJOG6O2Y",
@@ -305,19 +320,19 @@ func TestCardPaymentsPaymentsCaptureWithWireMock(
 			"Jane",
 		),
 		Amount: payroc.Int64(
-			4999,
+			int64(4999),
 		),
 		Breakdown: &payroc.ItemizedBreakdownRequest{
-			Subtotal: 4999,
+			Subtotal: int64(4999),
 			DutyAmount: payroc.Int64(
-				499,
+				int64(499),
 			),
 			FreightAmount: payroc.Int64(
-				500,
+				int64(500),
 			),
 			Items: []*payroc.LineItemRequest{
 				&payroc.LineItemRequest{
-					UnitPrice: 4000,
+					UnitPrice: int64(4000),
 					Quantity:  1,
 				},
 			},

@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestFundingFundingInstructionsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.ListFundingInstructionsRequest{
 		Before: payroc.String(
@@ -99,15 +106,39 @@ func TestFundingFundingInstructionsListWithWireMock(
 func TestFundingFundingInstructionsCreateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.CreateFundingInstructionsRequest{
 		IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
-		Body:           &payroc.Instruction{},
+		Body: &payroc.Instruction{
+			Merchants: []*payroc.InstructionMerchantsItem{
+				&payroc.InstructionMerchantsItem{
+					MerchantId: "4525644354",
+					Recipients: []*payroc.InstructionMerchantsItemRecipientsItem{
+						&payroc.InstructionMerchantsItemRecipientsItem{
+							FundingAccountId: 123,
+							PaymentMethod:    payroc.InstructionMerchantsItemRecipientsItemPaymentMethodAch,
+							Amount: &payroc.InstructionMerchantsItemRecipientsItemAmount{
+								Value:    120000,
+								Currency: payroc.InstructionMerchantsItemRecipientsItemAmountCurrencyUsd.Ptr(),
+							},
+							Metadata: map[string]string{
+								"yourCustomField": "abc123",
+							},
+						},
+					},
+				},
+			},
+			Metadata: map[string]string{
+				"yourCustomField": "abc123",
+			},
+		},
 	}
 	_, invocationErr := client.Funding.FundingInstructions.Create(
 		context.TODO(),
@@ -124,11 +155,13 @@ func TestFundingFundingInstructionsCreateWithWireMock(
 func TestFundingFundingInstructionsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.RetrieveFundingInstructionsRequest{
 		InstructionId: 1,
@@ -148,15 +181,39 @@ func TestFundingFundingInstructionsRetrieveWithWireMock(
 func TestFundingFundingInstructionsUpdateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.UpdateFundingInstructionsRequest{
 		InstructionId: 1,
-		Body:          &payroc.Instruction{},
+		Body: &payroc.Instruction{
+			Merchants: []*payroc.InstructionMerchantsItem{
+				&payroc.InstructionMerchantsItem{
+					MerchantId: "9876543219",
+					Recipients: []*payroc.InstructionMerchantsItemRecipientsItem{
+						&payroc.InstructionMerchantsItemRecipientsItem{
+							FundingAccountId: 124,
+							PaymentMethod:    payroc.InstructionMerchantsItemRecipientsItemPaymentMethodAch,
+							Amount: &payroc.InstructionMerchantsItemRecipientsItemAmount{
+								Value:    69950,
+								Currency: payroc.InstructionMerchantsItemRecipientsItemAmountCurrencyUsd.Ptr(),
+							},
+							Metadata: map[string]string{
+								"supplier": "IT Support Services",
+							},
+						},
+					},
+				},
+			},
+			Metadata: map[string]string{
+				"instructionCreatedBy": "Jane Doe",
+			},
+		},
 	}
 	invocationErr := client.Funding.FundingInstructions.Update(
 		context.TODO(),
@@ -173,11 +230,13 @@ func TestFundingFundingInstructionsUpdateWithWireMock(
 func TestFundingFundingInstructionsDeleteWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.DeleteFundingInstructionsRequest{
 		InstructionId: 1,

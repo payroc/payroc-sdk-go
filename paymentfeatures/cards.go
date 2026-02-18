@@ -23,8 +23,14 @@ type BinLookup struct {
 	// Transaction amount that you send to check the surcharge amount. The value is in the currency's lowest denomination, for example, cents.
 	Amount   *int64              `json:"amount,omitempty" url:"-"`
 	Currency *papisdkgo.Currency `json:"currency,omitempty" url:"-"`
-	// Object that contains information about the card.
-	Card *BinLookupCard `json:"card,omitempty" url:"-"`
+	// Polymorphic object that contains payment details.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`card` - Payment card details
+	// -	`cardBin` - Bank identification number (BIN) of the payment card
+	// -	`secureToken` - Secure token details
+	// -	`digitalWallet` - Digital wallet details
+	Card *BinLookupCard `json:"card" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -65,6 +71,27 @@ func (b *BinLookup) SetCard(card *BinLookupCard) {
 	b.require(binLookupFieldCard)
 }
 
+func (b *BinLookup) UnmarshalJSON(data []byte) error {
+	type unmarshaler BinLookup
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BinLookup(body)
+	return nil
+}
+
+func (b *BinLookup) MarshalJSON() ([]byte, error) {
+	type embed BinLookup
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	fxRateInquiryFieldChannel              = big.NewInt(1 << 0)
 	fxRateInquiryFieldProcessingTerminalId = big.NewInt(1 << 1)
@@ -84,8 +111,13 @@ type FxRateInquiry struct {
 	// Total amount of the transaction in the merchant’s currency. The value is in the currency’s lowest denomination, for example, cents.
 	BaseAmount   int64              `json:"baseAmount" url:"-"`
 	BaseCurrency papisdkgo.Currency `json:"baseCurrency" url:"-"`
-	// Object that contains information about the customer's payment details.
-	PaymentMethod *FxRateInquiryPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
+	// Polymorphic object that contains payment details.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`card` - Payment card details
+	// -	`secureToken` - Secure token details
+	// -	`digitalWallet` - Digital wallet details
+	PaymentMethod *FxRateInquiryPaymentMethod `json:"paymentMethod" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -140,7 +172,32 @@ func (f *FxRateInquiry) SetPaymentMethod(paymentMethod *FxRateInquiryPaymentMeth
 	f.require(fxRateInquiryFieldPaymentMethod)
 }
 
-// Object that contains information about the card.
+func (f *FxRateInquiry) UnmarshalJSON(data []byte) error {
+	type unmarshaler FxRateInquiry
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*f = FxRateInquiry(body)
+	return nil
+}
+
+func (f *FxRateInquiry) MarshalJSON() ([]byte, error) {
+	type embed FxRateInquiry
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*f),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+// Polymorphic object that contains payment details.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`card` - Payment card details
+// -	`singleUseToken` - Single-use token details
 type BalanceInquiryCard struct {
 	Type           string
 	Card           *papisdkgo.CardPayload
@@ -258,7 +315,13 @@ func (b *BalanceInquiryCard) validate() error {
 	return nil
 }
 
-// Object that contains information about the card.
+// Polymorphic object that contains payment details.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`card` - Payment card details
+// -	`cardBin` - Bank identification number (BIN) of the payment card
+// -	`secureToken` - Secure token details
+// -	`digitalWallet` - Digital wallet details
 type BinLookupCard struct {
 	Type          string
 	Card          *papisdkgo.CardPayload
@@ -424,7 +487,7 @@ func (b *BinLookupCard) validate() error {
 	return nil
 }
 
-// Object that contains information about the card.
+// Polymorphic object that contains payment details.
 type CardVerificationRequestCard struct {
 	Type string
 	Card *papisdkgo.CardPayload
@@ -544,7 +607,12 @@ func (f FxRateInquiryChannel) Ptr() *FxRateInquiryChannel {
 	return &f
 }
 
-// Object that contains information about the customer's payment details.
+// Polymorphic object that contains payment details.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`card` - Payment card details
+// -	`secureToken` - Secure token details
+// -	`digitalWallet` - Digital wallet details
 type FxRateInquiryPaymentMethod struct {
 	Type          string
 	Card          *papisdkgo.CardPayload
@@ -702,8 +770,8 @@ type CardVerificationRequest struct {
 	// Operator who requested to verify the card.
 	Operator *string             `json:"operator,omitempty" url:"-"`
 	Customer *papisdkgo.Customer `json:"customer,omitempty" url:"-"`
-	// Object that contains information about the card.
-	Card *CardVerificationRequestCard `json:"card,omitempty" url:"-"`
+	// Polymorphic object that contains payment details.
+	Card *CardVerificationRequestCard `json:"card" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -751,6 +819,27 @@ func (c *CardVerificationRequest) SetCard(card *CardVerificationRequestCard) {
 	c.require(cardVerificationRequestFieldCard)
 }
 
+func (c *CardVerificationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CardVerificationRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CardVerificationRequest(body)
+	return nil
+}
+
+func (c *CardVerificationRequest) MarshalJSON() ([]byte, error) {
+	type embed CardVerificationRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	balanceInquiryFieldProcessingTerminalId = big.NewInt(1 << 0)
 	balanceInquiryFieldOperator             = big.NewInt(1 << 1)
@@ -766,8 +855,12 @@ type BalanceInquiry struct {
 	Operator *string             `json:"operator,omitempty" url:"-"`
 	Currency papisdkgo.Currency  `json:"currency" url:"-"`
 	Customer *papisdkgo.Customer `json:"customer,omitempty" url:"-"`
-	// Object that contains information about the card.
-	Card *BalanceInquiryCard `json:"card,omitempty" url:"-"`
+	// Polymorphic object that contains payment details.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`card` - Payment card details
+	// -	`singleUseToken` - Single-use token details
+	Card *BalanceInquiryCard `json:"card" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -813,4 +906,25 @@ func (b *BalanceInquiry) SetCustomer(customer *papisdkgo.Customer) {
 func (b *BalanceInquiry) SetCard(card *BalanceInquiryCard) {
 	b.Card = card
 	b.require(balanceInquiryFieldCard)
+}
+
+func (b *BalanceInquiry) UnmarshalJSON(data []byte) error {
+	type unmarshaler BalanceInquiry
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BalanceInquiry(body)
+	return nil
+}
+
+func (b *BalanceInquiry) MarshalJSON() ([]byte, error) {
+	type embed BalanceInquiry
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }

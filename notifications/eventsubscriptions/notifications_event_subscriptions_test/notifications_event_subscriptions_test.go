@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestNotificationsEventSubscriptionsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &notifications.ListEventSubscriptionsRequest{
 		Status: notifications.ListEventSubscriptionsRequestStatusRegistered.Ptr(),
@@ -88,11 +95,13 @@ func TestNotificationsEventSubscriptionsListWithWireMock(
 func TestNotificationsEventSubscriptionsCreateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &notifications.CreateEventSubscriptionsRequest{
 		IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
@@ -130,11 +139,13 @@ func TestNotificationsEventSubscriptionsCreateWithWireMock(
 func TestNotificationsEventSubscriptionsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &notifications.RetrieveEventSubscriptionsRequest{
 		SubscriptionId: 1,
@@ -154,11 +165,13 @@ func TestNotificationsEventSubscriptionsRetrieveWithWireMock(
 func TestNotificationsEventSubscriptionsUpdateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &notifications.UpdateEventSubscriptionsRequest{
 		SubscriptionId: 1,
@@ -196,11 +209,13 @@ func TestNotificationsEventSubscriptionsUpdateWithWireMock(
 func TestNotificationsEventSubscriptionsDeleteWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &notifications.DeleteEventSubscriptionsRequest{
 		SubscriptionId: 1,
@@ -220,11 +235,13 @@ func TestNotificationsEventSubscriptionsDeleteWithWireMock(
 func TestNotificationsEventSubscriptionsPartiallyUpdateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &notifications.PartiallyUpdateEventSubscriptionsRequest{
 		SubscriptionId: 1,

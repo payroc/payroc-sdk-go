@@ -161,11 +161,11 @@ var (
 
 type ListFundingActivityResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -180,14 +180,14 @@ type ListFundingActivityResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListFundingActivityResponse) GetLimit() *float64 {
+func (l *ListFundingActivityResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListFundingActivityResponse) GetCount() *float64 {
+func (l *ListFundingActivityResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -228,14 +228,14 @@ func (l *ListFundingActivityResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListFundingActivityResponse) SetLimit(limit *float64) {
+func (l *ListFundingActivityResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listFundingActivityResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListFundingActivityResponse) SetCount(count *float64) {
+func (l *ListFundingActivityResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listFundingActivityResponseFieldCount)
 }
@@ -310,11 +310,11 @@ var (
 
 type RetrieveBalanceFundingActivityResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -329,14 +329,14 @@ type RetrieveBalanceFundingActivityResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RetrieveBalanceFundingActivityResponse) GetLimit() *float64 {
+func (r *RetrieveBalanceFundingActivityResponse) GetLimit() *int {
 	if r == nil {
 		return nil
 	}
 	return r.Limit
 }
 
-func (r *RetrieveBalanceFundingActivityResponse) GetCount() *float64 {
+func (r *RetrieveBalanceFundingActivityResponse) GetCount() *int {
 	if r == nil {
 		return nil
 	}
@@ -377,14 +377,14 @@ func (r *RetrieveBalanceFundingActivityResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RetrieveBalanceFundingActivityResponse) SetLimit(limit *float64) {
+func (r *RetrieveBalanceFundingActivityResponse) SetLimit(limit *int) {
 	r.Limit = limit
 	r.require(retrieveBalanceFundingActivityResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RetrieveBalanceFundingActivityResponse) SetCount(count *float64) {
+func (r *RetrieveBalanceFundingActivityResponse) SetCount(count *int) {
 	r.Count = count
 	r.require(retrieveBalanceFundingActivityResponseFieldCount)
 }

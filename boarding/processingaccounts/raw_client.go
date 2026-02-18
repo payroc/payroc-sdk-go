@@ -70,7 +70,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -122,7 +122,7 @@ func (r *RawClient) ListProcessingAccountFundingAccounts(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -181,7 +181,7 @@ func (r *RawClient) ListContacts(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -233,7 +233,7 @@ func (r *RawClient) GetProcessingAccountPricingAgreement(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -292,7 +292,7 @@ func (r *RawClient) ListOwners(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -347,7 +347,7 @@ func (r *RawClient) CreateReminder(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -406,7 +406,7 @@ func (r *RawClient) ListTerminalOrders(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -461,7 +461,7 @@ func (r *RawClient) CreateTerminalOrder(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -520,7 +520,7 @@ func (r *RawClient) ListProcessingTerminals(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {

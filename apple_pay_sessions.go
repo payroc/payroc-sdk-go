@@ -55,6 +55,27 @@ func (a *ApplePaySessions) SetAppleValidationUrl(appleValidationUrl string) {
 	a.require(applePaySessionsFieldAppleValidationUrl)
 }
 
+func (a *ApplePaySessions) UnmarshalJSON(data []byte) error {
+	type unmarshaler ApplePaySessions
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*a = ApplePaySessions(body)
+	return nil
+}
+
+func (a *ApplePaySessions) MarshalJSON() ([]byte, error) {
+	type embed ApplePaySessions
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	applePayResponseSessionFieldStartSessionResponse = big.NewInt(1 << 0)
 )

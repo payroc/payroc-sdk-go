@@ -12,6 +12,7 @@ import (
 	repeatpayments "github.com/payroc/payroc-sdk-go/repeatpayments"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestRepeatPaymentsSubscriptionsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.ListSubscriptionsRequest{
 		ProcessingTerminalId: "1234001",
@@ -115,11 +122,13 @@ func TestRepeatPaymentsSubscriptionsListWithWireMock(
 func TestRepeatPaymentsSubscriptionsCreateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.SubscriptionRequest{
 		ProcessingTerminalId: "1234001",
@@ -142,7 +151,7 @@ func TestRepeatPaymentsSubscriptionsCreateWithWireMock(
 				"OrderRef6543",
 			),
 			Amount: payroc.Int64(
-				4999,
+				int64(4999),
 			),
 			Description: payroc.String(
 				"Initial setup fee for Premium Club subscription",
@@ -150,13 +159,13 @@ func TestRepeatPaymentsSubscriptionsCreateWithWireMock(
 		},
 		RecurringOrder: &payroc.SubscriptionRecurringOrderRequest{
 			Amount: payroc.Int64(
-				4999,
+				int64(4999),
 			),
 			Description: payroc.String(
 				"Monthly Premium Club subscription",
 			),
 			Breakdown: &payroc.SubscriptionOrderBreakdownRequest{
-				Subtotal: 4347,
+				Subtotal: int64(4347),
 				Taxes: []*payroc.TaxRate{
 					&payroc.TaxRate{
 						Type: payroc.TaxRateTypeRate,
@@ -196,11 +205,13 @@ func TestRepeatPaymentsSubscriptionsCreateWithWireMock(
 func TestRepeatPaymentsSubscriptionsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.RetrieveSubscriptionsRequest{
 		ProcessingTerminalId: "1234001",
@@ -221,11 +232,13 @@ func TestRepeatPaymentsSubscriptionsRetrieveWithWireMock(
 func TestRepeatPaymentsSubscriptionsPartiallyUpdateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.PartiallyUpdateSubscriptionsRequest{
 		ProcessingTerminalId: "1234001",
@@ -264,11 +277,13 @@ func TestRepeatPaymentsSubscriptionsPartiallyUpdateWithWireMock(
 func TestRepeatPaymentsSubscriptionsDeactivateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.DeactivateSubscriptionsRequest{
 		ProcessingTerminalId: "1234001",
@@ -289,11 +304,13 @@ func TestRepeatPaymentsSubscriptionsDeactivateWithWireMock(
 func TestRepeatPaymentsSubscriptionsReactivateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.ReactivateSubscriptionsRequest{
 		ProcessingTerminalId: "1234001",
@@ -314,11 +331,13 @@ func TestRepeatPaymentsSubscriptionsReactivateWithWireMock(
 func TestRepeatPaymentsSubscriptionsPayWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &repeatpayments.SubscriptionPaymentRequest{
 		ProcessingTerminalId: "1234001",
@@ -332,7 +351,7 @@ func TestRepeatPaymentsSubscriptionsPayWithWireMock(
 				"OrderRef6543",
 			),
 			Amount: payroc.Int64(
-				4999,
+				int64(4999),
 			),
 			Description: payroc.String(
 				"Monthly Premium Club subscription",

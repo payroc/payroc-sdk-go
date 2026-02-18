@@ -12,6 +12,7 @@ import (
 	paymentfeatures "github.com/payroc/payroc-sdk-go/paymentfeatures"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestPaymentFeaturesCardsVerifyCardWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &paymentfeatures.CardVerificationRequest{
 		IdempotencyKey:       "8e03978e-40d5-43e8-bc93-6894a57f9324",
@@ -102,11 +109,13 @@ func TestPaymentFeaturesCardsVerifyCardWithWireMock(
 func TestPaymentFeaturesCardsViewEbtBalanceWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &paymentfeatures.BalanceInquiry{
 		ProcessingTerminalId: "1234001",
@@ -143,11 +152,13 @@ func TestPaymentFeaturesCardsViewEbtBalanceWithWireMock(
 func TestPaymentFeaturesCardsLookupBinWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &paymentfeatures.BinLookup{
 		ProcessingTerminalId: payroc.String(
@@ -182,11 +193,13 @@ func TestPaymentFeaturesCardsLookupBinWithWireMock(
 func TestPaymentFeaturesCardsRetrieveFxRatesWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &paymentfeatures.FxRateInquiry{
 		Channel:              paymentfeatures.FxRateInquiryChannelWeb,
@@ -194,7 +207,7 @@ func TestPaymentFeaturesCardsRetrieveFxRatesWithWireMock(
 		Operator: payroc.String(
 			"Jane",
 		),
-		BaseAmount:   10000,
+		BaseAmount:   int64(10000),
 		BaseCurrency: payroc.CurrencyUsd,
 		PaymentMethod: &paymentfeatures.FxRateInquiryPaymentMethod{
 			Card: &payroc.CardPayload{

@@ -99,7 +99,7 @@ func (c *Client) ListBatches(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -203,7 +203,7 @@ func (c *Client) ListTransactions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -306,7 +306,7 @@ func (c *Client) ListAuthorizations(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -406,7 +406,7 @@ func (c *Client) ListDisputes(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -505,7 +505,7 @@ func (c *Client) ListAchDeposits(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -599,7 +599,7 @@ func (c *Client) ListAchDepositFees(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err

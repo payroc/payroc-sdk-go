@@ -74,7 +74,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -126,7 +126,7 @@ func (r *RawClient) Create(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -178,7 +178,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -237,7 +237,7 @@ func (r *RawClient) ListProcessingAccounts(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -292,7 +292,7 @@ func (r *RawClient) CreateProcessingAccount(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(boarding.ErrorCodes),
 		},
 	)
 	if err != nil {

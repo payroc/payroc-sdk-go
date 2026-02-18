@@ -3,7 +3,9 @@
 package payroccloud
 
 import (
+	json "encoding/json"
 	papisdkgo "github.com/payroc/payroc-sdk-go"
+	internal "github.com/payroc/payroc-sdk-go/internal"
 	big "math/big"
 )
 
@@ -82,7 +84,7 @@ type PaymentInstructionRequest struct {
 	Operator *string `json:"operator,omitempty" url:"-"`
 	// Unique identifier that we assigned to the terminal.
 	ProcessingTerminalId string                             `json:"processingTerminalId" url:"-"`
-	Order                *papisdkgo.PaymentInstructionOrder `json:"order,omitempty" url:"-"`
+	Order                *papisdkgo.PaymentInstructionOrder `json:"order" url:"-"`
 	Customer             *papisdkgo.Customer                `json:"customer,omitempty" url:"-"`
 	IpAddress            *papisdkgo.IpAddress               `json:"ipAddress,omitempty" url:"-"`
 	CredentialOnFile     *papisdkgo.SchemasCredentialOnFile `json:"credentialOnFile,omitempty" url:"-"`
@@ -184,4 +186,25 @@ func (p *PaymentInstructionRequest) SetAutoCapture(autoCapture *bool) {
 func (p *PaymentInstructionRequest) SetProcessAsSale(processAsSale *bool) {
 	p.ProcessAsSale = processAsSale
 	p.require(paymentInstructionRequestFieldProcessAsSale)
+}
+
+func (p *PaymentInstructionRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentInstructionRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PaymentInstructionRequest(body)
+	return nil
+}
+
+func (p *PaymentInstructionRequest) MarshalJSON() ([]byte, error) {
+	type embed PaymentInstructionRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }

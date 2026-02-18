@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestFundingFundingRecipientsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.ListFundingRecipientsRequest{
 		Before: payroc.String(
@@ -93,19 +100,27 @@ func TestFundingFundingRecipientsListWithWireMock(
 func TestFundingFundingRecipientsCreateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.CreateFundingRecipient{
 		IdempotencyKey:  "8e03978e-40d5-43e8-bc93-6894a57f9324",
 		RecipientType:   funding.CreateFundingRecipientRecipientTypePrivateCorporation,
-		TaxId:           "123456789",
-		DoingBusinessAs: "doingBusinessAs",
+		TaxId:           "12-3456789",
+		DoingBusinessAs: "Pizza Doe",
 		Address: &payroc.Address{
-			Address1:   "1 Example Ave.",
+			Address1: "1 Example Ave.",
+			Address2: payroc.String(
+				"Example Address Line 2",
+			),
+			Address3: payroc.String(
+				"Example Address Line 3",
+			),
 			City:       "Chicago",
 			State:      "Illinois",
 			Country:    "US",
@@ -117,11 +132,22 @@ func TestFundingFundingRecipientsCreateWithWireMock(
 					Value: "jane.doe@example.com",
 				},
 			},
+			&payroc.ContactMethod{
+				Phone: &payroc.ContactMethodPhone{
+					Value: "2025550164",
+				},
+			},
+		},
+		Metadata: map[string]string{
+			"yourCustomField": "abc123",
 		},
 		Owners: []*payroc.Owner{
 			&payroc.Owner{
 				FirstName: "Jane",
-				LastName:  "Doe",
+				MiddleName: payroc.String(
+					"Helen",
+				),
+				LastName: "Doe",
 				DateOfBirth: payroc.MustParseDate(
 					"1964-03-22",
 				),
@@ -135,7 +161,7 @@ func TestFundingFundingRecipientsCreateWithWireMock(
 				Identifiers: []*payroc.Identifier{
 					&payroc.Identifier{
 						Type:  payroc.IdentifierTypeNationalId,
-						Value: "xxxxx4320",
+						Value: "000-00-4320",
 					},
 				},
 				ContactMethods: []*payroc.ContactMethod{
@@ -144,9 +170,23 @@ func TestFundingFundingRecipientsCreateWithWireMock(
 							Value: "jane.doe@example.com",
 						},
 					},
+					&payroc.ContactMethod{
+						Phone: &payroc.ContactMethodPhone{
+							Value: "2025550164",
+						},
+					},
 				},
 				Relationship: &payroc.OwnerRelationship{
+					EquityPercentage: payroc.Float64(
+						48.5,
+					),
+					Title: payroc.String(
+						"CFO",
+					),
 					IsControlProng: true,
+					IsAuthorizedSignatory: payroc.Bool(
+						false,
+					),
 				},
 			},
 		},
@@ -178,11 +218,13 @@ func TestFundingFundingRecipientsCreateWithWireMock(
 func TestFundingFundingRecipientsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.RetrieveFundingRecipientsRequest{
 		RecipientId: 1,
@@ -202,20 +244,28 @@ func TestFundingFundingRecipientsRetrieveWithWireMock(
 func TestFundingFundingRecipientsUpdateWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.UpdateFundingRecipientsRequest{
 		RecipientId: 1,
 		Body: &payroc.FundingRecipient{
 			RecipientType:   payroc.FundingRecipientRecipientTypePrivateCorporation,
-			TaxId:           "123456789",
-			DoingBusinessAs: "doingBusinessAs",
+			TaxId:           "12-3456789",
+			DoingBusinessAs: "Doe Hot Dogs",
 			Address: &payroc.Address{
-				Address1:   "1 Example Ave.",
+				Address1: "2 Example Ave.",
+				Address2: payroc.String(
+					"Example Address Line 2",
+				),
+				Address3: payroc.String(
+					"Example Address Line 3",
+				),
 				City:       "Chicago",
 				State:      "Illinois",
 				Country:    "US",
@@ -225,6 +275,51 @@ func TestFundingFundingRecipientsUpdateWithWireMock(
 				&payroc.ContactMethod{
 					Email: &payroc.ContactMethodEmail{
 						Value: "jane.doe@example.com",
+					},
+				},
+				&payroc.ContactMethod{
+					Phone: &payroc.ContactMethodPhone{
+						Value: "2025550164",
+					},
+				},
+			},
+			Metadata: map[string]string{
+				"responsiblePerson": "Jane Doe",
+			},
+			Owners: []*payroc.FundingRecipientOwnersItem{
+				&payroc.FundingRecipientOwnersItem{
+					OwnerId: payroc.Int(
+						12346,
+					),
+					Link: &payroc.FundingRecipientOwnersItemLink{
+						Rel: payroc.String(
+							"owner",
+						),
+						Href: payroc.String(
+							"https://api.payroc.com/v1/owners/12346",
+						),
+						Method: payroc.String(
+							"get",
+						),
+					},
+				},
+			},
+			FundingAccounts: []*payroc.FundingRecipientFundingAccountsItem{
+				&payroc.FundingRecipientFundingAccountsItem{
+					FundingAccountId: payroc.Int(
+						124,
+					),
+					Status: payroc.FundingRecipientFundingAccountsItemStatusApproved.Ptr(),
+					Link: &payroc.FundingRecipientFundingAccountsItemLink{
+						Rel: payroc.String(
+							"fundingAccount",
+						),
+						Href: payroc.String(
+							"https://api.payroc.com/v1/funding-accounts/124",
+						),
+						Method: payroc.String(
+							"get",
+						),
 					},
 				},
 			},
@@ -245,11 +340,13 @@ func TestFundingFundingRecipientsUpdateWithWireMock(
 func TestFundingFundingRecipientsDeleteWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.DeleteFundingRecipientsRequest{
 		RecipientId: 1,
@@ -269,11 +366,13 @@ func TestFundingFundingRecipientsDeleteWithWireMock(
 func TestFundingFundingRecipientsListAccountsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.ListFundingRecipientFundingAccountsRequest{
 		RecipientId: 1,
@@ -293,23 +392,28 @@ func TestFundingFundingRecipientsListAccountsWithWireMock(
 func TestFundingFundingRecipientsCreateAccountWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.CreateAccountFundingRecipientsRequest{
 		RecipientId:    1,
 		IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
 		Body: &payroc.FundingAccount{
-			Type:          payroc.FundingAccountTypeChecking,
+			Type:          payroc.FundingAccountTypeSavings,
 			Use:           payroc.FundingAccountUseCredit,
-			NameOnAccount: "Jane Doe",
+			NameOnAccount: "Fred Nerk",
 			PaymentMethods: []*payroc.PaymentMethodsItem{
 				&payroc.PaymentMethodsItem{
 					Ach: &payroc.PaymentMethodAch{},
 				},
+			},
+			Metadata: map[string]string{
+				"responsiblePerson": "Jane Doe",
 			},
 		},
 	}
@@ -328,11 +432,13 @@ func TestFundingFundingRecipientsCreateAccountWithWireMock(
 func TestFundingFundingRecipientsListOwnersWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.ListFundingRecipientOwnersRequest{
 		RecipientId: 1,
@@ -352,23 +458,28 @@ func TestFundingFundingRecipientsListOwnersWithWireMock(
 func TestFundingFundingRecipientsCreateOwnerWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &funding.CreateOwnerFundingRecipientsRequest{
 		RecipientId:    1,
 		IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
 		Body: &payroc.Owner{
-			FirstName: "Jane",
-			LastName:  "Doe",
+			FirstName: "Fred",
+			MiddleName: payroc.String(
+				"Jim",
+			),
+			LastName: "Nerk",
 			DateOfBirth: payroc.MustParseDate(
-				"1964-03-22",
+				"1980-01-19",
 			),
 			Address: &payroc.Address{
-				Address1:   "1 Example Ave.",
+				Address1:   "2 Example Ave.",
 				City:       "Chicago",
 				State:      "Illinois",
 				Country:    "US",
@@ -377,7 +488,7 @@ func TestFundingFundingRecipientsCreateOwnerWithWireMock(
 			Identifiers: []*payroc.Identifier{
 				&payroc.Identifier{
 					Type:  payroc.IdentifierTypeNationalId,
-					Value: "xxxxx4320",
+					Value: "000-00-9876",
 				},
 			},
 			ContactMethods: []*payroc.ContactMethod{
@@ -386,9 +497,23 @@ func TestFundingFundingRecipientsCreateOwnerWithWireMock(
 						Value: "jane.doe@example.com",
 					},
 				},
+				&payroc.ContactMethod{
+					Phone: &payroc.ContactMethodPhone{
+						Value: "2025550164",
+					},
+				},
 			},
 			Relationship: &payroc.OwnerRelationship{
-				IsControlProng: true,
+				EquityPercentage: payroc.Float64(
+					51.5,
+				),
+				Title: payroc.String(
+					"CEO",
+				),
+				IsControlProng: false,
+				IsAuthorizedSignatory: payroc.Bool(
+					true,
+				),
 			},
 		},
 	}

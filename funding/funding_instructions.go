@@ -183,11 +183,11 @@ var (
 
 type ListFundingInstructionsResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -202,14 +202,14 @@ type ListFundingInstructionsResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListFundingInstructionsResponse) GetLimit() *float64 {
+func (l *ListFundingInstructionsResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListFundingInstructionsResponse) GetCount() *float64 {
+func (l *ListFundingInstructionsResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -250,14 +250,14 @@ func (l *ListFundingInstructionsResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListFundingInstructionsResponse) SetLimit(limit *float64) {
+func (l *ListFundingInstructionsResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listFundingInstructionsResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListFundingInstructionsResponse) SetCount(count *float64) {
+func (l *ListFundingInstructionsResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listFundingInstructionsResponseFieldCount)
 }

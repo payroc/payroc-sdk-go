@@ -26,11 +26,17 @@ type BankTransferPaymentRequest struct {
 	IdempotencyKey string `json:"-" url:"-"`
 	// Unique identifier that we assigned to the terminal.
 	ProcessingTerminalId string                                     `json:"processingTerminalId" url:"-"`
-	Order                *papisdkgo.BankTransferPaymentRequestOrder `json:"order,omitempty" url:"-"`
+	Order                *papisdkgo.BankTransferPaymentRequestOrder `json:"order" url:"-"`
 	Customer             *papisdkgo.BankTransferCustomer            `json:"customer,omitempty" url:"-"`
 	CredentialOnFile     *papisdkgo.SchemasCredentialOnFile         `json:"credentialOnFile,omitempty" url:"-"`
-	// Object that contains information about the customer's payment details.
-	PaymentMethod *BankTransferPaymentRequestPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
+	// Polymorphic object that contains payment detail information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	// -	`secureToken` - Secure token details
+	// -	`singleUseToken` - Single-use token details
+	PaymentMethod *BankTransferPaymentRequestPaymentMethod `json:"paymentMethod" url:"-"`
 	// Array of customField objects.
 	CustomFields []*papisdkgo.CustomField `json:"customFields,omitempty" url:"-"`
 
@@ -92,6 +98,27 @@ func (b *BankTransferPaymentRequest) SetPaymentMethod(paymentMethod *BankTransfe
 func (b *BankTransferPaymentRequest) SetCustomFields(customFields []*papisdkgo.CustomField) {
 	b.CustomFields = customFields
 	b.require(bankTransferPaymentRequestFieldCustomFields)
+}
+
+func (b *BankTransferPaymentRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler BankTransferPaymentRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BankTransferPaymentRequest(body)
+	return nil
+}
+
+func (b *BankTransferPaymentRequest) MarshalJSON() ([]byte, error) {
+	type embed BankTransferPaymentRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -265,7 +292,11 @@ type Representment struct {
 	IdempotencyKey string `json:"-" url:"-"`
 	// Unique identifier that our gateway assigned to the payment.
 	PaymentId string `json:"-" url:"-"`
-	// Object that contains information about the customer's payment details.
+	// Polymorphic object that contains the customer's updated payment details.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`secureToken` - Secure token details
 	PaymentMethod *RepresentmentPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -300,6 +331,27 @@ func (r *Representment) SetPaymentMethod(paymentMethod *RepresentmentPaymentMeth
 	r.require(representmentFieldPaymentMethod)
 }
 
+func (r *Representment) UnmarshalJSON(data []byte) error {
+	type unmarshaler Representment
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = Representment(body)
+	return nil
+}
+
+func (r *Representment) MarshalJSON() ([]byte, error) {
+	type embed Representment
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	retrievePaymentsRequestFieldPaymentId = big.NewInt(1 << 0)
 )
@@ -326,7 +378,13 @@ func (r *RetrievePaymentsRequest) SetPaymentId(paymentId string) {
 	r.require(retrievePaymentsRequestFieldPaymentId)
 }
 
-// Object that contains information about the customer's payment details.
+// Polymorphic object that contains payment detail information.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
+// -	`secureToken` - Secure token details
+// -	`singleUseToken` - Single-use token details
 type BankTransferPaymentRequestPaymentMethod struct {
 	Type           string
 	Ach            *papisdkgo.AchPayload
@@ -573,7 +631,11 @@ func (l ListPaymentsRequestTypeItem) Ptr() *ListPaymentsRequestTypeItem {
 	return &l
 }
 
-// Object that contains information about the customer's payment details.
+// Polymorphic object that contains the customer's updated payment details.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`secureToken` - Secure token details
 type RepresentmentPaymentMethod struct {
 	Type        string
 	Ach         *papisdkgo.AchPayload

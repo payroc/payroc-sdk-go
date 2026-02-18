@@ -619,11 +619,11 @@ var (
 
 type ListAchDepositFeesSettlementResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -638,14 +638,14 @@ type ListAchDepositFeesSettlementResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListAchDepositFeesSettlementResponse) GetLimit() *float64 {
+func (l *ListAchDepositFeesSettlementResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListAchDepositFeesSettlementResponse) GetCount() *float64 {
+func (l *ListAchDepositFeesSettlementResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -686,14 +686,14 @@ func (l *ListAchDepositFeesSettlementResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAchDepositFeesSettlementResponse) SetLimit(limit *float64) {
+func (l *ListAchDepositFeesSettlementResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listAchDepositFeesSettlementResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAchDepositFeesSettlementResponse) SetCount(count *float64) {
+func (l *ListAchDepositFeesSettlementResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listAchDepositFeesSettlementResponseFieldCount)
 }
@@ -768,11 +768,11 @@ var (
 
 type ListAchDepositsSettlementResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -787,14 +787,14 @@ type ListAchDepositsSettlementResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListAchDepositsSettlementResponse) GetLimit() *float64 {
+func (l *ListAchDepositsSettlementResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListAchDepositsSettlementResponse) GetCount() *float64 {
+func (l *ListAchDepositsSettlementResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -835,14 +835,14 @@ func (l *ListAchDepositsSettlementResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAchDepositsSettlementResponse) SetLimit(limit *float64) {
+func (l *ListAchDepositsSettlementResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listAchDepositsSettlementResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAchDepositsSettlementResponse) SetCount(count *float64) {
+func (l *ListAchDepositsSettlementResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listAchDepositsSettlementResponseFieldCount)
 }
@@ -917,11 +917,11 @@ var (
 
 type ListAuthorizationsSettlementResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -936,14 +936,14 @@ type ListAuthorizationsSettlementResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListAuthorizationsSettlementResponse) GetLimit() *float64 {
+func (l *ListAuthorizationsSettlementResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListAuthorizationsSettlementResponse) GetCount() *float64 {
+func (l *ListAuthorizationsSettlementResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -984,14 +984,14 @@ func (l *ListAuthorizationsSettlementResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAuthorizationsSettlementResponse) SetLimit(limit *float64) {
+func (l *ListAuthorizationsSettlementResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listAuthorizationsSettlementResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAuthorizationsSettlementResponse) SetCount(count *float64) {
+func (l *ListAuthorizationsSettlementResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listAuthorizationsSettlementResponseFieldCount)
 }
@@ -1066,11 +1066,11 @@ var (
 
 type ListBatchesSettlementResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -1085,14 +1085,14 @@ type ListBatchesSettlementResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListBatchesSettlementResponse) GetLimit() *float64 {
+func (l *ListBatchesSettlementResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListBatchesSettlementResponse) GetCount() *float64 {
+func (l *ListBatchesSettlementResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -1133,14 +1133,14 @@ func (l *ListBatchesSettlementResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListBatchesSettlementResponse) SetLimit(limit *float64) {
+func (l *ListBatchesSettlementResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listBatchesSettlementResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListBatchesSettlementResponse) SetCount(count *float64) {
+func (l *ListBatchesSettlementResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listBatchesSettlementResponseFieldCount)
 }
@@ -1215,11 +1215,11 @@ var (
 
 type ListDisputesSettlementResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -1234,14 +1234,14 @@ type ListDisputesSettlementResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListDisputesSettlementResponse) GetLimit() *float64 {
+func (l *ListDisputesSettlementResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListDisputesSettlementResponse) GetCount() *float64 {
+func (l *ListDisputesSettlementResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -1282,14 +1282,14 @@ func (l *ListDisputesSettlementResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListDisputesSettlementResponse) SetLimit(limit *float64) {
+func (l *ListDisputesSettlementResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listDisputesSettlementResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListDisputesSettlementResponse) SetCount(count *float64) {
+func (l *ListDisputesSettlementResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listDisputesSettlementResponseFieldCount)
 }
@@ -1386,11 +1386,11 @@ var (
 
 type ListTransactionsSettlementResponse struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -1405,14 +1405,14 @@ type ListTransactionsSettlementResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListTransactionsSettlementResponse) GetLimit() *float64 {
+func (l *ListTransactionsSettlementResponse) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListTransactionsSettlementResponse) GetCount() *float64 {
+func (l *ListTransactionsSettlementResponse) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -1453,14 +1453,14 @@ func (l *ListTransactionsSettlementResponse) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListTransactionsSettlementResponse) SetLimit(limit *float64) {
+func (l *ListTransactionsSettlementResponse) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listTransactionsSettlementResponseFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListTransactionsSettlementResponse) SetCount(count *float64) {
+func (l *ListTransactionsSettlementResponse) SetCount(count *int) {
 	l.Count = count
 	l.require(listTransactionsSettlementResponseFieldCount)
 }

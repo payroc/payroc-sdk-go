@@ -8,6 +8,7 @@ import (
 
 	payroc "github.com/payroc/payroc-sdk-go"
 	applepaysessions "github.com/payroc/payroc-sdk-go/applepaysessions"
+	attachments "github.com/payroc/payroc-sdk-go/attachments"
 	auth "github.com/payroc/payroc-sdk-go/auth"
 	banktransferpaymentsclient "github.com/payroc/payroc-sdk-go/banktransferpayments/client"
 	boardingclient "github.com/payroc/payroc-sdk-go/boarding/client"
@@ -30,6 +31,7 @@ type PayrocClient struct {
 	PaymentLinks         *client.Client
 	HostedFields         *hostedfields.Client
 	ApplePaySessions     *applepaysessions.Client
+	Attachments          *attachments.Client
 	Auth                 *auth.Client
 	Funding              *fundingclient.Client
 	BankTransferPayments *banktransferpaymentsclient.Client
@@ -78,6 +80,7 @@ func NewPayrocClient(opts ...option.RequestOption) *PayrocClient {
 		PaymentLinks:         client.NewClient(options),
 		HostedFields:         hostedfields.NewClient(options),
 		ApplePaySessions:     applepaysessions.NewClient(options),
+		Attachments:          attachments.NewClient(options),
 		Auth:                 auth.NewClient(options),
 		Funding:              fundingclient.NewClient(options),
 		BankTransferPayments: banktransferpaymentsclient.NewClient(options),

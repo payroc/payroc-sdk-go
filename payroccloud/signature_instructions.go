@@ -3,6 +3,8 @@
 package payroccloud
 
 import (
+	json "encoding/json"
+	internal "github.com/payroc/payroc-sdk-go/internal"
 	big "math/big"
 )
 
@@ -102,4 +104,25 @@ func (s *SignatureInstructionRequest) SetSerialNumber(serialNumber string) {
 func (s *SignatureInstructionRequest) SetProcessingTerminalId(processingTerminalId string) {
 	s.ProcessingTerminalId = processingTerminalId
 	s.require(signatureInstructionRequestFieldProcessingTerminalId)
+}
+
+func (s *SignatureInstructionRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler SignatureInstructionRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = SignatureInstructionRequest(body)
+	return nil
+}
+
+func (s *SignatureInstructionRequest) MarshalJSON() ([]byte, error) {
+	type embed SignatureInstructionRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }

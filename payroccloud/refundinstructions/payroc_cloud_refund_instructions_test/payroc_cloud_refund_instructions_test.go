@@ -12,6 +12,7 @@ import (
 	payroccloud "github.com/payroc/payroc-sdk-go/payroccloud"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestPayrocCloudRefundInstructionsSubmitWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payroccloud.RefundInstructionRequest{
 		SerialNumber:   "1850010868",
@@ -79,7 +86,7 @@ func TestPayrocCloudRefundInstructionsSubmitWithWireMock(
 			Description: payroc.String(
 				"Refund for order OrderRef6543",
 			),
-			Amount:   4999,
+			Amount:   int64(4999),
 			Currency: payroc.CurrencyUsd,
 		},
 		CustomizationOptions: &payroc.CustomizationOptions{
@@ -101,11 +108,13 @@ func TestPayrocCloudRefundInstructionsSubmitWithWireMock(
 func TestPayrocCloudRefundInstructionsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payroccloud.RetrieveRefundInstructionsRequest{
 		RefundInstructionId: "a37439165d134678a9100ebba3b29597",
@@ -125,11 +134,13 @@ func TestPayrocCloudRefundInstructionsRetrieveWithWireMock(
 func TestPayrocCloudRefundInstructionsDeleteWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payroccloud.DeleteRefundInstructionsRequest{
 		RefundInstructionId: "a37439165d134678a9100ebba3b29597",

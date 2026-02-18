@@ -106,7 +106,7 @@ func (c *Client) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(repeatpayments.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -119,7 +119,7 @@ func (c *Client) List(
 
 // Use this method to assign a customer to a payment plan.
 //
-// **Note:** This method is part of our Repeat Payments feature. To help you understand how this method works with our Payment plans endpoints, go to [Repeat Payments](https://docs.payroc.com/guides/integrate/repeat-payments).
+// **Note:** This method is part of our Repeat Payments feature. To help you understand how this method works with our Payment plans endpoints, go to [Repeat Payments](https://docs.payroc.com/guides/take-payments/repeat-payments).
 //
 // When you create a subscription you need to provide a unique subscriptionId that you use to run follow-on actions:
 //

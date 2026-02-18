@@ -572,7 +572,7 @@ In your request, you need to indicate whether the merchant is using Hosted Field
 
 In the response, our gateway returns the session token and the time that it expires. You need the session token when you configure the JavaScript for Hosted Fields.  
 
-For more information about adding Hosted Fields to a webpage, go to [Hosted Fields](https://docs.payroc.com/guides/integrate/hosted-fields). 
+For more information about adding Hosted Fields to a webpage, go to [Hosted Fields](https://docs.payroc.com/guides/take-payments/hosted-fields). 
 </dd>
 </dl>
 </dd>
@@ -686,7 +686,7 @@ Use this method to start an Apple Pay session for your merchant.
 
 In the response, we return the startSessionObject that you send to Apple when you retrieve the cardholder's encrypted payment details.  
 
-**Note:** For more information about how to integrate with Apple Pay, go to [Apple Pay](https://docs.payroc.com/guides/integrate/apple-pay).
+**Note:** For more information about how to integrate with Apple Pay, go to [Apple Pay](https://docs.payroc.com/guides/take-payments/apple-pay).
 </dd>
 </dl>
 </dd>
@@ -742,6 +742,159 @@ client.ApplePaySessions.Create(
 <dd>
 
 **appleValidationUrl:** `string` — Validation URL from the Apple Pay JS API.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Attachments
+<details><summary><code>client.Attachments.UploadToProcessingAccount(ProcessingAccountId, request) -> *payroc.Attachment</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+> Before you upload an attachment, make sure that you follow local privacy regulations and get the merchant's consent to process their information.  
+
+**Note:** You need the ID of the processing account before you can upload an attachment. If you don't know the processingAccountId, go to the [Retrieve a Merchant Platform](https://docs.payroc.com/api/schema/boarding/merchant-platforms/retrieve) method.  
+
+The attachment must be an uncompressed file under 30MB in one of the following formats:
+- .bmp, csv, .doc, .docx, .gif, .htm, .html, .jpg, .jpeg, .msg, .pdf, .png, .ppt, .pptx, .tif, .tiff, .txt, .xls, .xlsx  
+
+In the request, include the attachment that you want to upload and the following information about the attachment:
+- **type** - Type of attachment that you want to upload.
+- **description** - Short description of the attachment.  
+
+In the response, our gateway returns information about the attachment including its upload status and an attachmentId that you can use to [Retrieve the details of the Attachment](https://docs.payroc.com/api/schema/attachments/get-attachment).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payroc.UploadAttachment{
+        ProcessingAccountId: "38765",
+        IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
+        File: strings.NewReader(
+            "",
+        ),
+        Attachment: &payroc.UploadToProcessingAccountAttachmentsRequestAttachment{
+            Type: payroc.UploadToProcessingAccountAttachmentsRequestAttachmentTypeBankingEvidence,
+        },
+    }
+client.Attachments.UploadToProcessingAccount(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**processingAccountId:** `string` — Unique identifier that we assigned to the processing account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `string` — Unique identifier that you generate for each request. You must use the [UUID v4 format](https://www.rfc-editor.org/rfc/rfc4122) for the identifier. For more information about the idempotency key, go to [Idempotency](https://docs.payroc.com/api/idempotency).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Attachments.GetAttachment(AttachmentId) -> *payroc.Attachment</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to retrieve the details of an attachment.  
+
+To retrieve the details of an attachment you need its attachmentId. Our gateway returned the attachmentId in the response of the method that you used to upload the attachment.  
+
+Our gateway returns information about the attachment, including its upload status and the entity that the attachment is linked to. Our gateway doesn't return the file that you uploaded.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payroc.GetAttachmentRequest{
+        AttachmentId: "12876",
+    }
+client.Attachments.GetAttachment(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**attachmentId:** `string` — Unique identifier of the attachment
     
 </dd>
 </dl>
@@ -1108,11 +1261,11 @@ request := &banktransferpayments.BankTransferPaymentRequest{
                 "Large Pepperoni Pizza",
             ),
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Currency: payroc.CurrencyUsd.Ptr(),
             Breakdown: &payroc.BankTransferRequestBreakdown{
-                Subtotal: 4347,
+                Subtotal: int64(4347),
                 Tip: &payroc.Tip{
                     Type: payroc.TipTypePercentage,
                     Percentage: payroc.Float64(
@@ -1216,7 +1369,15 @@ client.BankTransferPayments.Payments.Create(
 <dl>
 <dd>
 
-**paymentMethod:** `*banktransferpayments.BankTransferPaymentRequestPaymentMethod` — Object that contains information about the customer's payment details.
+**paymentMethod:** `*banktransferpayments.BankTransferPaymentRequestPaymentMethod` 
+
+Polymorphic object that contains payment detail information.  
+
+The value of the type parameter determines which variant you should use:  
+-	`ach` - Automated Clearing House (ACH) details
+-	`pad` - Pre-authorized debit (PAD) details
+-	`secureToken` - Secure token details
+-	`singleUseToken` - Single-use token details
     
 </dd>
 </dl>
@@ -1392,7 +1553,13 @@ client.BankTransferPayments.Payments.Represent(
 <dl>
 <dd>
 
-**paymentMethod:** `*banktransferpayments.RepresentmentPaymentMethod` — Object that contains information about the customer's payment details.
+**paymentMethod:** `*banktransferpayments.RepresentmentPaymentMethod` 
+
+Polymorphic object that contains the customer's updated payment details.  
+
+The value of the type parameter determines which variant you should use:  
+-	`ach` - Automated Clearing House (ACH) details
+-	`secureToken` - Secure token details
     
 </dd>
 </dl>
@@ -1521,7 +1688,7 @@ If your refund is successful, our gateway returns the payment amount to the cust
 request := &banktransferpayments.BankTransferReferencedRefund{
         PaymentId: "M2MJOG6O2Y",
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
-        Amount: 4999,
+        Amount: int64(4999),
         Description: "amount to refund",
     }
 client.BankTransferPayments.Refunds.Refund(
@@ -1836,7 +2003,7 @@ request := &banktransferpayments.BankTransferUnreferencedRefund{
                 "Refund for order OrderRef6543",
             ),
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Currency: payroc.CurrencyUsd.Ptr(),
         },
@@ -1915,7 +2082,13 @@ client.BankTransferPayments.Refunds.Create(
 <dl>
 <dd>
 
-**refundMethod:** `*banktransferpayments.BankTransferUnreferencedRefundRefundMethod` — Object that contains information about how the merchant refunds the customer.
+**refundMethod:** `*banktransferpayments.BankTransferUnreferencedRefundRefundMethod` 
+
+Polymorphic object that contains payment details for the refund.  
+
+The value of the type parameter determines which variant you should use:  
+-	`ach` - Automated Clearing House (ACH) details
+-	`secureToken` - Secure token details
     
 </dd>
 </dl>
@@ -3117,7 +3290,7 @@ You can’t send the after parameter in the same request as the before parameter
 
 Use this method to board a merchant with Payroc.  
 
-**Note**: This method is part of our Boarding solution. To help you understand how this method works with other Boarding methods, go to [Board a Merchant](https://docs.payroc.com/guides/integrate/boarding).  
+**Note**: This method is part of our Boarding solution. To help you understand how this method works with other Boarding methods, go to [Board a Merchant](https://docs.payroc.com/guides/board-merchants/boarding).  
 
 In the request, include the following information:  
 - Legal information, including its legal name and address.  
@@ -4072,7 +4245,15 @@ client.Boarding.ProcessingAccounts.Retrieve(
 <dl>
 <dd>
 
-Retrieve a list of funding accounts associated with a processing account.
+Use this method to return a list of funding accounts linked to a processing acccount.  
+
+To retrieve a list of funding accounts for a processing account, you need the processingAccountId. Our gateway returned the processingAccountId in the response of the [Create Merchant Platform](https://docs.payroc.com/api/schema/boarding/merchant-platforms/create) method or the [Create Proccessing Account](https://docs.payroc.com/api/schema/boarding/merchant-platforms/create-processing-account) method.  
+
+Our gateway returns information about the following for each funding account in the list:  
+- Account information, including the name on the account and payment methods.  
+- Status, including whether we have approved or rejected the account.  
+
+For each funding account, we also return its fundingAccountId, which you can use to perform follow-on actions.  
 </dd>
 </dl>
 </dd>
@@ -4638,7 +4819,7 @@ In the request, specify the gateway settings, device settings, and application s
 
 In the response, our gateway returns information about the terminal order including its status and terminalOrderId that you can use to [retrieve the terminal order](https://docs.payroc.com/api/schema/boarding/terminal-orders/retrieve).  
 
-**Note**: You can subscribe to the terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Events Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).  
+**Note**: You can subscribe to the terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Events Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).  
 </dd>
 </dl>
 </dd>
@@ -4686,7 +4867,7 @@ request := &boarding.CreateTerminalOrder{
             &payroc.OrderItem{
                 Type: payroc.OrderItemTypeSolution,
                 SolutionTemplateId: "Roc Services_DX8000",
-                SolutionQuantity: payroc.Float64(
+                SolutionQuantity: payroc.Int(
                     1,
                 ),
                 DeviceCondition: payroc.OrderItemDeviceConditionNew.Ptr(),
@@ -4726,7 +4907,7 @@ request := &boarding.CreateTerminalOrder{
                         },
                     },
                     DeviceSettings: &payroc.OrderItemSolutionSetupDeviceSettings{
-                        NumberOfMobileUsers: payroc.Float64(
+                        NumberOfMobileUsers: payroc.Int(
                             2,
                         ),
                         CommunicationType: payroc.OrderItemSolutionSetupDeviceSettingsCommunicationTypeWifi.Ptr(),
@@ -5339,7 +5520,7 @@ Our gateway returns the following information about the terminal order:
 - Training provider  
 - Shipping information  
 
-**Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Events Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).  
+**Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Events Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).  
 </dd>
 </dl>
 </dd>
@@ -5678,18 +5859,18 @@ In the response, our gateway returns information about the card payment and a pa
 **Payment methods** 
 
 - **Cards** - Credit, debit, and EBT
-- **Digital wallets** - [Apple Pay®](https://docs.payroc.com/guides/integrate/apple-pay) and [Google Pay®](https://docs.payroc.com/guides/integrate/google-pay) 
+- **Digital wallets** - [Apple Pay®](https://docs.payroc.com/guides/take-payments/apple-pay) and [Google Pay®](https://docs.payroc.com/guides/take-payments/google-pay) 
 - **Tokens** - Secure tokens and single-use tokens
 
 **Features** 
 
 Our Create Payment method also supports the following features: 
 
-- [Repeat payments](https://docs.payroc.com/guides/integrate/repeat-payments/use-your-own-software) - Run multiple payments as part of a payment schedule that you manage with your own software. 
+- [Repeat payments](https://docs.payroc.com/guides/take-payments/repeat-payments/use-your-own-software) - Run multiple payments as part of a payment schedule that you manage with your own software. 
 - **Offline sales** - Run a sale or a pre-authorization if the terminal loses its connection to our gateway. 
-- [Tokenization](https://docs.payroc.com/guides/integrate/save-payment-details) - Save card details to use in future transactions. 
-- [3-D Secure](https://docs.payroc.com/guides/integrate/3-d-secure) - Verify the identity of the cardholder. 
-- [Custom fields](https://docs.payroc.com/guides/integrate/add-custom-fields) - Add your own data to a payment. 
+- [Tokenization](https://docs.payroc.com/guides/take-payments/save-payment-details) - Save card details to use in future transactions. 
+- [3-D Secure](https://docs.payroc.com/guides/take-payments/3-d-secure) - Verify the identity of the cardholder. 
+- [Custom fields](https://docs.payroc.com/guides/take-payments/add-custom-fields) - Add your own data to a payment. 
 - **Tips** - Add tips to the card payment.  
 - **Taxes** - Add local taxes to the card payment. 
 - **Surcharging** - Add a surcharge to the card payment. 
@@ -5723,7 +5904,7 @@ request := &cardpayments.PaymentRequest{
                 "Large Pepperoni Pizza",
             ),
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Currency: payroc.CurrencyUsd.Ptr(),
         },
@@ -5861,7 +6042,15 @@ client.CardPayments.Payments.Create(
 <dl>
 <dd>
 
-**paymentMethod:** `*cardpayments.PaymentRequestPaymentMethod` — Object that contains information about the customer's payment details.
+**paymentMethod:** `*cardpayments.PaymentRequestPaymentMethod` 
+
+Polymorphic object that contains payment details.  
+
+The value of the type parameter determines which variant you should use:  
+-	`card` - Payment card details
+-	`secureToken` - Secure token details
+-	`digitalWallet` - Digital wallet details
+-	`singleUseToken` - Single-use token details
     
 </dd>
 </dl>
@@ -5869,7 +6058,13 @@ client.CardPayments.Payments.Create(
 <dl>
 <dd>
 
-**threeDSecure:** `*cardpayments.PaymentRequestThreeDSecure` — Object that contains information for an authentication check on the customer's payment details using the 3-D Secure protocol.
+**threeDSecure:** `*cardpayments.PaymentRequestThreeDSecure` 
+
+Polymorphic object that contains authentication information from 3-D Secure.  
+
+The value of the serviceProvider parameter determines which variant you should use:  
+-	`gateway` - Use our gateway to run a 3-D Secure check.
+-	`thirdParty` - Use a third party to run a 3-D Secure check.
     
 </dd>
 </dl>
@@ -6053,7 +6248,7 @@ request := &cardpayments.PaymentAdjustment{
             },
             &cardpayments.PaymentAdjustmentAdjustmentsItem{
                 Order: &payroc.OrderAdjustment{
-                    Amount: 4999,
+                    Amount: int64(4999),
                 },
             },
         },
@@ -6101,7 +6296,15 @@ client.CardPayments.Payments.Adjust(
 <dl>
 <dd>
 
-**adjustments:** `[]*cardpayments.PaymentAdjustmentAdjustmentsItem` — Array of objects that contain information about the adjustments to the payment.
+**adjustments:** `[]*cardpayments.PaymentAdjustmentAdjustmentsItem` 
+
+Array of polymorphic objects which contain information about adjustments to a payment.  
+
+The value of the type parameter determines which variant you should use:
+-	`order` - Tip information.
+-	`status` - Status of the transaction.
+-	`customer` - Customer's contact information and shipping address.
+-	`signature` - Customer's signature.
     
 </dd>
 </dl>
@@ -6163,19 +6366,19 @@ request := &cardpayments.PaymentCapture{
             "Jane",
         ),
         Amount: payroc.Int64(
-            4999,
+            int64(4999),
         ),
         Breakdown: &payroc.ItemizedBreakdownRequest{
-            Subtotal: 4999,
+            Subtotal: int64(4999),
             DutyAmount: payroc.Int64(
-                499,
+                int64(499),
             ),
             FreightAmount: payroc.Int64(
-                500,
+                int64(500),
             ),
             Items: []*payroc.LineItemRequest{
                 &payroc.LineItemRequest{
-                    UnitPrice: 4000,
+                    UnitPrice: int64(4000),
                     Quantity: 1,
                 },
             },
@@ -6293,7 +6496,7 @@ request := &cardpayments.PaymentReversal{
         PaymentId: "M2MJOG6O2Y",
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
         Amount: payroc.Int64(
-            4999,
+            int64(4999),
         ),
     }
 client.CardPayments.Refunds.Reverse(
@@ -6395,7 +6598,7 @@ If your refund is successful, our gateway returns the payment amount to the card
 request := &cardpayments.ReferencedRefund{
         PaymentId: "M2MJOG6O2Y",
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
-        Amount: 4999,
+        Amount: int64(4999),
         Description: "Refund for order OrderRef6543",
     }
 client.CardPayments.Refunds.CreateReferencedRefund(
@@ -6744,7 +6947,7 @@ request := &cardpayments.UnreferencedRefund{
                 "Refund for order OrderRef6543",
             ),
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Currency: payroc.CurrencyUsd.Ptr(),
         },
@@ -6843,7 +7046,13 @@ client.CardPayments.Refunds.CreateUnreferencedRefund(
 <dl>
 <dd>
 
-**refundMethod:** `*cardpayments.UnreferencedRefundRefundMethod` — Object that contains information about how the merchant refunds the customer.
+**refundMethod:** `*cardpayments.UnreferencedRefundRefundMethod` 
+
+Polymorphic object that contains information about the payment method that the merchant uses to refund the customer.  
+
+The value of the type parameter determines which variant you should use:
+-	`card` - Payment card details
+-	`secureToken` - Secure token details
     
 </dd>
 </dl>
@@ -7032,7 +7241,13 @@ client.CardPayments.Refunds.Adjust(
 <dl>
 <dd>
 
-**adjustments:** `[]*cardpayments.RefundAdjustmentAdjustmentsItem` — Array of objects that contain information about the adjustments to the refund.
+**adjustments:** `[]*cardpayments.RefundAdjustmentAdjustmentsItem` 
+
+Array of polymorphic objects that contain information about adjustments to the refund.  
+
+The value of the type parameter determines which variant you should use:  
+-	`status` - Status of the transaction.
+-	`customer` - Customer's contact information and shipping address.
     
 </dd>
 </dl>
@@ -7263,10 +7478,16 @@ Our gateway returns the recipientId of the funding recipient, which you can use 
 request := &funding.CreateFundingRecipient{
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
         RecipientType: funding.CreateFundingRecipientRecipientTypePrivateCorporation,
-        TaxId: "123456789",
-        DoingBusinessAs: "doingBusinessAs",
+        TaxId: "12-3456789",
+        DoingBusinessAs: "Pizza Doe",
         Address: &payroc.Address{
             Address1: "1 Example Ave.",
+            Address2: payroc.String(
+                "Example Address Line 2",
+            ),
+            Address3: payroc.String(
+                "Example Address Line 3",
+            ),
             City: "Chicago",
             State: "Illinois",
             Country: "US",
@@ -7278,10 +7499,21 @@ request := &funding.CreateFundingRecipient{
                     Value: "jane.doe@example.com",
                 },
             },
+            &payroc.ContactMethod{
+                Phone: &payroc.ContactMethodPhone{
+                    Value: "2025550164",
+                },
+            },
+        },
+        Metadata: map[string]string{
+            "yourCustomField": "abc123",
         },
         Owners: []*payroc.Owner{
             &payroc.Owner{
                 FirstName: "Jane",
+                MiddleName: payroc.String(
+                    "Helen",
+                ),
                 LastName: "Doe",
                 DateOfBirth: payroc.MustParseDate(
                     "1964-03-22",
@@ -7296,7 +7528,7 @@ request := &funding.CreateFundingRecipient{
                 Identifiers: []*payroc.Identifier{
                     &payroc.Identifier{
                         Type: payroc.IdentifierTypeNationalId,
-                        Value: "xxxxx4320",
+                        Value: "000-00-4320",
                     },
                 },
                 ContactMethods: []*payroc.ContactMethod{
@@ -7305,9 +7537,23 @@ request := &funding.CreateFundingRecipient{
                             Value: "jane.doe@example.com",
                         },
                     },
+                    &payroc.ContactMethod{
+                        Phone: &payroc.ContactMethodPhone{
+                            Value: "2025550164",
+                        },
+                    },
                 },
                 Relationship: &payroc.OwnerRelationship{
+                    EquityPercentage: payroc.Float64(
+                        48.5,
+                    ),
+                    Title: payroc.String(
+                        "CFO",
+                    ),
                     IsControlProng: true,
+                    IsAuthorizedSignatory: payroc.Bool(
+                        false,
+                    ),
                 },
             },
         },
@@ -7383,7 +7629,7 @@ client.Funding.FundingRecipients.Create(
 <dl>
 <dd>
 
-**address:** `*payroc.Address` — Address of the funding recipient.
+**address:** `*payroc.Address` — Polymorphic object that contains address information for a funding recipient.
     
 </dd>
 </dl>
@@ -7391,7 +7637,17 @@ client.Funding.FundingRecipients.Create(
 <dl>
 <dd>
 
-**contactMethods:** `[]*payroc.ContactMethod` — Array of contactMethod objects that you can use to add contact methods for the funding recipient. You must provide at least an email address.
+**contactMethods:** `[]*payroc.ContactMethod` 
+
+Array of polymorphic objects, which contain contact information.  
+
+**Note:** You must provide an email address.
+
+The value of the type parameter determines which variant you should use:  
+-	`email` - Email address 
+-	`phone` - Phone number
+-	`mobile` - Mobile number
+-	`fax` - Fax number
     
 </dd>
 </dl>
@@ -7538,10 +7794,16 @@ request := &funding.UpdateFundingRecipientsRequest{
         RecipientId: 1,
         Body: &payroc.FundingRecipient{
             RecipientType: payroc.FundingRecipientRecipientTypePrivateCorporation,
-            TaxId: "123456789",
-            DoingBusinessAs: "doingBusinessAs",
+            TaxId: "12-3456789",
+            DoingBusinessAs: "Doe Hot Dogs",
             Address: &payroc.Address{
-                Address1: "1 Example Ave.",
+                Address1: "2 Example Ave.",
+                Address2: payroc.String(
+                    "Example Address Line 2",
+                ),
+                Address3: payroc.String(
+                    "Example Address Line 3",
+                ),
                 City: "Chicago",
                 State: "Illinois",
                 Country: "US",
@@ -7551,6 +7813,51 @@ request := &funding.UpdateFundingRecipientsRequest{
                 &payroc.ContactMethod{
                     Email: &payroc.ContactMethodEmail{
                         Value: "jane.doe@example.com",
+                    },
+                },
+                &payroc.ContactMethod{
+                    Phone: &payroc.ContactMethodPhone{
+                        Value: "2025550164",
+                    },
+                },
+            },
+            Metadata: map[string]string{
+                "responsiblePerson": "Jane Doe",
+            },
+            Owners: []*payroc.FundingRecipientOwnersItem{
+                &payroc.FundingRecipientOwnersItem{
+                    OwnerId: payroc.Int(
+                        12346,
+                    ),
+                    Link: &payroc.FundingRecipientOwnersItemLink{
+                        Rel: payroc.String(
+                            "owner",
+                        ),
+                        Href: payroc.String(
+                            "https://api.payroc.com/v1/owners/12346",
+                        ),
+                        Method: payroc.String(
+                            "get",
+                        ),
+                    },
+                },
+            },
+            FundingAccounts: []*payroc.FundingRecipientFundingAccountsItem{
+                &payroc.FundingRecipientFundingAccountsItem{
+                    FundingAccountId: payroc.Int(
+                        124,
+                    ),
+                    Status: payroc.FundingRecipientFundingAccountsItemStatusApproved.Ptr(),
+                    Link: &payroc.FundingRecipientFundingAccountsItemLink{
+                        Rel: payroc.String(
+                            "fundingAccount",
+                        ),
+                        Href: payroc.String(
+                            "https://api.payroc.com/v1/funding-accounts/124",
+                        ),
+                        Method: payroc.String(
+                            "get",
+                        ),
                     },
                 },
             },
@@ -7774,13 +8081,16 @@ request := &funding.CreateAccountFundingRecipientsRequest{
         RecipientId: 1,
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
         Body: &payroc.FundingAccount{
-            Type: payroc.FundingAccountTypeChecking,
+            Type: payroc.FundingAccountTypeSavings,
             Use: payroc.FundingAccountUseCredit,
-            NameOnAccount: "Jane Doe",
+            NameOnAccount: "Fred Nerk",
             PaymentMethods: []*payroc.PaymentMethodsItem{
                 &payroc.PaymentMethodsItem{
                     Ach: &payroc.PaymentMethodAch{},
                 },
+            },
+            Metadata: map[string]string{
+                "responsiblePerson": "Jane Doe",
             },
         },
     }
@@ -7946,13 +8256,16 @@ request := &funding.CreateOwnerFundingRecipientsRequest{
         RecipientId: 1,
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
         Body: &payroc.Owner{
-            FirstName: "Jane",
-            LastName: "Doe",
+            FirstName: "Fred",
+            MiddleName: payroc.String(
+                "Jim",
+            ),
+            LastName: "Nerk",
             DateOfBirth: payroc.MustParseDate(
-                "1964-03-22",
+                "1980-01-19",
             ),
             Address: &payroc.Address{
-                Address1: "1 Example Ave.",
+                Address1: "2 Example Ave.",
                 City: "Chicago",
                 State: "Illinois",
                 Country: "US",
@@ -7961,7 +8274,7 @@ request := &funding.CreateOwnerFundingRecipientsRequest{
             Identifiers: []*payroc.Identifier{
                 &payroc.Identifier{
                     Type: payroc.IdentifierTypeNationalId,
-                    Value: "xxxxx4320",
+                    Value: "000-00-9876",
                 },
             },
             ContactMethods: []*payroc.ContactMethod{
@@ -7970,9 +8283,23 @@ request := &funding.CreateOwnerFundingRecipientsRequest{
                         Value: "jane.doe@example.com",
                     },
                 },
+                &payroc.ContactMethod{
+                    Phone: &payroc.ContactMethodPhone{
+                        Value: "2025550164",
+                    },
+                },
             },
             Relationship: &payroc.OwnerRelationship{
-                IsControlProng: true,
+                EquityPercentage: payroc.Float64(
+                    51.5,
+                ),
+                Title: payroc.String(
+                    "CEO",
+                ),
+                IsControlProng: false,
+                IsAuthorizedSignatory: payroc.Bool(
+                    true,
+                ),
             },
         },
     }
@@ -8237,13 +8564,16 @@ You can update the following details about the funding account:
 request := &funding.UpdateFundingAccountsRequest{
         FundingAccountId: 1,
         Body: &payroc.FundingAccount{
-            Type: payroc.FundingAccountTypeChecking,
+            Type: payroc.FundingAccountTypeSavings,
             Use: payroc.FundingAccountUseCredit,
-            NameOnAccount: "Jane Doe",
+            NameOnAccount: "Fred Nerk",
             PaymentMethods: []*payroc.PaymentMethodsItem{
                 &payroc.PaymentMethodsItem{
                     Ach: &payroc.PaymentMethodAch{},
                 },
+            },
+            Metadata: map[string]string{
+                "responsiblePerson": "Jane Doe",
             },
         },
     }
@@ -8517,7 +8847,29 @@ Our gateway returns the instructionId, which you can use to run follow-on action
 ```go
 request := &funding.CreateFundingInstructionsRequest{
         IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
-        Body: &payroc.Instruction{},
+        Body: &payroc.Instruction{
+            Merchants: []*payroc.InstructionMerchantsItem{
+                &payroc.InstructionMerchantsItem{
+                    MerchantId: "4525644354",
+                    Recipients: []*payroc.InstructionMerchantsItemRecipientsItem{
+                        &payroc.InstructionMerchantsItemRecipientsItem{
+                            FundingAccountId: 123,
+                            PaymentMethod: payroc.InstructionMerchantsItemRecipientsItemPaymentMethodAch,
+                            Amount: &payroc.InstructionMerchantsItemRecipientsItemAmount{
+                                Value: 120000,
+                                Currency: payroc.InstructionMerchantsItemRecipientsItemAmountCurrencyUsd.Ptr(),
+                            },
+                            Metadata: map[string]string{
+                                "yourCustomField": "abc123",
+                            },
+                        },
+                    },
+                },
+            },
+            Metadata: map[string]string{
+                "yourCustomField": "abc123",
+            },
+        },
     }
 client.Funding.FundingInstructions.Create(
         context.TODO(),
@@ -8667,7 +9019,29 @@ You can modify the following information for the funding instruction:
 ```go
 request := &funding.UpdateFundingInstructionsRequest{
         InstructionId: 1,
-        Body: &payroc.Instruction{},
+        Body: &payroc.Instruction{
+            Merchants: []*payroc.InstructionMerchantsItem{
+                &payroc.InstructionMerchantsItem{
+                    MerchantId: "9876543219",
+                    Recipients: []*payroc.InstructionMerchantsItemRecipientsItem{
+                        &payroc.InstructionMerchantsItemRecipientsItem{
+                            FundingAccountId: 124,
+                            PaymentMethod: payroc.InstructionMerchantsItemRecipientsItemPaymentMethodAch,
+                            Amount: &payroc.InstructionMerchantsItemRecipientsItemAmount{
+                                Value: 69950,
+                                Currency: payroc.InstructionMerchantsItemRecipientsItemAmountCurrencyUsd.Ptr(),
+                            },
+                            Metadata: map[string]string{
+                                "supplier": "IT Support Services",
+                            },
+                        },
+                    },
+                },
+            },
+            Metadata: map[string]string{
+                "instructionCreatedBy": "Jane Doe",
+            },
+        },
     }
 client.Funding.FundingInstructions.Update(
         context.TODO(),
@@ -9212,7 +9586,7 @@ Use this method to retrieve the details of an event subscription.
 
 In your request, include the subscriptionId that we sent to you when we created the event subscription.  
   
-**Note:** If you don't know the subscriptionId of the event subscription, go to [List event subscriptions](#listEventSubscriptions).
+**Note:** If you don't know the subscriptionId of the event subscription, go to [List event subscriptions](https://docs.payroc.com/api/schema/notifications/event-subscriptions/list).
 </dd>
 </dl>
 </dd>
@@ -9634,7 +10008,7 @@ client.PaymentFeatures.Cards.VerifyCard(
 <dl>
 <dd>
 
-**card:** `*paymentfeatures.CardVerificationRequestCard` — Object that contains information about the card.
+**card:** `*paymentfeatures.CardVerificationRequestCard` — Polymorphic object that contains payment details.
     
 </dd>
 </dl>
@@ -9746,7 +10120,13 @@ client.PaymentFeatures.Cards.ViewEbtBalance(
 <dl>
 <dd>
 
-**card:** `*paymentfeatures.BalanceInquiryCard` — Object that contains information about the card.
+**card:** `*paymentfeatures.BalanceInquiryCard` 
+
+Polymorphic object that contains payment details.  
+
+The value of the type parameter determines which variant you should use:  
+-	`card` - Payment card details
+-	`singleUseToken` - Single-use token details
     
 </dd>
 </dl>
@@ -9852,7 +10232,15 @@ client.PaymentFeatures.Cards.LookupBin(
 <dl>
 <dd>
 
-**card:** `*paymentfeatures.BinLookupCard` — Object that contains information about the card.
+**card:** `*paymentfeatures.BinLookupCard` 
+
+Polymorphic object that contains payment details.  
+
+The value of the type parameter determines which variant you should use:  
+-	`card` - Payment card details
+-	`cardBin` - Bank identification number (BIN) of the payment card
+-	`secureToken` - Secure token details
+-	`digitalWallet` - Digital wallet details
     
 </dd>
 </dl>
@@ -9912,7 +10300,7 @@ request := &paymentfeatures.FxRateInquiry{
         Operator: payroc.String(
             "Jane",
         ),
-        BaseAmount: 10000,
+        BaseAmount: int64(10000),
         BaseCurrency: payroc.CurrencyUsd,
         PaymentMethod: &paymentfeatures.FxRateInquiryPaymentMethod{
             Card: &payroc.CardPayload{
@@ -9987,7 +10375,14 @@ client.PaymentFeatures.Cards.RetrieveFxRates(
 <dl>
 <dd>
 
-**paymentMethod:** `*paymentfeatures.FxRateInquiryPaymentMethod` — Object that contains information about the customer's payment details.
+**paymentMethod:** `*paymentfeatures.FxRateInquiryPaymentMethod` 
+
+Polymorphic object that contains payment details.  
+
+The value of the type parameter determines which variant you should use:  
+-	`card` - Payment card details
+-	`secureToken` - Secure token details
+-	`digitalWallet` - Digital wallet details
     
 </dd>
 </dl>
@@ -10081,7 +10476,13 @@ client.PaymentFeatures.Bank.Verify(
 <dl>
 <dd>
 
-**bankAccount:** `*paymentfeatures.BankAccountVerificationRequestBankAccount` — Object that contains information about the bank account.
+**bankAccount:** `*paymentfeatures.BankAccountVerificationRequestBankAccount` 
+
+Polymorphic object that contains bank account information.  
+
+The value of the type field determines which variant you should use:  
+-	`ach` - Automated Clearing House (ACH) details
+-	`pad` - Pre-authorized debit (PAD) details
     
 </dd>
 </dl>
@@ -10321,7 +10722,7 @@ client.PaymentLinks.SharingEvents.Share(
 <dl>
 <dd>
 
-**request:** `*payroc.PaymentLinkEmailShareEvent` 
+**request:** `*payroc.PaymentLinkEmailShareEvent` — Polymorphic object that contains information about how to share a payment link.
     
 </dd>
 </dl>
@@ -10376,7 +10777,7 @@ request := &payroccloud.PaymentInstructionRequest{
         ProcessingTerminalId: "1234001",
         Order: &payroc.PaymentInstructionOrder{
             OrderId: "OrderRef6543",
-            Amount: 4999,
+            Amount: int64(4999),
             Currency: payroc.CurrencyUsd,
         },
         CustomizationOptions: &payroc.CustomizationOptions{
@@ -10683,7 +11084,7 @@ request := &payroccloud.RefundInstructionRequest{
             Description: payroc.String(
                 "Refund for order OrderRef6543",
             ),
-            Amount: 4999,
+            Amount: int64(4999),
             Currency: payroc.CurrencyUsd,
         },
         CustomizationOptions: &payroc.CustomizationOptions{
@@ -11314,7 +11715,7 @@ You can’t send the after parameter in the same request as the before parameter
 
 Use this method to create a payment schedule that you can assign customers to.  
 
-**Note:** This method is part of our Repeat Payments feature. To help you understand how this method works with our Subscriptions endpoints, go to [Repeat Payments](https://docs.payroc.com/guides/integrate/repeat-payments).  
+**Note:** This method is part of our Repeat Payments feature. To help you understand how this method works with our Subscriptions endpoints, go to [Repeat Payments](https://docs.payroc.com/guides/take-payments/repeat-payments).  
 
 When you create a payment plan you need to provide a unique paymentPlanId that you use to run follow-on actions:  
 
@@ -11365,13 +11766,13 @@ request := &repeatpayments.CreatePaymentPlansRequest{
             },
             SetupOrder: &payroc.PaymentPlanSetupOrder{
                 Amount: payroc.Int64(
-                    4999,
+                    int64(4999),
                 ),
                 Description: payroc.String(
                     "Initial setup fee for Premium Club subscription",
                 ),
                 Breakdown: &payroc.PaymentPlanOrderBreakdown{
-                    Subtotal: 4347,
+                    Subtotal: int64(4347),
                     Taxes: []*payroc.RetrievedTax{
                         &payroc.RetrievedTax{
                             Name: "Sales Tax",
@@ -11382,13 +11783,13 @@ request := &repeatpayments.CreatePaymentPlansRequest{
             },
             RecurringOrder: &payroc.PaymentPlanRecurringOrder{
                 Amount: payroc.Int64(
-                    4999,
+                    int64(4999),
                 ),
                 Description: payroc.String(
                     "Monthly Premium Club subscription",
                 ),
                 Breakdown: &payroc.PaymentPlanOrderBreakdown{
-                    Subtotal: 4347,
+                    Subtotal: int64(4347),
                     Taxes: []*payroc.RetrievedTax{
                         &payroc.RetrievedTax{
                             Name: "Sales Tax",
@@ -11936,7 +12337,7 @@ You can’t send the after parameter in the same request as the before parameter
 
 Use this method to assign a customer to a payment plan.  
 
-**Note:** This method is part of our Repeat Payments feature. To help you understand how this method works with our Payment plans endpoints, go to [Repeat Payments](https://docs.payroc.com/guides/integrate/repeat-payments).  
+**Note:** This method is part of our Repeat Payments feature. To help you understand how this method works with our Payment plans endpoints, go to [Repeat Payments](https://docs.payroc.com/guides/take-payments/repeat-payments).  
 
 When you create a subscription you need to provide a unique subscriptionId that you use to run follow-on actions:  
 
@@ -11987,7 +12388,7 @@ request := &repeatpayments.SubscriptionRequest{
                 "OrderRef6543",
             ),
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Description: payroc.String(
                 "Initial setup fee for Premium Club subscription",
@@ -11995,13 +12396,13 @@ request := &repeatpayments.SubscriptionRequest{
         },
         RecurringOrder: &payroc.SubscriptionRecurringOrderRequest{
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Description: payroc.String(
                 "Monthly Premium Club subscription",
             ),
             Breakdown: &payroc.SubscriptionOrderBreakdownRequest{
-                Subtotal: 4347,
+                Subtotal: int64(4347),
                 Taxes: []*payroc.TaxRate{
                     &payroc.TaxRate{
                         Type: payroc.TaxRateTypeRate,
@@ -12077,7 +12478,7 @@ client.RepeatPayments.Subscriptions.Create(
 <dl>
 <dd>
 
-**paymentMethod:** `*repeatpayments.SubscriptionRequestPaymentMethod` — Object that contains information about the customer's payment details.
+**paymentMethod:** `*repeatpayments.SubscriptionRequestPaymentMethod` — Polymorphic object that contains information about the secure token.
     
 </dd>
 </dl>
@@ -12591,7 +12992,7 @@ request := &repeatpayments.SubscriptionPaymentRequest{
                 "OrderRef6543",
             ),
             Amount: payroc.Int64(
-                4999,
+                int64(4999),
             ),
             Description: payroc.String(
                 "Monthly Premium Club subscription",
@@ -14218,7 +14619,15 @@ Indicates how the merchant can use the customer's card details, as agreed by the
 <dl>
 <dd>
 
-**source:** `*tokenization.TokenizationRequestSource` — Object that contains information about the payment method to tokenize.
+**source:** `*tokenization.TokenizationRequestSource` 
+
+Polymorphic object that contains the payment method to tokenize.  
+
+The value of the type parameter determines which variant you should use:  
+-	`ach` - Automated Clearing House (ACH) details
+-	`pad` - Pre-authorized debit (PAD) details
+-	`card` - Payment card details
+-	`singleUseToken` - Single-use token details
     
 </dd>
 </dl>
@@ -14226,7 +14635,13 @@ Indicates how the merchant can use the customer's card details, as agreed by the
 <dl>
 <dd>
 
-**threeDSecure:** `*tokenization.TokenizationRequestThreeDSecure` — Object that contains information for an authentication check on the customer's payment details using the 3-D Secure protocol.
+**threeDSecure:** `*tokenization.TokenizationRequestThreeDSecure` 
+
+Polymorphic object that contains authentication information from 3-D Secure.  
+
+The value of the type parameter determines which variant you should use:  
+-	`gatewayThreeDSecure` - Use our gateway to run a 3-D Secure check.
+-	`thirdPartyThreeDSecure` - Use a third party to run a 3-D Secure check.
     
 </dd>
 </dl>
@@ -14544,7 +14959,7 @@ client.Tokenization.SecureTokens.PartiallyUpdate(
 
 Use this method to update a secure token if you have a single-use token from Hosted Fields.  
 
-**Note:** If you don't have a single-use token, you can update saved payment details with our [Update Secure Token](https://docs.payroc.com/api/resources#updateSecureToken) method. For more information about our two options to update a secure token, go to [Update saved payment details](https://docs.payroc.com/guides/integrate/update-saved-payment-details).  
+**Note:** If you don't have a single-use token, you can update saved payment details with our [Update Secure Token](https://docs.payroc.com/api/resources#updateSecureToken) method. For more information about our two options to update a secure token, go to [Update saved payment details](https://docs.payroc.com/guides/take-payments/update-saved-payment-details).  
 </dd>
 </dl>
 </dd>
@@ -14730,7 +15145,14 @@ client.Tokenization.SingleUseTokens.Create(
 <dl>
 <dd>
 
-**source:** `*tokenization.SingleUseTokenRequestSource` — Object that contains information about the payment method to tokenize.
+**source:** `*tokenization.SingleUseTokenRequestSource` 
+
+Polymorphic object that contains the payment method to tokenize.  
+
+The value of the type parameter determines which variant you should use:  
+-	`ach` - Automated Clearing House (ACH) details
+-	`pad` - Pre-authorized debit (PAD) details
+-	`card` - Payment card details
     
 </dd>
 </dl>
