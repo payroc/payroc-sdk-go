@@ -4,12 +4,11 @@ package attachments
 
 import (
 	context "context"
-	http "net/http"
-
 	payroc "github.com/payroc/payroc-sdk-go"
 	core "github.com/payroc/payroc-sdk-go/core"
 	internal "github.com/payroc/payroc-sdk-go/internal"
 	option "github.com/payroc/payroc-sdk-go/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -84,7 +83,7 @@ func (r *RawClient) UploadToProcessingAccount(
 			Client:          options.HTTPClient,
 			Request:         writer.Buffer(),
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -97,9 +96,9 @@ func (r *RawClient) UploadToProcessingAccount(
 	}, nil
 }
 
-func (r *RawClient) GetAttachment(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *payroc.GetAttachmentRequest,
+	request *payroc.RetrieveAttachmentsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payroc.Attachment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -136,7 +135,7 @@ func (r *RawClient) GetAttachment(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
 		},
 	)
 	if err != nil {

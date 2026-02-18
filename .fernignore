@@ -9,6 +9,8 @@ core/oauth.go
 
 auth/oauth_wire_test/oauth_wire_test.go  # Will be removed once inferred auth is configured in generator
 
+core/custom_pagination.go # Remove once generator writers limit etc. as int rather than float64
+
 README.md
 go.mod
 go.sum

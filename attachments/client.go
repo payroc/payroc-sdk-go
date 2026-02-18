@@ -43,7 +43,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // - **type** - Type of attachment that you want to upload.
 // - **description** - Short description of the attachment.
 //
-// In the response, our gateway returns information about the attachment including its upload status and an attachmentId that you can use to [Retrieve the details of the Attachment](https://docs.payroc.com/api/schema/attachments/get-attachment).
+// In the response, our gateway returns information about the attachment including its upload status and an attachmentId that you can use to [Retrieve the details of the Attachment](https://docs.payroc.com/api/schema/attachments/retrieve).
 func (c *Client) UploadToProcessingAccount(
 	ctx context.Context,
 	request *payroc.UploadAttachment,
@@ -65,12 +65,12 @@ func (c *Client) UploadToProcessingAccount(
 // To retrieve the details of an attachment you need its attachmentId. Our gateway returned the attachmentId in the response of the method that you used to upload the attachment.
 //
 // Our gateway returns information about the attachment, including its upload status and the entity that the attachment is linked to. Our gateway doesn't return the file that you uploaded.
-func (c *Client) GetAttachment(
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *payroc.GetAttachmentRequest,
+	request *payroc.RetrieveAttachmentsRequest,
 	opts ...option.RequestOption,
 ) (*payroc.Attachment, error) {
-	response, err := c.WithRawResponse.GetAttachment(
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,

@@ -1,11 +1,11 @@
 {
-  "cliVersion": "3.78.0",
+  "cliVersion": "3.79.2",
   "generatorName": "fernapi/fern-go-sdk",
-  "generatorVersion": "1.23.7",
+  "generatorVersion": "1.24.0",
   "generatorConfig": {
     "packageName": "payroc",
     "customPagerName": "PayrocPager",
     "clientName": "PayrocClient"
   },
-  "sdkVersion": "v0.0.3699"
+  "sdkVersion": "v0.0.3769"
 }
