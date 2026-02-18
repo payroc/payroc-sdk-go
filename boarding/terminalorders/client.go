@@ -45,7 +45,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // - Training provider
 // - Shipping information
 //
-// **Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Events Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+// **Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Events Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 func (c *Client) Retrieve(
 	ctx context.Context,
 	request *boarding.RetrieveTerminalOrdersRequest,

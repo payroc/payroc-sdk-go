@@ -74,7 +74,7 @@ func (r *RawClient) ListBatches(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -126,7 +126,7 @@ func (r *RawClient) RetrieveBatch(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -182,7 +182,7 @@ func (r *RawClient) ListTransactions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -234,7 +234,7 @@ func (r *RawClient) RetrieveTransaction(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -290,7 +290,7 @@ func (r *RawClient) ListAuthorizations(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -342,7 +342,7 @@ func (r *RawClient) RetrieveAuthorization(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -398,7 +398,7 @@ func (r *RawClient) ListDisputes(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -450,7 +450,7 @@ func (r *RawClient) ListDisputesStatuses(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -506,7 +506,7 @@ func (r *RawClient) ListAchDeposits(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -558,7 +558,7 @@ func (r *RawClient) RetrieveAchDeposit(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -614,7 +614,7 @@ func (r *RawClient) ListAchDepositFees(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(reporting.ErrorCodes),
 		},
 	)
 	if err != nil {

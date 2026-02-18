@@ -222,7 +222,7 @@ func TestReadmeExample_PolymorphicDirectAccess(t *testing.T) {
 					KeyedData: &payroc.KeyedCardDetailsKeyedData{
 						PlainText: &payroc.PlainTextKeyedDataFormat{
 							CardNumber: "4111111111111111",
-							ExpiryDate: payroc.String("1225"),
+							ExpiryDate: payroc.String("1230"),
 							Cvv:        payroc.String("123"),
 						},
 					},

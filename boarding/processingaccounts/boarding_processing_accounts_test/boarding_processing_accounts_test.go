@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestBoardingProcessingAccountsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.RetrieveProcessingAccountsRequest{
 		ProcessingAccountId: "38765",
@@ -85,11 +92,13 @@ func TestBoardingProcessingAccountsRetrieveWithWireMock(
 func TestBoardingProcessingAccountsListProcessingAccountFundingAccountsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.ListProcessingAccountFundingAccountsRequest{
 		ProcessingAccountId: "38765",
@@ -109,11 +118,13 @@ func TestBoardingProcessingAccountsListProcessingAccountFundingAccountsWithWireM
 func TestBoardingProcessingAccountsListContactsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.ListContactsProcessingAccountsRequest{
 		ProcessingAccountId: "38765",
@@ -142,11 +153,13 @@ func TestBoardingProcessingAccountsListContactsWithWireMock(
 func TestBoardingProcessingAccountsGetProcessingAccountPricingAgreementWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.GetProcessingAccountPricingAgreementProcessingAccountsRequest{
 		ProcessingAccountId: "38765",
@@ -166,11 +179,13 @@ func TestBoardingProcessingAccountsGetProcessingAccountPricingAgreementWithWireM
 func TestBoardingProcessingAccountsListOwnersWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.ListProcessingAccountOwnersRequest{
 		ProcessingAccountId: "38765",
@@ -199,11 +214,13 @@ func TestBoardingProcessingAccountsListOwnersWithWireMock(
 func TestBoardingProcessingAccountsCreateReminderWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.CreateReminderProcessingAccountsRequest{
 		ProcessingAccountId: "38765",
@@ -227,11 +244,13 @@ func TestBoardingProcessingAccountsCreateReminderWithWireMock(
 func TestBoardingProcessingAccountsListTerminalOrdersWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.ListTerminalOrdersProcessingAccountsRequest{
 		ProcessingAccountId: "38765",
@@ -262,11 +281,13 @@ func TestBoardingProcessingAccountsListTerminalOrdersWithWireMock(
 func TestBoardingProcessingAccountsCreateTerminalOrderWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.CreateTerminalOrder{
 		ProcessingAccountId: "38765",
@@ -301,7 +322,7 @@ func TestBoardingProcessingAccountsCreateTerminalOrderWithWireMock(
 			&payroc.OrderItem{
 				Type:               payroc.OrderItemTypeSolution,
 				SolutionTemplateId: "Roc Services_DX8000",
-				SolutionQuantity: payroc.Float64(
+				SolutionQuantity: payroc.Int(
 					1,
 				),
 				DeviceCondition: payroc.OrderItemDeviceConditionNew.Ptr(),
@@ -341,7 +362,7 @@ func TestBoardingProcessingAccountsCreateTerminalOrderWithWireMock(
 						},
 					},
 					DeviceSettings: &payroc.OrderItemSolutionSetupDeviceSettings{
-						NumberOfMobileUsers: payroc.Float64(
+						NumberOfMobileUsers: payroc.Int(
 							2,
 						),
 						CommunicationType: payroc.OrderItemSolutionSetupDeviceSettingsCommunicationTypeWifi.Ptr(),
@@ -390,11 +411,13 @@ func TestBoardingProcessingAccountsCreateTerminalOrderWithWireMock(
 func TestBoardingProcessingAccountsListProcessingTerminalsWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &boarding.ListProcessingTerminalsProcessingAccountsRequest{
 		ProcessingAccountId: "38765",

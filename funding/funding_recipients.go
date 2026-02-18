@@ -6,6 +6,7 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	papisdkgo "github.com/payroc/payroc-sdk-go"
+	internal "github.com/payroc/payroc-sdk-go/internal"
 	big "math/big"
 )
 
@@ -33,16 +34,24 @@ type CreateFundingRecipient struct {
 	CharityId *string `json:"charityId,omitempty" url:"-"`
 	// Trading name of the business or organization.
 	DoingBusinessAs string `json:"doingBusinessAs" url:"-"`
-	// Address of the funding recipient.
-	Address *papisdkgo.Address `json:"address,omitempty" url:"-"`
-	// Array of contactMethod objects that you can use to add contact methods for the funding recipient. You must provide at least an email address.
-	ContactMethods []*papisdkgo.ContactMethod `json:"contactMethods,omitempty" url:"-"`
+	// Polymorphic object that contains address information for a funding recipient.
+	Address *papisdkgo.Address `json:"address" url:"-"`
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// **Note:** You must provide an email address.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
+	ContactMethods []*papisdkgo.ContactMethod `json:"contactMethods" url:"-"`
 	// [Metadata](https://docs.payroc.com/api/metadata) object you can use to include custom data with your request.
 	Metadata map[string]string `json:"metadata,omitempty" url:"-"`
 	// Array of owner objects. Each object contains information about an individual who owns or manages the funding recipient.
-	Owners []*papisdkgo.Owner `json:"owners,omitempty" url:"-"`
+	Owners []*papisdkgo.Owner `json:"owners" url:"-"`
 	// Array of fundingAccount objects that you can use to add funding accounts to the funding recipient.
-	FundingAccounts []*papisdkgo.FundingAccount `json:"fundingAccounts,omitempty" url:"-"`
+	FundingAccounts []*papisdkgo.FundingAccount `json:"fundingAccounts" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -123,6 +132,27 @@ func (c *CreateFundingRecipient) SetOwners(owners []*papisdkgo.Owner) {
 func (c *CreateFundingRecipient) SetFundingAccounts(fundingAccounts []*papisdkgo.FundingAccount) {
 	c.FundingAccounts = fundingAccounts
 	c.require(createFundingRecipientFieldFundingAccounts)
+}
+
+func (c *CreateFundingRecipient) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateFundingRecipient
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateFundingRecipient(body)
+	return nil
+}
+
+func (c *CreateFundingRecipient) MarshalJSON() ([]byte, error) {
+	type embed CreateFundingRecipient
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

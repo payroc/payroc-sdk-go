@@ -27,8 +27,13 @@ type SingleUseTokenRequest struct {
 	Channel SingleUseTokenRequestChannel `json:"channel" url:"-"`
 	// Operator who initiated the request.
 	Operator *string `json:"operator,omitempty" url:"-"`
-	// Object that contains information about the payment method to tokenize.
-	Source *SingleUseTokenRequestSource `json:"source,omitempty" url:"-"`
+	// Polymorphic object that contains the payment method to tokenize.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	// -	`card` - Payment card details
+	Source *SingleUseTokenRequestSource `json:"source" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -76,6 +81,27 @@ func (s *SingleUseTokenRequest) SetSource(source *SingleUseTokenRequestSource) {
 	s.require(singleUseTokenRequestFieldSource)
 }
 
+func (s *SingleUseTokenRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleUseTokenRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = SingleUseTokenRequest(body)
+	return nil
+}
+
+func (s *SingleUseTokenRequest) MarshalJSON() ([]byte, error) {
+	type embed SingleUseTokenRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 // Channel that the merchant used to receive the payment details.
 type SingleUseTokenRequestChannel string
 
@@ -102,7 +128,12 @@ func (s SingleUseTokenRequestChannel) Ptr() *SingleUseTokenRequestChannel {
 	return &s
 }
 
-// Object that contains information about the payment method to tokenize.
+// Polymorphic object that contains the payment method to tokenize.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
+// -	`card` - Payment card details
 type SingleUseTokenRequestSource struct {
 	Type string
 	Ach  *papisdkgo.AchPayload

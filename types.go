@@ -10,7 +10,7 @@ import (
 	time "time"
 )
 
-// Object that contains the single-use token.
+// Polymorphic object that contains information about the single-use token.
 type AccountUpdate struct {
 	Type           string
 	SingleUseToken *SingleUseTokenAccountUpdate
@@ -407,21 +407,21 @@ type AchDeposit struct {
 	// Number of transactions in the ACH deposit.
 	Transactions *int `json:"transactions,omitempty" url:"transactions,omitempty"`
 	// Amount of sales in the ACH deposit. We return the value in the currency's lowest denomination, for example, cents.
-	Sales *int `json:"sales,omitempty" url:"sales,omitempty"`
+	Sales *int64 `json:"sales,omitempty" url:"sales,omitempty"`
 	// Amount of returns in the ACH deposit. We return the value in the currency's lowest denomination, for example, cents.
-	Returns *int `json:"returns,omitempty" url:"returns,omitempty"`
+	Returns *int64 `json:"returns,omitempty" url:"returns,omitempty"`
 	// Amount of fees that were applied to the transactions in the ACH deposit. We return the value in the currency's lowest denomination, for example cents.
-	DailyFees *int `json:"dailyFees,omitempty" url:"dailyFees,omitempty"`
+	DailyFees *int64 `json:"dailyFees,omitempty" url:"dailyFees,omitempty"`
 	// Amount of funds that we held if the merchant was in full suspense. We return the value in the currency's lowest denomination, for example, cents.
-	HeldSales *int `json:"heldSales,omitempty" url:"heldSales,omitempty"`
+	HeldSales *int64 `json:"heldSales,omitempty" url:"heldSales,omitempty"`
 	// Amount of adjustments that we made to the ACH deposit. We return the value in the currency's lowest denomination, for example, cents.
-	AchAdjustment *int `json:"achAdjustment,omitempty" url:"achAdjustment,omitempty"`
+	AchAdjustment *int64 `json:"achAdjustment,omitempty" url:"achAdjustment,omitempty"`
 	// Amount of funds that we held as reserve from the ACH deposit. We return the value in the currency's lowest denomination, for example, cents.
-	Holdback *int `json:"holdback,omitempty" url:"holdback,omitempty"`
+	Holdback *int64 `json:"holdback,omitempty" url:"holdback,omitempty"`
 	// Amount of funds that we released from holdback. We return the value in the currency's lowest denomination, for example, cents.
-	ReserveRelease *int `json:"reserveRelease,omitempty" url:"reserveRelease,omitempty"`
+	ReserveRelease *int64 `json:"reserveRelease,omitempty" url:"reserveRelease,omitempty"`
 	// Total amount that we paid the merchant after fees and adjustments. We return the value in the currency's lowest denomination, for example, cents.
-	NetAmount *int             `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	NetAmount *int64           `json:"netAmount,omitempty" url:"netAmount,omitempty"`
 	Merchant  *MerchantSummary `json:"merchant,omitempty" url:"merchant,omitempty"`
 	Links     []*Link          `json:"links,omitempty" url:"links,omitempty"`
 
@@ -467,56 +467,56 @@ func (a *AchDeposit) GetTransactions() *int {
 	return a.Transactions
 }
 
-func (a *AchDeposit) GetSales() *int {
+func (a *AchDeposit) GetSales() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.Sales
 }
 
-func (a *AchDeposit) GetReturns() *int {
+func (a *AchDeposit) GetReturns() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.Returns
 }
 
-func (a *AchDeposit) GetDailyFees() *int {
+func (a *AchDeposit) GetDailyFees() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.DailyFees
 }
 
-func (a *AchDeposit) GetHeldSales() *int {
+func (a *AchDeposit) GetHeldSales() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.HeldSales
 }
 
-func (a *AchDeposit) GetAchAdjustment() *int {
+func (a *AchDeposit) GetAchAdjustment() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.AchAdjustment
 }
 
-func (a *AchDeposit) GetHoldback() *int {
+func (a *AchDeposit) GetHoldback() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.Holdback
 }
 
-func (a *AchDeposit) GetReserveRelease() *int {
+func (a *AchDeposit) GetReserveRelease() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.ReserveRelease
 }
 
-func (a *AchDeposit) GetNetAmount() *int {
+func (a *AchDeposit) GetNetAmount() *int64 {
 	if a == nil {
 		return nil
 	}
@@ -585,56 +585,56 @@ func (a *AchDeposit) SetTransactions(transactions *int) {
 
 // SetSales sets the Sales field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetSales(sales *int) {
+func (a *AchDeposit) SetSales(sales *int64) {
 	a.Sales = sales
 	a.require(achDepositFieldSales)
 }
 
 // SetReturns sets the Returns field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetReturns(returns *int) {
+func (a *AchDeposit) SetReturns(returns *int64) {
 	a.Returns = returns
 	a.require(achDepositFieldReturns)
 }
 
 // SetDailyFees sets the DailyFees field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetDailyFees(dailyFees *int) {
+func (a *AchDeposit) SetDailyFees(dailyFees *int64) {
 	a.DailyFees = dailyFees
 	a.require(achDepositFieldDailyFees)
 }
 
 // SetHeldSales sets the HeldSales field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetHeldSales(heldSales *int) {
+func (a *AchDeposit) SetHeldSales(heldSales *int64) {
 	a.HeldSales = heldSales
 	a.require(achDepositFieldHeldSales)
 }
 
 // SetAchAdjustment sets the AchAdjustment field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetAchAdjustment(achAdjustment *int) {
+func (a *AchDeposit) SetAchAdjustment(achAdjustment *int64) {
 	a.AchAdjustment = achAdjustment
 	a.require(achDepositFieldAchAdjustment)
 }
 
 // SetHoldback sets the Holdback field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetHoldback(holdback *int) {
+func (a *AchDeposit) SetHoldback(holdback *int64) {
 	a.Holdback = holdback
 	a.require(achDepositFieldHoldback)
 }
 
 // SetReserveRelease sets the ReserveRelease field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetReserveRelease(reserveRelease *int) {
+func (a *AchDeposit) SetReserveRelease(reserveRelease *int64) {
 	a.ReserveRelease = reserveRelease
 	a.require(achDepositFieldReserveRelease)
 }
 
 // SetNetAmount sets the NetAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchDeposit) SetNetAmount(netAmount *int) {
+func (a *AchDeposit) SetNetAmount(netAmount *int64) {
 	a.NetAmount = netAmount
 	a.require(achDepositFieldNetAmount)
 }
@@ -1703,7 +1703,7 @@ type ActivityRecord struct {
 	// Description of the activity.
 	Description string `json:"description" url:"description"`
 	// Total amount that we removed or added to the merchant's funding balance. The value is in the currency’s lowest denomination, for example, cents.
-	Amount float64 `json:"amount" url:"amount"`
+	Amount int64 `json:"amount" url:"amount"`
 	// Indicates if we moved funds into or out of the funding balance. Our gateway returns one of the following values:
 	// -	`credit` - We moved funds into the funding balance.
 	// -	`debit` - We moved funds out of the funding balance.
@@ -1753,7 +1753,7 @@ func (a *ActivityRecord) GetDescription() string {
 	return a.Description
 }
 
-func (a *ActivityRecord) GetAmount() float64 {
+func (a *ActivityRecord) GetAmount() int64 {
 	if a == nil {
 		return 0
 	}
@@ -1822,7 +1822,7 @@ func (a *ActivityRecord) SetDescription(description string) {
 
 // SetAmount sets the Amount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityRecord) SetAmount(amount float64) {
+func (a *ActivityRecord) SetAmount(amount int64) {
 	a.Amount = amount
 	a.require(activityRecordFieldAmount)
 }
@@ -3460,7 +3460,13 @@ var (
 type BankTransferCustomer struct {
 	// Customer's preferred notification language. This code follows the [ISO 639-1](https://www.iso.org/iso-639-language-code) standard.
 	NotificationLanguage *BankTransferCustomerNotificationLanguage `json:"notificationLanguage,omitempty" url:"notificationLanguage,omitempty"`
-	// Customer's contact information.
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods,omitempty" url:"contactMethods,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -3592,7 +3598,10 @@ type BankTransferPayment struct {
 	ProcessingTerminalId string                    `json:"processingTerminalId" url:"processingTerminalId"`
 	Order                *BankTransferPaymentOrder `json:"order" url:"order"`
 	Customer             *BankTransferCustomer     `json:"customer,omitempty" url:"customer,omitempty"`
-	// Object that contains information about the bank account.
+	// Polymorphic object that contains bank account information.
+	// The value of the type field determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
 	BankAccount *BankTransferPaymentBankAccount `json:"bankAccount" url:"bankAccount"`
 	// List of refunds issued against the payment.
 	Refunds []*RefundSummary `json:"refunds,omitempty" url:"refunds,omitempty"`
@@ -3801,7 +3810,10 @@ func (b *BankTransferPayment) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-// Object that contains information about the bank account.
+// Polymorphic object that contains bank account information.
+// The value of the type field determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
 type BankTransferPaymentBankAccount struct {
 	Type string
 	Ach  *AchBankAccount
@@ -4255,11 +4267,11 @@ var (
 
 type BankTransferPaymentPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -4274,14 +4286,14 @@ type BankTransferPaymentPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BankTransferPaymentPaginatedList) GetLimit() *float64 {
+func (b *BankTransferPaymentPaginatedList) GetLimit() *int {
 	if b == nil {
 		return nil
 	}
 	return b.Limit
 }
 
-func (b *BankTransferPaymentPaginatedList) GetCount() *float64 {
+func (b *BankTransferPaymentPaginatedList) GetCount() *int {
 	if b == nil {
 		return nil
 	}
@@ -4322,14 +4334,14 @@ func (b *BankTransferPaymentPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferPaymentPaginatedList) SetLimit(limit *float64) {
+func (b *BankTransferPaymentPaginatedList) SetLimit(limit *int) {
 	b.Limit = limit
 	b.require(bankTransferPaymentPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferPaymentPaginatedList) SetCount(count *float64) {
+func (b *BankTransferPaymentPaginatedList) SetCount(count *int) {
 	b.Count = count
 	b.require(bankTransferPaymentPaginatedListFieldCount)
 }
@@ -4583,7 +4595,11 @@ type BankTransferRefund struct {
 	ProcessingTerminalId string                   `json:"processingTerminalId" url:"processingTerminalId"`
 	Order                *BankTransferRefundOrder `json:"order" url:"order"`
 	Customer             *BankTransferCustomer    `json:"customer,omitempty" url:"customer,omitempty"`
-	// Object that contains information about the bank account.
+	// Polymorphic object that contains bank account information.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
 	BankAccount       *BankTransferRefundBankAccount `json:"bankAccount" url:"bankAccount"`
 	Payment           *PaymentSummary                `json:"payment,omitempty" url:"payment,omitempty"`
 	TransactionResult *BankTransferResult            `json:"transactionResult" url:"transactionResult"`
@@ -4759,7 +4775,11 @@ func (b *BankTransferRefund) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-// Object that contains information about the bank account.
+// Polymorphic object that contains bank account information.
+//
+// The value of the type field determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
 type BankTransferRefundBankAccount struct {
 	Type string
 	Ach  *AchBankAccount
@@ -5042,11 +5062,11 @@ var (
 
 type BankTransferRefundPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -5061,14 +5081,14 @@ type BankTransferRefundPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BankTransferRefundPaginatedList) GetLimit() *float64 {
+func (b *BankTransferRefundPaginatedList) GetLimit() *int {
 	if b == nil {
 		return nil
 	}
 	return b.Limit
 }
 
-func (b *BankTransferRefundPaginatedList) GetCount() *float64 {
+func (b *BankTransferRefundPaginatedList) GetCount() *int {
 	if b == nil {
 		return nil
 	}
@@ -5109,14 +5129,14 @@ func (b *BankTransferRefundPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferRefundPaginatedList) SetLimit(limit *float64) {
+func (b *BankTransferRefundPaginatedList) SetLimit(limit *int) {
 	b.Limit = limit
 	b.require(bankTransferRefundPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferRefundPaginatedList) SetCount(count *float64) {
+func (b *BankTransferRefundPaginatedList) SetCount(count *int) {
 	b.Count = count
 	b.require(bankTransferRefundPaginatedListFieldCount)
 }
@@ -5313,14 +5333,14 @@ type BankTransferResult struct {
 	Status BankTransferResultStatus `json:"status" url:"status"`
 	// Amount of the transaction.
 	// **Note:** The amount is negative for a refund.
-	AuthorizedAmount *float64  `json:"authorizedAmount,omitempty" url:"authorizedAmount,omitempty"`
-	Currency         *Currency `json:"currency,omitempty" url:"currency,omitempty"`
+	AuthorizedAmount *int64   `json:"authorizedAmount,omitempty" url:"authorizedAmount,omitempty"`
+	Currency         Currency `json:"currency" url:"currency"`
 	// Response from the processor.
 	// - `A` - The processor approved the transaction.
 	// - `D` - The processor declined the transaction.
-	ResponseCode *string `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	ResponseCode string `json:"responseCode" url:"responseCode"`
 	// Description of the response from the processor.
-	ResponseMessage string `json:"responseMessage" url:"responseMessage"`
+	ResponseMessage *string `json:"responseMessage,omitempty" url:"responseMessage,omitempty"`
 	// Original response code that the processor sent.
 	ProcessorResponseCode *string `json:"processorResponseCode,omitempty" url:"processorResponseCode,omitempty"`
 
@@ -5345,30 +5365,30 @@ func (b *BankTransferResult) GetStatus() BankTransferResultStatus {
 	return b.Status
 }
 
-func (b *BankTransferResult) GetAuthorizedAmount() *float64 {
+func (b *BankTransferResult) GetAuthorizedAmount() *int64 {
 	if b == nil {
 		return nil
 	}
 	return b.AuthorizedAmount
 }
 
-func (b *BankTransferResult) GetCurrency() *Currency {
+func (b *BankTransferResult) GetCurrency() Currency {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.Currency
 }
 
-func (b *BankTransferResult) GetResponseCode() *string {
+func (b *BankTransferResult) GetResponseCode() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.ResponseCode
 }
 
-func (b *BankTransferResult) GetResponseMessage() string {
+func (b *BankTransferResult) GetResponseMessage() *string {
 	if b == nil {
-		return ""
+		return nil
 	}
 	return b.ResponseMessage
 }
@@ -5407,28 +5427,28 @@ func (b *BankTransferResult) SetStatus(status BankTransferResultStatus) {
 
 // SetAuthorizedAmount sets the AuthorizedAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferResult) SetAuthorizedAmount(authorizedAmount *float64) {
+func (b *BankTransferResult) SetAuthorizedAmount(authorizedAmount *int64) {
 	b.AuthorizedAmount = authorizedAmount
 	b.require(bankTransferResultFieldAuthorizedAmount)
 }
 
 // SetCurrency sets the Currency field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferResult) SetCurrency(currency *Currency) {
+func (b *BankTransferResult) SetCurrency(currency Currency) {
 	b.Currency = currency
 	b.require(bankTransferResultFieldCurrency)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferResult) SetResponseCode(responseCode *string) {
+func (b *BankTransferResult) SetResponseCode(responseCode string) {
 	b.ResponseCode = responseCode
 	b.require(bankTransferResultFieldResponseCode)
 }
 
 // SetResponseMessage sets the ResponseMessage field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankTransferResult) SetResponseMessage(responseMessage string) {
+func (b *BankTransferResult) SetResponseMessage(responseMessage *string) {
 	b.ResponseMessage = responseMessage
 	b.require(bankTransferResultFieldResponseMessage)
 }
@@ -5955,7 +5975,11 @@ type BaseUs struct {
 	PciNonCompliance *int `json:"pciNonCompliance,omitempty" url:"pciNonCompliance,omitempty"`
 	// Monthly fee for Payroc Advantage. The value is in the currency's lowest denomination, for example, cents.
 	MerchantAdvantage *int `json:"merchantAdvantage,omitempty" url:"merchantAdvantage,omitempty"`
-	// Object that contains information about the Platinum Security fee.
+	// Polymorphic object that contains billing details for Platinum Security.
+	//
+	// The value of the billingFrequency field determines which variant you should use:
+	// -	`monthly` - We collect the fee for Platinum Security each month.
+	// -	`annual` - We collect the fee for Platinum Security each year.
 	PlatinumSecurity *BaseUsPlatinumSecurity `json:"platinumSecurity,omitempty" url:"platinumSecurity,omitempty"`
 	// Monthly fee for maintenance. The value is in the currency's lowest denomination, for example, cents.
 	Maintenance int `json:"maintenance" url:"maintenance"`
@@ -6489,7 +6513,11 @@ func (b *BaseUsMonthly) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-// Object that contains information about the Platinum Security fee.
+// Polymorphic object that contains billing details for Platinum Security.
+//
+// The value of the billingFrequency field determines which variant you should use:
+// -	`monthly` - We collect the fee for Platinum Security each month.
+// -	`annual` - We collect the fee for Platinum Security each year.
 type BaseUsPlatinumSecurity struct {
 	BillingFrequency string
 	Monthly          *BaseUsMonthly
@@ -6631,13 +6659,13 @@ type Batch struct {
 	// Date that the batch was last changed. The format of this value is **YYYY-MM-DD**.
 	LastModifiedDate *time.Time `json:"lastModifiedDate,omitempty" url:"lastModifiedDate,omitempty" format:"date"`
 	// Total value of sales in the batch. We return the value in the currency's lowest denomination, for example, cents.
-	SaleAmount *int `json:"saleAmount,omitempty" url:"saleAmount,omitempty"`
+	SaleAmount *int64 `json:"saleAmount,omitempty" url:"saleAmount,omitempty"`
 	// Total value of authorizations in the batch. We return the value in the currency's lowest denomination, for example, cents.
-	HeldAmount *int `json:"heldAmount,omitempty" url:"heldAmount,omitempty"`
+	HeldAmount *int64 `json:"heldAmount,omitempty" url:"heldAmount,omitempty"`
 	// Total value of returns in the batch. We return the value in the currency's lowest denomination, for example, cents.
-	ReturnAmount *int `json:"returnAmount,omitempty" url:"returnAmount,omitempty"`
+	ReturnAmount *int64 `json:"returnAmount,omitempty" url:"returnAmount,omitempty"`
 	// Total number of transactions in the batch.
-	TransactionCount *int `json:"transactionCount,omitempty" url:"transactionCount,omitempty"`
+	TransactionCount *int64 `json:"transactionCount,omitempty" url:"transactionCount,omitempty"`
 	// Currency of the transactions in the batch. The value for the currency follows the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard.
 	Currency *string          `json:"currency,omitempty" url:"currency,omitempty"`
 	Merchant *MerchantSummary `json:"merchant,omitempty" url:"merchant,omitempty"`
@@ -6678,28 +6706,28 @@ func (b *Batch) GetLastModifiedDate() *time.Time {
 	return b.LastModifiedDate
 }
 
-func (b *Batch) GetSaleAmount() *int {
+func (b *Batch) GetSaleAmount() *int64 {
 	if b == nil {
 		return nil
 	}
 	return b.SaleAmount
 }
 
-func (b *Batch) GetHeldAmount() *int {
+func (b *Batch) GetHeldAmount() *int64 {
 	if b == nil {
 		return nil
 	}
 	return b.HeldAmount
 }
 
-func (b *Batch) GetReturnAmount() *int {
+func (b *Batch) GetReturnAmount() *int64 {
 	if b == nil {
 		return nil
 	}
 	return b.ReturnAmount
 }
 
-func (b *Batch) GetTransactionCount() *int {
+func (b *Batch) GetTransactionCount() *int64 {
 	if b == nil {
 		return nil
 	}
@@ -6768,28 +6796,28 @@ func (b *Batch) SetLastModifiedDate(lastModifiedDate *time.Time) {
 
 // SetSaleAmount sets the SaleAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *Batch) SetSaleAmount(saleAmount *int) {
+func (b *Batch) SetSaleAmount(saleAmount *int64) {
 	b.SaleAmount = saleAmount
 	b.require(batchFieldSaleAmount)
 }
 
 // SetHeldAmount sets the HeldAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *Batch) SetHeldAmount(heldAmount *int) {
+func (b *Batch) SetHeldAmount(heldAmount *int64) {
 	b.HeldAmount = heldAmount
 	b.require(batchFieldHeldAmount)
 }
 
 // SetReturnAmount sets the ReturnAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *Batch) SetReturnAmount(returnAmount *int) {
+func (b *Batch) SetReturnAmount(returnAmount *int64) {
 	b.ReturnAmount = returnAmount
 	b.require(batchFieldReturnAmount)
 }
 
 // SetTransactionCount sets the TransactionCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *Batch) SetTransactionCount(transactionCount *int) {
+func (b *Batch) SetTransactionCount(transactionCount *int64) {
 	b.TransactionCount = transactionCount
 	b.require(batchFieldTransactionCount)
 }
@@ -7583,7 +7611,11 @@ type BreakdownRequest struct {
 	Surcharge *Surcharge `json:"surcharge,omitempty" url:"surcharge,omitempty"`
 	// Object that contains dual pricing information for the transaction.
 	DualPricing *DualPricing `json:"dualPricing,omitempty" url:"dualPricing,omitempty"`
-	// List of taxes.
+	// Array of polymorphic tax objects, which contain information about a tax.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`amount` - Tax is a fixed amount.
+	// -	`rate` - Tax is a percentage.
 	Taxes []*Tax `json:"taxes,omitempty" url:"taxes,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7746,9 +7778,17 @@ type Business struct {
 	OrganizationType BusinessOrganizationType `json:"organizationType" url:"organizationType"`
 	// Two-digit code for the country that the business operates in. The format follows the [ISO-3166](https://www.iso.org/iso-3166-country-codes.html) standard.
 	CountryOfOperation *BusinessCountryOfOperation `json:"countryOfOperation,omitempty" url:"countryOfOperation,omitempty"`
-	// Object that contains the addresses for the business.
+	// Array of polymorphic objects that contain address information for the business.
 	Addresses []*LegalAddress `json:"addresses" url:"addresses"`
-	// Array of contactMethod objects. One contact method must be an email address.
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// **Note:** You must provide an email address.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods" url:"contactMethods"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8612,7 +8652,13 @@ type CardPayload struct {
 	//
 	// **Note:** Send a value for accountType only for bank account details.
 	AccountType *CardPayloadAccountType `json:"accountType,omitempty" url:"accountType,omitempty"`
-	// Object that contains the details of the payment card.
+	// Polymorphic object that contains payment card information.
+	//
+	// The value of the entryMethod parameter determines which variant you should use:
+	// - `raw` - Unencrypted payment data directly from the device.
+	// - `icc` - Payment data that the device captured from the chip.
+	// - `keyed` - Payment data that the merchant entered manually.
+	// - `swiped` - Payment data that the device captured from the magnetic strip.
 	CardDetails *CardPayloadCardDetails `json:"cardDetails" url:"cardDetails"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -8725,7 +8771,13 @@ func (c CardPayloadAccountType) Ptr() *CardPayloadAccountType {
 	return &c
 }
 
-// Object that contains the details of the payment card.
+// Polymorphic object that contains payment card information.
+//
+// The value of the entryMethod parameter determines which variant you should use:
+// - `raw` - Unencrypted payment data directly from the device.
+// - `icc` - Payment data that the device captured from the chip.
+// - `keyed` - Payment data that the merchant entered manually.
+// - `swiped` - Payment data that the device captured from the magnetic strip.
 type CardPayloadCardDetails struct {
 	EntryMethod string
 	Raw         *RawCardDetails
@@ -10020,8 +10072,15 @@ type Contact struct {
 	LastName string `json:"lastName" url:"lastName"`
 	// Array of identifier objects.
 	Identifiers []*Identifier `json:"identifiers" url:"identifiers"`
-	// Array of contactMethod objects.
+	// Array of polymorphic objects, which contain contact information.
+	//
 	// **Note:** If you are adding information about an owner, you must provide at least an email address. If you are adding information about a contact, you must provide at least a contact number.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods" url:"contactMethods"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -10962,8 +11021,17 @@ type CreateProcessingAccount struct {
 	// Date that the business was established. The format of the value is **YYYY-MM-DD**.
 	BusinessStartDate time.Time `json:"businessStartDate" url:"businessStartDate" format:"date"`
 	Timezone          Timezone  `json:"timezone" url:"timezone"`
-	Address           *Address  `json:"address" url:"address"`
-	// Array of contactMethod objects. One contact method must be an email address.
+	// Polymorphic object that contains address information for the processing account.
+	Address *Address `json:"address" url:"address"`
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// **Note:** You must provide an email address.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number.
 	ContactMethods []*ContactMethod `json:"contactMethods" url:"contactMethods"`
 	Processing     *Processing      `json:"processing" url:"processing"`
 	Funding        *CreateFunding   `json:"funding" url:"funding"`
@@ -11964,7 +12032,13 @@ type Customer struct {
 	// Object that contains information about the address that the card is registered to.
 	BillingAddress  *Address  `json:"billingAddress,omitempty" url:"billingAddress,omitempty"`
 	ShippingAddress *Shipping `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
-	// Customer's contact information.
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods,omitempty" url:"contactMethods,omitempty"`
 	// Language that the customer uses for notifications. This code follows the [ISO 639-1](https://www.iso.org/iso-639-language-code) alpha-2 standard.
 	NotificationLanguage *CustomerNotificationLanguage `json:"notificationLanguage,omitempty" url:"notificationLanguage,omitempty"`
@@ -12154,7 +12228,13 @@ var (
 
 type CustomerAdjustment struct {
 	ShippingAddress *Shipping `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
-	// Customer's contact information.
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods,omitempty" url:"contactMethods,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -13198,8 +13278,8 @@ type DigitalWalletPayload struct {
 	// **Note:** Send a value for accountType only for bank account details.
 	AccountType *DigitalWalletPayloadAccountType `json:"accountType,omitempty" url:"accountType,omitempty"`
 	// Provider of the digital wallet. Send one of the following values:
-	// - `apple` - For more information about how to integrate with Apple Pay, go to [Apple Pay®](https://docs.payroc.com/guides/integrate/apple-pay).
-	// - `google` - For more information about how to integrate with google Pay, go to [Google Pay®](https://docs.payroc.com/guides/integrate/google-pay).
+	// - `apple` - For more information about how to integrate with Apple Pay, go to [Apple Pay®](https://docs.payroc.com/guides/take-payments/apple-pay).
+	// - `google` - For more information about how to integrate with google Pay, go to [Google Pay®](https://docs.payroc.com/guides/take-payments/google-pay).
 	ServiceProvider DigitalWalletPayloadServiceProvider `json:"serviceProvider" url:"serviceProvider"`
 	// Cardholder’s name.
 	CardholderName *string `json:"cardholderName,omitempty" url:"cardholderName,omitempty"`
@@ -13345,8 +13425,8 @@ func (d DigitalWalletPayloadAccountType) Ptr() *DigitalWalletPayloadAccountType 
 }
 
 // Provider of the digital wallet. Send one of the following values:
-// - `apple` - For more information about how to integrate with Apple Pay, go to [Apple Pay®](https://docs.payroc.com/guides/integrate/apple-pay).
-// - `google` - For more information about how to integrate with google Pay, go to [Google Pay®](https://docs.payroc.com/guides/integrate/google-pay).
+// - `apple` - For more information about how to integrate with Apple Pay, go to [Apple Pay®](https://docs.payroc.com/guides/take-payments/apple-pay).
+// - `google` - For more information about how to integrate with google Pay, go to [Google Pay®](https://docs.payroc.com/guides/take-payments/google-pay).
 type DigitalWalletPayloadServiceProvider string
 
 const (
@@ -13407,9 +13487,9 @@ type Dispute struct {
 	// Reference number from the acquiring bank.
 	ReferenceNumber *string `json:"referenceNumber,omitempty" url:"referenceNumber,omitempty"`
 	// Dispute amount. We return the value in the currency's lowest denomination, for example, cents.
-	DisputeAmount *int `json:"disputeAmount,omitempty" url:"disputeAmount,omitempty"`
+	DisputeAmount *int64 `json:"disputeAmount,omitempty" url:"disputeAmount,omitempty"`
 	// Value of the fees for the dispute. We return the value in the currency's lowest denomination, for example, cents.
-	FeeAmount *int `json:"feeAmount,omitempty" url:"feeAmount,omitempty"`
+	FeeAmount *int64 `json:"feeAmount,omitempty" url:"feeAmount,omitempty"`
 	// Indicates if this is the first dispute for the transaction.
 	FirstDispute *bool `json:"firstDispute,omitempty" url:"firstDispute,omitempty"`
 	// Authorization code of the transaction that the dispute is linked to.
@@ -13483,14 +13563,14 @@ func (d *Dispute) GetReferenceNumber() *string {
 	return d.ReferenceNumber
 }
 
-func (d *Dispute) GetDisputeAmount() *int {
+func (d *Dispute) GetDisputeAmount() *int64 {
 	if d == nil {
 		return nil
 	}
 	return d.DisputeAmount
 }
 
-func (d *Dispute) GetFeeAmount() *int {
+func (d *Dispute) GetFeeAmount() *int64 {
 	if d == nil {
 		return nil
 	}
@@ -13608,14 +13688,14 @@ func (d *Dispute) SetReferenceNumber(referenceNumber *string) {
 
 // SetDisputeAmount sets the DisputeAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *Dispute) SetDisputeAmount(disputeAmount *int) {
+func (d *Dispute) SetDisputeAmount(disputeAmount *int64) {
 	d.DisputeAmount = disputeAmount
 	d.require(disputeFieldDisputeAmount)
 }
 
 // SetFeeAmount sets the FeeAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *Dispute) SetFeeAmount(feeAmount *int) {
+func (d *Dispute) SetFeeAmount(feeAmount *int64) {
 	d.FeeAmount = feeAmount
 	d.require(disputeFieldFeeAmount)
 }
@@ -15433,7 +15513,7 @@ type EventSubscription struct {
 	Status *EventSubscriptionStatus `json:"status,omitempty" url:"status,omitempty"`
 	// Array of events that you want to subscribe to. For a list of events, go to [Events List](https://docs.payroc.com/knowledge/events/events-list).
 	EventTypes []string `json:"eventTypes" url:"eventTypes"`
-	// Array of notifications objects. Each object contains information about how we contact you when an event occurs.
+	// Array of polymorphic notification objects that contain information about how we contact you when an event occurs.
 	Notifications []*Notification `json:"notifications" url:"notifications"`
 	// Object that you can send to include custom data in the request. For more information about how to use metadata, go to [Metadata](https://docs.payroc.com/api/metadata).
 	Metadata map[string]interface{} `json:"metadata,omitempty" url:"metadata,omitempty"`
@@ -15877,7 +15957,7 @@ var (
 type FlatRateFees struct {
 	// Object that contains the fees for standard card transactions.
 	StandardCards *ProcessorFee `json:"standardCards" url:"standardCards"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
 	Amex                       *FlatRateFeesAmex           `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                   `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -16010,7 +16090,7 @@ func (f *FlatRateFees) String() string {
 	return fmt.Sprintf("%#v", f)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
 type FlatRateFeesAmex struct {
 	Type   string
 	Direct *FlatRateAmexDirect
@@ -16732,9 +16812,15 @@ type FundingRecipient struct {
 	CharityId *string `json:"charityId,omitempty" url:"charityId,omitempty"`
 	// Legal name of the business or organization.
 	DoingBusinessAs string `json:"doingBusinessAs" url:"doingBusinessAs"`
-	// Address of the funding recipient.
+	// Polymorphic object that contains address information for a funding recipient.
 	Address *Address `json:"address" url:"address"`
-	// Array of contactMethod objects for the funding recipient.
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods" url:"contactMethods"`
 	// [Metadata](https://docs.payroc.com/api/metadata) object you can use to include custom data with your request.
 	Metadata map[string]string `json:"metadata,omitempty" url:"metadata,omitempty"`
@@ -18416,7 +18502,7 @@ type HostConfiguration struct {
 	ProcessingTerminalId string `json:"processingTerminalId" url:"processingTerminalId"`
 	// Unique identifier that we assigned to the processing account.
 	ProcessingAccountId *string `json:"processingAccountId,omitempty" url:"processingAccountId,omitempty"`
-	// Object that contains the host processor configuration.
+	// Polymorphic object that contains the host processor configuration.
 	Configuration *HostConfigurationConfiguration `json:"configuration" url:"configuration"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -18518,7 +18604,7 @@ func (h *HostConfiguration) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
-// Object that contains the host processor configuration.
+// Polymorphic object that contains the host processor configuration.
 type HostConfigurationConfiguration struct {
 	Processor string
 	Tsys      *Tsys
@@ -19492,7 +19578,7 @@ var (
 
 type InstructionMerchantsItemRecipientsItemAmount struct {
 	// Amount of funds in the currency's lowest denomination, for example, cents.
-	Value float64 `json:"value" url:"value"`
+	Value int `json:"value" url:"value"`
 	// Currency of the value parameter.
 	Currency *InstructionMerchantsItemRecipientsItemAmountCurrency `json:"currency,omitempty" url:"currency,omitempty"`
 
@@ -19503,7 +19589,7 @@ type InstructionMerchantsItemRecipientsItemAmount struct {
 	rawJSON         json.RawMessage
 }
 
-func (i *InstructionMerchantsItemRecipientsItemAmount) GetValue() float64 {
+func (i *InstructionMerchantsItemRecipientsItemAmount) GetValue() int {
 	if i == nil {
 		return 0
 	}
@@ -19530,7 +19616,7 @@ func (i *InstructionMerchantsItemRecipientsItemAmount) require(field *big.Int) {
 
 // SetValue sets the Value field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InstructionMerchantsItemRecipientsItemAmount) SetValue(value float64) {
+func (i *InstructionMerchantsItemRecipientsItemAmount) SetValue(value int) {
 	i.Value = value
 	i.require(instructionMerchantsItemRecipientsItemAmountFieldValue)
 }
@@ -20077,7 +20163,11 @@ var (
 type InterchangePlusFees struct {
 	// Object that contains the fees for Mastercard, Visa, and Discover transactions.
 	MastercardVisaDiscover *ProcessorFee `json:"mastercardVisaDiscover" url:"mastercardVisaDiscover"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`optBlue` - Amex OptBlue pricing program.
+	// -	`direct` - Amex Direct pricing program.
 	Amex                       *InterchangePlusFeesAmex    `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                   `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -20225,7 +20315,11 @@ func (i *InterchangePlusFees) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
+//
+// The value of the type field determines which variant you should use:
+// -	`optBlue` - Amex OptBlue pricing program.
+// -	`direct` - Amex Direct pricing program.
 type InterchangePlusFeesAmex struct {
 	Type    string
 	OptBlue *InterchangePlusAmexOptBlue
@@ -20628,7 +20722,11 @@ var (
 type InterchangePlusPlusFees struct {
 	// Object that contains the fees for Mastercard, Visa, and Discover transactions.
 	MastercardVisaDiscover *QualRates `json:"mastercardVisaDiscover" url:"mastercardVisaDiscover"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`optBlue` - Amex OptBlue pricing program.
+	// -	`direct` - Amex Direct pricing program.
 	Amex                       *InterchangePlusPlusFeesAmex `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                    `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer  `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -20776,7 +20874,11 @@ func (i *InterchangePlusPlusFees) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
+//
+// The value of the type field determines which variant you should use:
+// -	`optBlue` - Amex OptBlue pricing program.
+// -	`direct` - Amex Direct pricing program.
 type InterchangePlusPlusFeesAmex struct {
 	Type    string
 	OptBlue *InterchangePlusPlusAmexOptBlue
@@ -21179,7 +21281,11 @@ var (
 type InterchangePlusTiered3Fees struct {
 	// Object that contains the fees for Mastercard, Visa, and Discover transactions.
 	MastercardVisaDiscover *QualRates `json:"mastercardVisaDiscover" url:"mastercardVisaDiscover"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`optBlue` - Amex OptBlue pricing program.
+	// -	`direct` - Amex Direct pricing program.
 	Amex                       *InterchangePlusTiered3FeesAmex `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                       `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer     `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -21327,7 +21433,11 @@ func (i *InterchangePlusTiered3Fees) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
+//
+// The value of the type field determines which variant you should use:
+// -	`optBlue` - Amex OptBlue pricing program.
+// -	`direct` - Amex Direct pricing program.
 type InterchangePlusTiered3FeesAmex struct {
 	Type    string
 	OptBlue *InterchangePlusTiered3AmexOptBlue
@@ -21822,7 +21932,11 @@ type ItemizedBreakdownRequest struct {
 	Surcharge *Surcharge `json:"surcharge,omitempty" url:"surcharge,omitempty"`
 	// Object that contains dual pricing information for the transaction.
 	DualPricing *DualPricing `json:"dualPricing,omitempty" url:"dualPricing,omitempty"`
-	// List of taxes.
+	// Array of polymorphic tax objects, which contain information about a tax.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`amount` - Tax is a fixed amount.
+	// -	`rate` - Tax is a percentage.
 	Taxes []*Tax `json:"taxes,omitempty" url:"taxes,omitempty"`
 	// Amount of duties or fees that apply to the order. The value is in the currency's lowest denomination, for example, cents.
 	DutyAmount *int64 `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
@@ -22039,13 +22153,20 @@ var (
 )
 
 type KeyedCardDetails struct {
+	// Polymorphic object that contains payment card details that the merchant manually entered into the device.
+	//
+	// The value of the dataFormat parameter determines which variant you should use:
+	// -	`fullyEncrypted` - Some payment card details are encrypted.
+	// -	`partiallyEncrypted` - Payment card details are in plain text.
+	// -	`plainText` - All payment card details are encrypted.
 	KeyedData *KeyedCardDetailsKeyedData `json:"keyedData" url:"keyedData"`
 	// Cardholder’s name.
 	CardholderName *string `json:"cardholderName,omitempty" url:"cardholderName,omitempty"`
 	// Cardholder's signature. For more information about how to format the signature, go to [How to send a signature to our gateway](https://docs.payroc.com/knowledge/basic-concepts/signature-capture).
-	CardholderSignature *string                     `json:"cardholderSignature,omitempty" url:"cardholderSignature,omitempty"`
-	PinDetails          *KeyedCardDetailsPinDetails `json:"pinDetails,omitempty" url:"pinDetails,omitempty"`
-	EbtDetails          *EbtDetailsWithVoucher      `json:"ebtDetails,omitempty" url:"ebtDetails,omitempty"`
+	CardholderSignature *string `json:"cardholderSignature,omitempty" url:"cardholderSignature,omitempty"`
+	// Polymorphic object that contains information about the customer's PIN.
+	PinDetails *KeyedCardDetailsPinDetails `json:"pinDetails,omitempty" url:"pinDetails,omitempty"`
+	EbtDetails *EbtDetailsWithVoucher      `json:"ebtDetails,omitempty" url:"ebtDetails,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -22174,6 +22295,12 @@ func (k *KeyedCardDetails) String() string {
 	return fmt.Sprintf("%#v", k)
 }
 
+// Polymorphic object that contains payment card details that the merchant manually entered into the device.
+//
+// The value of the dataFormat parameter determines which variant you should use:
+// -	`fullyEncrypted` - Some payment card details are encrypted.
+// -	`partiallyEncrypted` - Payment card details are in plain text.
+// -	`plainText` - All payment card details are encrypted.
 type KeyedCardDetailsKeyedData struct {
 	DataFormat         string
 	FullyEncrypted     *FullyEncryptedKeyedDataFormat
@@ -22315,6 +22442,7 @@ func (k *KeyedCardDetailsKeyedData) validate() error {
 	return nil
 }
 
+// Polymorphic object that contains information about the customer's PIN.
 type KeyedCardDetailsPinDetails struct {
 	DataFormat string
 	Dukpt      *DukptPinDetails
@@ -22626,7 +22754,7 @@ type LineItem struct {
 	Description   *string        `json:"description,omitempty" url:"description,omitempty"`
 	UnitOfMeasure *UnitOfMeasure `json:"unitOfMeasure,omitempty" url:"unitOfMeasure,omitempty"`
 	// Price of each unit.
-	UnitPrice float64 `json:"unitPrice" url:"unitPrice"`
+	UnitPrice int64 `json:"unitPrice" url:"unitPrice"`
 	// Number of units.
 	Quantity float64 `json:"quantity" url:"quantity"`
 	// Discount rate that the merchant applies to the item.
@@ -22669,7 +22797,7 @@ func (l *LineItem) GetUnitOfMeasure() *UnitOfMeasure {
 	return l.UnitOfMeasure
 }
 
-func (l *LineItem) GetUnitPrice() float64 {
+func (l *LineItem) GetUnitPrice() int64 {
 	if l == nil {
 		return 0
 	}
@@ -22738,7 +22866,7 @@ func (l *LineItem) SetUnitOfMeasure(unitOfMeasure *UnitOfMeasure) {
 
 // SetUnitPrice sets the UnitPrice field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LineItem) SetUnitPrice(unitPrice float64) {
+func (l *LineItem) SetUnitPrice(unitPrice int64) {
 	l.UnitPrice = unitPrice
 	l.require(lineItemFieldUnitPrice)
 }
@@ -22823,7 +22951,7 @@ type LineItemBase struct {
 	Description   *string        `json:"description,omitempty" url:"description,omitempty"`
 	UnitOfMeasure *UnitOfMeasure `json:"unitOfMeasure,omitempty" url:"unitOfMeasure,omitempty"`
 	// Price of each unit.
-	UnitPrice float64 `json:"unitPrice" url:"unitPrice"`
+	UnitPrice int64 `json:"unitPrice" url:"unitPrice"`
 	// Number of units.
 	Quantity float64 `json:"quantity" url:"quantity"`
 	// Discount rate that the merchant applies to the item.
@@ -22864,7 +22992,7 @@ func (l *LineItemBase) GetUnitOfMeasure() *UnitOfMeasure {
 	return l.UnitOfMeasure
 }
 
-func (l *LineItemBase) GetUnitPrice() float64 {
+func (l *LineItemBase) GetUnitPrice() int64 {
 	if l == nil {
 		return 0
 	}
@@ -22926,7 +23054,7 @@ func (l *LineItemBase) SetUnitOfMeasure(unitOfMeasure *UnitOfMeasure) {
 
 // SetUnitPrice sets the UnitPrice field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LineItemBase) SetUnitPrice(unitPrice float64) {
+func (l *LineItemBase) SetUnitPrice(unitPrice int64) {
 	l.UnitPrice = unitPrice
 	l.require(lineItemBaseFieldUnitPrice)
 }
@@ -23004,7 +23132,7 @@ type LineItemRequest struct {
 	Description   *string        `json:"description,omitempty" url:"description,omitempty"`
 	UnitOfMeasure *UnitOfMeasure `json:"unitOfMeasure,omitempty" url:"unitOfMeasure,omitempty"`
 	// Price of each unit.
-	UnitPrice float64 `json:"unitPrice" url:"unitPrice"`
+	UnitPrice int64 `json:"unitPrice" url:"unitPrice"`
 	// Number of units.
 	Quantity float64 `json:"quantity" url:"quantity"`
 	// Discount rate that the merchant applies to the item.
@@ -23047,7 +23175,7 @@ func (l *LineItemRequest) GetUnitOfMeasure() *UnitOfMeasure {
 	return l.UnitOfMeasure
 }
 
-func (l *LineItemRequest) GetUnitPrice() float64 {
+func (l *LineItemRequest) GetUnitPrice() int64 {
 	if l == nil {
 		return 0
 	}
@@ -23116,7 +23244,7 @@ func (l *LineItemRequest) SetUnitOfMeasure(unitOfMeasure *UnitOfMeasure) {
 
 // SetUnitPrice sets the UnitPrice field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LineItemRequest) SetUnitPrice(unitPrice float64) {
+func (l *LineItemRequest) SetUnitPrice(unitPrice int64) {
 	l.UnitPrice = unitPrice
 	l.require(lineItemRequestFieldUnitPrice)
 }
@@ -23301,6 +23429,7 @@ var (
 )
 
 type Links struct {
+	// Polymorphic object that contains information about the processing terminal that the order is linked to.
 	Links []*ProcessingTerminalSummary `json:"links,omitempty" url:"links,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -23384,11 +23513,11 @@ var (
 
 type ListFundingAccounts struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -23403,14 +23532,14 @@ type ListFundingAccounts struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListFundingAccounts) GetLimit() *float64 {
+func (l *ListFundingAccounts) GetLimit() *int {
 	if l == nil {
 		return nil
 	}
 	return l.Limit
 }
 
-func (l *ListFundingAccounts) GetCount() *float64 {
+func (l *ListFundingAccounts) GetCount() *int {
 	if l == nil {
 		return nil
 	}
@@ -23451,14 +23580,14 @@ func (l *ListFundingAccounts) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListFundingAccounts) SetLimit(limit *float64) {
+func (l *ListFundingAccounts) SetLimit(limit *int) {
 	l.Limit = limit
 	l.require(listFundingAccountsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListFundingAccounts) SetCount(count *float64) {
+func (l *ListFundingAccounts) SetCount(count *int) {
 	l.Count = count
 	l.require(listFundingAccountsFieldCount)
 }
@@ -23598,9 +23727,9 @@ type MerchantBalance struct {
 	// Total funding balance for the merchant, including pending amounts. The value is in the currency's lowest denomination, for example, cents.
 	Funds *int `json:"funds,omitempty" url:"funds,omitempty"`
 	// Amount of the funding balance that we have not yet sent to funding accounts. The value is in the currency's lowest denomination, for example, cents.
-	Pending *float64 `json:"pending,omitempty" url:"pending,omitempty"`
+	Pending *int `json:"pending,omitempty" url:"pending,omitempty"`
 	// Amount of the funding balance that you can use in funding instructions. The value is in the currency's lowest denomination, for example, cents.
-	Available *float64 `json:"available,omitempty" url:"available,omitempty"`
+	Available *int `json:"available,omitempty" url:"available,omitempty"`
 	// Currency of the funding balance. We return a value of `USD`.
 	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
 
@@ -23625,14 +23754,14 @@ func (m *MerchantBalance) GetFunds() *int {
 	return m.Funds
 }
 
-func (m *MerchantBalance) GetPending() *float64 {
+func (m *MerchantBalance) GetPending() *int {
 	if m == nil {
 		return nil
 	}
 	return m.Pending
 }
 
-func (m *MerchantBalance) GetAvailable() *float64 {
+func (m *MerchantBalance) GetAvailable() *int {
 	if m == nil {
 		return nil
 	}
@@ -23673,14 +23802,14 @@ func (m *MerchantBalance) SetFunds(funds *int) {
 
 // SetPending sets the Pending field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MerchantBalance) SetPending(pending *float64) {
+func (m *MerchantBalance) SetPending(pending *int) {
 	m.Pending = pending
 	m.require(merchantBalanceFieldPending)
 }
 
 // SetAvailable sets the Available field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MerchantBalance) SetAvailable(available *float64) {
+func (m *MerchantBalance) SetAvailable(available *int) {
 	m.Available = available
 	m.require(merchantBalanceFieldAvailable)
 }
@@ -23948,7 +24077,7 @@ type MerchantPlatformProcessingAccountsItem struct {
 	// - `cancelled` - Merchant withdrew the application for the processing account.
 	// - `failed` - An error occurred while we were setting up the processing account.
 	//
-	// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+	// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 	Status *MerchantPlatformProcessingAccountsItemStatus `json:"status,omitempty" url:"status,omitempty"`
 	// Object that contains HATEOAS links for the processing account.
 	Link      *MerchantPlatformProcessingAccountsItemLink `json:"link,omitempty" url:"link,omitempty"`
@@ -24207,7 +24336,7 @@ func (m *MerchantPlatformProcessingAccountsItemLink) String() string {
 // - `cancelled` - Merchant withdrew the application for the processing account.
 // - `failed` - An error occurred while we were setting up the processing account.
 //
-// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 type MerchantPlatformProcessingAccountsItemStatus string
 
 const (
@@ -24916,7 +25045,7 @@ type OrderItem struct {
 	// - `Axium Bundle`
 	SolutionTemplateId string `json:"solutionTemplateId" url:"solutionTemplateId"`
 	// Quantity of the solution.
-	SolutionQuantity *float64 `json:"solutionQuantity,omitempty" url:"solutionQuantity,omitempty"`
+	SolutionQuantity *int `json:"solutionQuantity,omitempty" url:"solutionQuantity,omitempty"`
 	// Indicates if the order contains a new item or a refurbished item.
 	DeviceCondition *OrderItemDeviceCondition `json:"deviceCondition,omitempty" url:"deviceCondition,omitempty"`
 	// Object that contains the settings for the solution, including gateway settings, device settings, and application settings.
@@ -24943,7 +25072,7 @@ func (o *OrderItem) GetSolutionTemplateId() string {
 	return o.SolutionTemplateId
 }
 
-func (o *OrderItem) GetSolutionQuantity() *float64 {
+func (o *OrderItem) GetSolutionQuantity() *int {
 	if o == nil {
 		return nil
 	}
@@ -24991,7 +25120,7 @@ func (o *OrderItem) SetSolutionTemplateId(solutionTemplateId string) {
 
 // SetSolutionQuantity sets the SolutionQuantity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrderItem) SetSolutionQuantity(solutionQuantity *float64) {
+func (o *OrderItem) SetSolutionQuantity(solutionQuantity *int) {
 	o.SolutionQuantity = solutionQuantity
 	o.require(orderItemFieldSolutionQuantity)
 }
@@ -25645,7 +25774,7 @@ var (
 
 type OrderItemSolutionSetupDeviceSettings struct {
 	// Number of users that we need to set up for mobile solutions.
-	NumberOfMobileUsers *float64 `json:"numberOfMobileUsers,omitempty" url:"numberOfMobileUsers,omitempty"`
+	NumberOfMobileUsers *int `json:"numberOfMobileUsers,omitempty" url:"numberOfMobileUsers,omitempty"`
 	// Method of connection between a terminal or a peripheral device and the host.
 	CommunicationType *OrderItemSolutionSetupDeviceSettingsCommunicationType `json:"communicationType,omitempty" url:"communicationType,omitempty"`
 
@@ -25656,7 +25785,7 @@ type OrderItemSolutionSetupDeviceSettings struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OrderItemSolutionSetupDeviceSettings) GetNumberOfMobileUsers() *float64 {
+func (o *OrderItemSolutionSetupDeviceSettings) GetNumberOfMobileUsers() *int {
 	if o == nil {
 		return nil
 	}
@@ -25683,7 +25812,7 @@ func (o *OrderItemSolutionSetupDeviceSettings) require(field *big.Int) {
 
 // SetNumberOfMobileUsers sets the NumberOfMobileUsers field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrderItemSolutionSetupDeviceSettings) SetNumberOfMobileUsers(numberOfMobileUsers *float64) {
+func (o *OrderItemSolutionSetupDeviceSettings) SetNumberOfMobileUsers(numberOfMobileUsers *int) {
 	o.NumberOfMobileUsers = numberOfMobileUsers
 	o.require(orderItemSolutionSetupDeviceSettingsFieldNumberOfMobileUsers)
 }
@@ -26214,8 +26343,15 @@ type Owner struct {
 	Address     *Address  `json:"address" url:"address"`
 	// Array of IDs.
 	Identifiers []*Identifier `json:"identifiers" url:"identifiers"`
-	// Array of contactMethod objects.
+	// Array of polymorphic objects, which contain contact information.
+	//
 	// **Note:** If you are adding information about an owner, you must provide at least an email address. If you are adding information about a contact, you must provide at least a contact number.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods" url:"contactMethods"`
 	// Object that contains information about the owner's relationship to the business.
 	Relationship *OwnerRelationship `json:"relationship" url:"relationship"`
@@ -27174,11 +27310,11 @@ var (
 
 type PaginatedContacts struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -27193,14 +27329,14 @@ type PaginatedContacts struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedContacts) GetLimit() *float64 {
+func (p *PaginatedContacts) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedContacts) GetCount() *float64 {
+func (p *PaginatedContacts) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -27241,14 +27377,14 @@ func (p *PaginatedContacts) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedContacts) SetLimit(limit *float64) {
+func (p *PaginatedContacts) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedContactsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedContacts) SetCount(count *float64) {
+func (p *PaginatedContacts) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedContactsFieldCount)
 }
@@ -27323,11 +27459,11 @@ var (
 
 type PaginatedEventSubscriptions struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -27342,14 +27478,14 @@ type PaginatedEventSubscriptions struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedEventSubscriptions) GetLimit() *float64 {
+func (p *PaginatedEventSubscriptions) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedEventSubscriptions) GetCount() *float64 {
+func (p *PaginatedEventSubscriptions) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -27390,14 +27526,14 @@ func (p *PaginatedEventSubscriptions) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedEventSubscriptions) SetLimit(limit *float64) {
+func (p *PaginatedEventSubscriptions) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedEventSubscriptionsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedEventSubscriptions) SetCount(count *float64) {
+func (p *PaginatedEventSubscriptions) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedEventSubscriptionsFieldCount)
 }
@@ -27472,11 +27608,11 @@ var (
 
 type PaginatedFundRecipients struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -27491,14 +27627,14 @@ type PaginatedFundRecipients struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedFundRecipients) GetLimit() *float64 {
+func (p *PaginatedFundRecipients) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedFundRecipients) GetCount() *float64 {
+func (p *PaginatedFundRecipients) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -27539,14 +27675,14 @@ func (p *PaginatedFundRecipients) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedFundRecipients) SetLimit(limit *float64) {
+func (p *PaginatedFundRecipients) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedFundRecipientsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedFundRecipients) SetCount(count *float64) {
+func (p *PaginatedFundRecipients) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedFundRecipientsFieldCount)
 }
@@ -27621,11 +27757,11 @@ var (
 
 type PaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -27638,14 +27774,14 @@ type PaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedList) GetLimit() *float64 {
+func (p *PaginatedList) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedList) GetCount() *float64 {
+func (p *PaginatedList) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -27679,14 +27815,14 @@ func (p *PaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedList) SetLimit(limit *float64) {
+func (p *PaginatedList) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedList) SetCount(count *float64) {
+func (p *PaginatedList) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedListFieldCount)
 }
@@ -27754,11 +27890,11 @@ var (
 
 type PaginatedMerchants struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -27773,14 +27909,14 @@ type PaginatedMerchants struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedMerchants) GetLimit() *float64 {
+func (p *PaginatedMerchants) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedMerchants) GetCount() *float64 {
+func (p *PaginatedMerchants) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -27821,14 +27957,14 @@ func (p *PaginatedMerchants) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedMerchants) SetLimit(limit *float64) {
+func (p *PaginatedMerchants) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedMerchantsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedMerchants) SetCount(count *float64) {
+func (p *PaginatedMerchants) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedMerchantsFieldCount)
 }
@@ -27903,11 +28039,11 @@ var (
 
 type PaginatedOwners struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -27922,14 +28058,14 @@ type PaginatedOwners struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedOwners) GetLimit() *float64 {
+func (p *PaginatedOwners) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedOwners) GetCount() *float64 {
+func (p *PaginatedOwners) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -27970,14 +28106,14 @@ func (p *PaginatedOwners) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedOwners) SetLimit(limit *float64) {
+func (p *PaginatedOwners) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedOwnersFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedOwners) SetCount(count *float64) {
+func (p *PaginatedOwners) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedOwnersFieldCount)
 }
@@ -28053,11 +28189,11 @@ var (
 
 type PaginatedPricingIntent struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -28072,14 +28208,14 @@ type PaginatedPricingIntent struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedPricingIntent) GetLimit() *float64 {
+func (p *PaginatedPricingIntent) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedPricingIntent) GetCount() *float64 {
+func (p *PaginatedPricingIntent) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -28120,14 +28256,14 @@ func (p *PaginatedPricingIntent) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedPricingIntent) SetLimit(limit *float64) {
+func (p *PaginatedPricingIntent) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedPricingIntentFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedPricingIntent) SetCount(count *float64) {
+func (p *PaginatedPricingIntent) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedPricingIntentFieldCount)
 }
@@ -28202,11 +28338,11 @@ var (
 
 type PaginatedProcessingAccounts struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -28221,14 +28357,14 @@ type PaginatedProcessingAccounts struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedProcessingAccounts) GetLimit() *float64 {
+func (p *PaginatedProcessingAccounts) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedProcessingAccounts) GetCount() *float64 {
+func (p *PaginatedProcessingAccounts) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -28269,14 +28405,14 @@ func (p *PaginatedProcessingAccounts) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedProcessingAccounts) SetLimit(limit *float64) {
+func (p *PaginatedProcessingAccounts) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedProcessingAccountsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedProcessingAccounts) SetCount(count *float64) {
+func (p *PaginatedProcessingAccounts) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedProcessingAccountsFieldCount)
 }
@@ -28351,11 +28487,11 @@ var (
 
 type PaginatedProcessingTerminals struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -28370,14 +28506,14 @@ type PaginatedProcessingTerminals struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaginatedProcessingTerminals) GetLimit() *float64 {
+func (p *PaginatedProcessingTerminals) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaginatedProcessingTerminals) GetCount() *float64 {
+func (p *PaginatedProcessingTerminals) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -28418,14 +28554,14 @@ func (p *PaginatedProcessingTerminals) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedProcessingTerminals) SetLimit(limit *float64) {
+func (p *PaginatedProcessingTerminals) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paginatedProcessingTerminalsFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaginatedProcessingTerminals) SetCount(count *float64) {
+func (p *PaginatedProcessingTerminals) SetCount(count *int) {
 	p.Count = count
 	p.require(paginatedProcessingTerminalsFieldCount)
 }
@@ -31158,11 +31294,11 @@ var (
 
 type PaymentPaginatedListForRead struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -31177,14 +31313,14 @@ type PaymentPaginatedListForRead struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaymentPaginatedListForRead) GetLimit() *float64 {
+func (p *PaymentPaginatedListForRead) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaymentPaginatedListForRead) GetCount() *float64 {
+func (p *PaymentPaginatedListForRead) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -31225,14 +31361,14 @@ func (p *PaymentPaginatedListForRead) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPaginatedListForRead) SetLimit(limit *float64) {
+func (p *PaymentPaginatedListForRead) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paymentPaginatedListForReadFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPaginatedListForRead) SetCount(count *float64) {
+func (p *PaymentPaginatedListForRead) SetCount(count *int) {
 	p.Count = count
 	p.require(paymentPaginatedListForReadFieldCount)
 }
@@ -32134,11 +32270,11 @@ var (
 
 type PaymentPlanPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -32153,14 +32289,14 @@ type PaymentPlanPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaymentPlanPaginatedList) GetLimit() *float64 {
+func (p *PaymentPlanPaginatedList) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaymentPlanPaginatedList) GetCount() *float64 {
+func (p *PaymentPlanPaginatedList) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -32201,14 +32337,14 @@ func (p *PaymentPlanPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPlanPaginatedList) SetLimit(limit *float64) {
+func (p *PaymentPlanPaginatedList) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paymentPlanPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPlanPaginatedList) SetCount(count *float64) {
+func (p *PaymentPlanPaginatedList) SetCount(count *int) {
 	p.Count = count
 	p.require(paymentPlanPaginatedListFieldCount)
 }
@@ -32835,8 +32971,8 @@ type PaymentSummary struct {
 	// - `C` - The issuer declined the transaction and indicated that the merchant should keep the card as it was reported lost or stolen.
 	ResponseCode PaymentSummaryResponseCode `json:"responseCode" url:"responseCode"`
 	// Response description from the processor.
-	ResponseMessage string `json:"responseMessage" url:"responseMessage"`
-	Link            *Link  `json:"link,omitempty" url:"link,omitempty"`
+	ResponseMessage *string `json:"responseMessage,omitempty" url:"responseMessage,omitempty"`
+	Link            *Link   `json:"link,omitempty" url:"link,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -32887,9 +33023,9 @@ func (p *PaymentSummary) GetResponseCode() PaymentSummaryResponseCode {
 	return p.ResponseCode
 }
 
-func (p *PaymentSummary) GetResponseMessage() string {
+func (p *PaymentSummary) GetResponseMessage() *string {
 	if p == nil {
-		return ""
+		return nil
 	}
 	return p.ResponseMessage
 }
@@ -32956,7 +33092,7 @@ func (p *PaymentSummary) SetResponseCode(responseCode PaymentSummaryResponseCode
 
 // SetResponseMessage sets the ResponseMessage field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentSummary) SetResponseMessage(responseMessage string) {
+func (p *PaymentSummary) SetResponseMessage(responseMessage *string) {
 	p.ResponseMessage = responseMessage
 	p.require(paymentSummaryFieldResponseMessage)
 }
@@ -33644,7 +33780,11 @@ func (p PlainTextSwipedDataFormatFallbackReason) Ptr() *PlainTextSwipedDataForma
 	return &p
 }
 
-// Object that contains HATEOAS links to the pricing information that we apply to the processing account.
+// Polymorphic object that contains pricing information for the processing account.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`intent` - Use a pricing agreement template.
+// -	`agreement` - Create a new pricing agreement.
 type Pricing struct {
 	Type      string
 	Intent    *PricingTemplate
@@ -34074,7 +34214,18 @@ var (
 )
 
 type PricingAgreementUs40Processor struct {
-	// Object that contains the fees for card transactions.
+	// Polymorphic object that contains fees for card transactions.
+	//
+	// The value of the planType field determines which variant you should use:
+	// -	`interchangePlus` - Interchange + pricing
+	// -	`interchangePlusTiered3` - Interchange pricing with three tiers
+	// -	`tiered3` - Three-tiered pricing
+	// -	`tiered4` - Four-tiered pricing
+	// -	`tiered6` - Six-tiered pricing
+	// -	`flatRate` - Flat rate pricing
+	// -	`consumerChoice` - ConsumerChoice
+	// -	`rewardPay` - RewardPay
+	// -	`rewardPayChoice` - RewardPayChoice
 	Card *PricingAgreementUs40ProcessorCard `json:"card,omitempty" url:"card,omitempty"`
 	Ach  *Ach                               `json:"ach,omitempty" url:"ach,omitempty"`
 
@@ -34163,7 +34314,18 @@ func (p *PricingAgreementUs40Processor) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Object that contains the fees for card transactions.
+// Polymorphic object that contains fees for card transactions.
+//
+// The value of the planType field determines which variant you should use:
+// -	`interchangePlus` - Interchange + pricing
+// -	`interchangePlusTiered3` - Interchange pricing with three tiers
+// -	`tiered3` - Three-tiered pricing
+// -	`tiered4` - Four-tiered pricing
+// -	`tiered6` - Six-tiered pricing
+// -	`flatRate` - Flat rate pricing
+// -	`consumerChoice` - ConsumerChoice
+// -	`rewardPay` - RewardPay
+// -	`rewardPayChoice` - RewardPayChoice
 type PricingAgreementUs40ProcessorCard struct {
 	PlanType               string
 	InterchangePlus        *InterchangePlus
@@ -34658,7 +34820,17 @@ var (
 )
 
 type PricingAgreementUs50Processor struct {
-	// Object that contains information about card fees.
+	// Polymorphic object that contains fees for card transactions.
+	//
+	// The value of the planType field determines which variant you should use:
+	// -	`interchangePlus` - Interchange + pricing
+	// -	`interchangePlusPlus` - Interchange pricing with three tiers
+	// -	`tiered3` - Three-tiered pricing
+	// -	`tiered4` - Four-tiered pricing
+	// -	`tiered6` - Six-tiered pricing
+	// -	`flatRate` - Flat rate pricing
+	// -	`consumerChoice` - ConsumerChoice
+	// -	`rewardPayChoice` - RewardPayChoice
 	Card *PricingAgreementUs50ProcessorCard `json:"card,omitempty" url:"card,omitempty"`
 	Ach  *Ach                               `json:"ach,omitempty" url:"ach,omitempty"`
 
@@ -34747,7 +34919,17 @@ func (p *PricingAgreementUs50Processor) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Object that contains information about card fees.
+// Polymorphic object that contains fees for card transactions.
+//
+// The value of the planType field determines which variant you should use:
+// -	`interchangePlus` - Interchange + pricing
+// -	`interchangePlusPlus` - Interchange pricing with three tiers
+// -	`tiered3` - Three-tiered pricing
+// -	`tiered4` - Four-tiered pricing
+// -	`tiered6` - Six-tiered pricing
+// -	`flatRate` - Flat rate pricing
+// -	`consumerChoice` - ConsumerChoice
+// -	`rewardPayChoice` - RewardPayChoice
 type PricingAgreementUs50ProcessorCard struct {
 	PlanType            string
 	InterchangePlus     *InterchangePlus
@@ -35029,7 +35211,7 @@ func (p PricingAgreementUs50Version) Ptr() *PricingAgreementUs50Version {
 	return &p
 }
 
-// Object that contains information about a pricing intent.
+// Polymorphic object that contains pricing intent information.
 type PricingIntent = *PricingIntent50
 
 // Object that contains information about a pricing intent for Merchant Processing Agreement (MPA) 5.0.
@@ -35630,7 +35812,7 @@ type ProcessingAccount struct {
 	// - `rejected` - We rejected the application for the processing account.
 	// - `terminated` - Processing account is closed.
 	// - `cancelled` - Merchant withdrew the application for the processing account.
-	// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+	// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 	Status *ProcessingAccountStatus `json:"status,omitempty" url:"status,omitempty"`
 	// Trading name of the business.
 	DoingBusinessAs string `json:"doingBusinessAs" url:"doingBusinessAs"`
@@ -35647,8 +35829,17 @@ type ProcessingAccount struct {
 	// Date that the business was established. The format of the value is **YYYY-MM-DD**.
 	BusinessStartDate *time.Time `json:"businessStartDate,omitempty" url:"businessStartDate,omitempty" format:"date"`
 	Timezone          Timezone   `json:"timezone" url:"timezone"`
-	Address           *Address   `json:"address" url:"address"`
-	// Array of contactMethods objects for the processing account. At least one contactMethod must be an email address.
+	// Polymorphic object that contains address information for the processing account.
+	Address *Address `json:"address" url:"address"`
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// **Note:** You must provide an email address.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods" url:"contactMethods"`
 	Processing     *Processing      `json:"processing" url:"processing"`
 	Funding        *Funding         `json:"funding" url:"funding"`
@@ -36756,7 +36947,7 @@ func (p *ProcessingAccountPricingLink) String() string {
 // - `rejected` - We rejected the application for the processing account.
 // - `terminated` - Processing account is closed.
 // - `cancelled` - Merchant withdrew the application for the processing account.
-// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+// **Note**: You can subscribe to our processingAccount.status.changed event to get notifications when we change the status of a processing account. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 type ProcessingAccountStatus string
 
 const (
@@ -37978,9 +38169,13 @@ type ProcessingTerminal struct {
 	Timezone ProcessingTerminalTimezone `json:"timezone" url:"timezone"`
 	// Name of the product and its setup.
 	Program *string `json:"program,omitempty" url:"program,omitempty"`
-	// Object that contains the gateway settings for the solution.
+	// Polymorphic object that contains the gateway settings for the solution.
 	Gateway *PayrocGateway `json:"gateway,omitempty" url:"gateway,omitempty"`
-	// Object that contains information about when and how the terminal closes the batch.
+	// Polymorphic object that contains information about when and how the terminal closes the batch.
+	//
+	// The value of the batchCloseType field determines which variant you should use:
+	// -	`automatic` - Terminal automatically closes the batch at a specific time each day.
+	// - `manual` - Merchant uses the terminal to manually close the batch.
 	BatchClosure *ProcessingTerminalBatchClosure `json:"batchClosure" url:"batchClosure"`
 	// Object that contains the application settings for the solution.
 	ApplicationSettings *ProcessingTerminalApplicationSettings `json:"applicationSettings" url:"applicationSettings"`
@@ -38317,7 +38512,11 @@ func (p *ProcessingTerminalApplicationSettings) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Object that contains information about when and how the terminal closes the batch.
+// Polymorphic object that contains information about when and how the terminal closes the batch.
+//
+// The value of the batchCloseType field determines which variant you should use:
+// -	`automatic` - Terminal automatically closes the batch at a specific time each day.
+// - `manual` - Merchant uses the terminal to manually close the batch.
 type ProcessingTerminalBatchClosure struct {
 	BatchCloseType string
 	Automatic      *SchemasAutomaticBatchClose
@@ -38578,15 +38777,23 @@ var (
 )
 
 type ProcessingTerminalFeatures struct {
-	// Object that contains the tip settings for the processing terminal.
+	// Polymorphic object that indicates if the terminal accepts tips.
+	//
+	// The value of the enabled field determines which variant you should use:
+	// -	`true` - Terminal allows tips.
+	// -	`false` - Terminal doesn't allow tips.
 	Tips *ProcessingTerminalFeaturesTips `json:"tips,omitempty" url:"tips,omitempty"`
 	// Object that contains details about level two and level three transactions.
 	EnhancedProcessing *ProcessingTerminalFeaturesEnhancedProcessing `json:"enhancedProcessing" url:"enhancedProcessing"`
-	// Object that contains details about EBT transactions.
+	// Polymorphic object that indicates if the terminal accepts EBT transactions.
+	//
+	// The value of the enabled field determines which variant you should use:
+	// -	`true` - Terminal allows EBT transactions.
+	// -	`false` - Terminal doesn't allow EBT transactions.
 	Ebt *ProcessingTerminalFeaturesEbt `json:"ebt" url:"ebt"`
 	// Indicates if the terminal prompts for cashback on PIN debit transactions.
 	PinDebitCashback bool `json:"pinDebitCashback" url:"pinDebitCashback"`
-	// Indicates if the terminal can run repeat payments. For more information about repeat payments, go to [Payment Plans](https://docs.payroc.com/guides/integrate/repeat-payments).
+	// Indicates if the terminal can run repeat payments. For more information about repeat payments, go to [Payment Plans](https://docs.payroc.com/guides/take-payments/repeat-payments).
 	RecurringPayments *bool `json:"recurringPayments,omitempty" url:"recurringPayments,omitempty"`
 	// Object that contains details about payment links.
 	PaymentLinks *ProcessingTerminalFeaturesPaymentLinks `json:"paymentLinks,omitempty" url:"paymentLinks,omitempty"`
@@ -38764,7 +38971,11 @@ func (p *ProcessingTerminalFeatures) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Object that contains details about EBT transactions.
+// Polymorphic object that indicates if the terminal accepts EBT transactions.
+//
+// The value of the enabled field determines which variant you should use:
+// -	`true` - Terminal allows EBT transactions.
+// -	`false` - Terminal doesn't allow EBT transactions.
 type ProcessingTerminalFeaturesEbt struct {
 	EbtEnabled  *EbtEnabled
 	EbtDisabled *EbtDisabled
@@ -39105,7 +39316,11 @@ func (p *ProcessingTerminalFeaturesPaymentLinks) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Object that contains the tip settings for the processing terminal.
+// Polymorphic object that indicates if the terminal accepts tips.
+//
+// The value of the enabled field determines which variant you should use:
+// -	`true` - Terminal allows tips.
+// -	`false` - Terminal doesn't allow tips.
 type ProcessingTerminalFeaturesTips struct {
 	TipProcessingEnabled  *TipProcessingEnabled
 	TipProcessingDisabled *TipProcessingDisabled
@@ -41216,11 +41431,11 @@ var (
 
 type RefundPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -41235,14 +41450,14 @@ type RefundPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RefundPaginatedList) GetLimit() *float64 {
+func (r *RefundPaginatedList) GetLimit() *int {
 	if r == nil {
 		return nil
 	}
 	return r.Limit
 }
 
-func (r *RefundPaginatedList) GetCount() *float64 {
+func (r *RefundPaginatedList) GetCount() *int {
 	if r == nil {
 		return nil
 	}
@@ -41283,14 +41498,14 @@ func (r *RefundPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RefundPaginatedList) SetLimit(limit *float64) {
+func (r *RefundPaginatedList) SetLimit(limit *int) {
 	r.Limit = limit
 	r.require(refundPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RefundPaginatedList) SetCount(count *float64) {
+func (r *RefundPaginatedList) SetCount(count *int) {
 	r.Count = count
 	r.require(refundPaginatedListFieldCount)
 }
@@ -42131,7 +42346,13 @@ type RetrievedCustomer struct {
 	// Object that contains information about the address that the card is registered to.
 	BillingAddress  *RetrievedAddress  `json:"billingAddress,omitempty" url:"billingAddress,omitempty"`
 	ShippingAddress *RetrievedShipping `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
-	// Customer's contact information.
+	// Array of polymorphic objects, which contain contact information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`email` - Email address
+	// -	`phone` - Phone number
+	// -	`mobile` - Mobile number
+	// -	`fax` - Fax number
 	ContactMethods []*ContactMethod `json:"contactMethods,omitempty" url:"contactMethods,omitempty"`
 	// Language that the customer uses for notifications. This code follows the [ISO 639-1](https://www.iso.org/iso-639-language-code) alpha-2 standard.
 	NotificationLanguage *RetrievedCustomerNotificationLanguage `json:"notificationLanguage,omitempty" url:"notificationLanguage,omitempty"`
@@ -44153,7 +44374,12 @@ type SecureToken struct {
 	// - `installment` - Transactions for a fixed amount that are run at regular intervals, for example, monthly. Installment transactions have a fixed duration.
 	MitAgreement *SecureTokenMitAgreement `json:"mitAgreement,omitempty" url:"mitAgreement,omitempty"`
 	Customer     *RetrievedCustomer       `json:"customer,omitempty" url:"customer,omitempty"`
-	// Object that contains information about the payment method that we tokenized.
+	// Polymorphic object that contains the payment method that we tokenized.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	// -	`card` - Payment card details
 	Source *SecureTokenSource `json:"source" url:"source"`
 	// Token that the merchant can use in future transactions to represent the customer's payment details. The token:
 	// - Begins with the six-digit identification number **296753**.
@@ -44376,11 +44602,11 @@ var (
 
 type SecureTokenPaginatedListWithAccountType struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -44395,14 +44621,14 @@ type SecureTokenPaginatedListWithAccountType struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SecureTokenPaginatedListWithAccountType) GetLimit() *float64 {
+func (s *SecureTokenPaginatedListWithAccountType) GetLimit() *int {
 	if s == nil {
 		return nil
 	}
 	return s.Limit
 }
 
-func (s *SecureTokenPaginatedListWithAccountType) GetCount() *float64 {
+func (s *SecureTokenPaginatedListWithAccountType) GetCount() *int {
 	if s == nil {
 		return nil
 	}
@@ -44443,14 +44669,14 @@ func (s *SecureTokenPaginatedListWithAccountType) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SecureTokenPaginatedListWithAccountType) SetLimit(limit *float64) {
+func (s *SecureTokenPaginatedListWithAccountType) SetLimit(limit *int) {
 	s.Limit = limit
 	s.require(secureTokenPaginatedListWithAccountTypeFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SecureTokenPaginatedListWithAccountType) SetCount(count *float64) {
+func (s *SecureTokenPaginatedListWithAccountType) SetCount(count *int) {
 	s.Count = count
 	s.require(secureTokenPaginatedListWithAccountTypeFieldCount)
 }
@@ -44695,7 +44921,12 @@ func (s SecureTokenPayloadSecCode) Ptr() *SecureTokenPayloadSecCode {
 	return &s
 }
 
-// Object that contains information about the payment method that we tokenized.
+// Polymorphic object that contains the payment method that we tokenized.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
+// -	`card` - Payment card details
 type SecureTokenSource struct {
 	Type string
 	Ach  *AchSource
@@ -45073,7 +45304,12 @@ var (
 )
 
 type SecureTokenWithAccountType struct {
-	// Object that contains information about the payment method that we tokenized.
+	// Polymorphic object that contains the payment method that we tokenized.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	// -	`card` - Payment card details
 	Source *SecureTokenWithAccountTypeSource `json:"source,omitempty" url:"source,omitempty"`
 	// Unique identifier that the merchant created for the secure token that represents the customer's payment details.
 	SecureTokenId string `json:"secureTokenId" url:"secureTokenId"`
@@ -45267,7 +45503,12 @@ func (s *SecureTokenWithAccountType) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-// Object that contains information about the payment method that we tokenized.
+// Polymorphic object that contains the payment method that we tokenized.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
+// -	`card` - Payment card details
 type SecureTokenWithAccountTypeSource struct {
 	Type string
 	Ach  *AchSourceWithAccountType
@@ -45721,7 +45962,7 @@ func (s *ServiceUs50) validate() error {
 	return nil
 }
 
-// Object that contains information about our additional services that the merchant can sign up for.
+// Array of polymorphic objects that contain information about additional services that we offer.
 type ServicesUs50 = []*ServiceUs50
 
 // Object that contains information about the settlement.
@@ -45872,16 +46113,16 @@ var (
 
 type SharingEventPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
 	Links []*Link `json:"links,omitempty" url:"links,omitempty"`
-	// Array of sharing events for the payment link.
+	// Array of polymorphic objects that contain information about how the merchant shared a payment link.
 	Data []*PaymentLinkEmailShareEvent `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -45891,14 +46132,14 @@ type SharingEventPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SharingEventPaginatedList) GetLimit() *float64 {
+func (s *SharingEventPaginatedList) GetLimit() *int {
 	if s == nil {
 		return nil
 	}
 	return s.Limit
 }
 
-func (s *SharingEventPaginatedList) GetCount() *float64 {
+func (s *SharingEventPaginatedList) GetCount() *int {
 	if s == nil {
 		return nil
 	}
@@ -45939,14 +46180,14 @@ func (s *SharingEventPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SharingEventPaginatedList) SetLimit(limit *float64) {
+func (s *SharingEventPaginatedList) SetLimit(limit *int) {
 	s.Limit = limit
 	s.require(sharingEventPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SharingEventPaginatedList) SetCount(count *float64) {
+func (s *SharingEventPaginatedList) SetCount(count *int) {
 	s.Count = count
 	s.require(sharingEventPaginatedListFieldCount)
 }
@@ -46107,7 +46348,11 @@ func (s *Shipping) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-// Object that includes information about how we captured the owner's signature.
+// Polymorphic object that contains information about how we captured the owner's signature.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`requestedViaDirectLink` - Request signature using a link.
+// -	`requestedViaEmail` - Request signature by email.
 type Signature struct {
 	Type                   string
 	RequestedViaDirectLink *SignatureByDirectLink
@@ -46595,14 +46840,19 @@ type SingleUseToken struct {
 	ProcessingTerminalId *string `json:"processingTerminalId,omitempty" url:"processingTerminalId,omitempty"`
 	// Operator who initiated the request.
 	Operator *string `json:"operator,omitempty" url:"operator,omitempty"`
-	// Object that contains information about the customer's payment details.
+	// Polymorphic object that contains payment card details.
 	PaymentMethod *SingleUseTokenPaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
 	// Unique identifier that our gateway assigned to the payment details.
 	// **Note:** Merchants can use the token with other terminals linked to their account.
 	Token *string `json:"token,omitempty" url:"token,omitempty"`
 	// Date and time that the token expires. We return this value in the [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
 	ExpiresAt *time.Time `json:"expiresAt,omitempty" url:"expiresAt,omitempty"`
-	// Object that contains information about the payment method that we tokenized.
+	// Polymorphic object that contains the payment method that we tokenized.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	// -	`card` - Payment card details
 	Source *SingleUseTokenSource `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -46849,7 +47099,12 @@ type SingleUseTokenPayload struct {
 	// **Note:** Send a value for accountType only if the single-use token represents bank account details.
 	AccountType *SingleUseTokenPayloadAccountType `json:"accountType,omitempty" url:"accountType,omitempty"`
 	// Unique token that the gateway assigned to the payment details.
-	Token      string                           `json:"token" url:"token"`
+	Token string `json:"token" url:"token"`
+	// Polymorphic object that contains information about a customer's PIN.
+	//
+	// The value of the dataFormat parameter determines which variant you should use:
+	// - `dukpt` - PIN information is encrypted.
+	// - `raw` - PIN information is unencrypted.
 	PinDetails *SingleUseTokenPayloadPinDetails `json:"pinDetails,omitempty" url:"pinDetails,omitempty"`
 	EbtDetails *EbtDetailsWithVoucher           `json:"ebtDetails,omitempty" url:"ebtDetails,omitempty"`
 	// Indicates how the customer authorized the ACH transaction. Send one of the following values:
@@ -47012,6 +47267,11 @@ func (s SingleUseTokenPayloadAccountType) Ptr() *SingleUseTokenPayloadAccountTyp
 	return &s
 }
 
+// Polymorphic object that contains information about a customer's PIN.
+//
+// The value of the dataFormat parameter determines which variant you should use:
+// - `dukpt` - PIN information is encrypted.
+// - `raw` - PIN information is unencrypted.
 type SingleUseTokenPayloadPinDetails struct {
 	DataFormat string
 	Dukpt      *DukptPinDetails
@@ -47163,7 +47423,7 @@ func (s SingleUseTokenPayloadSecCode) Ptr() *SingleUseTokenPayloadSecCode {
 	return &s
 }
 
-// Object that contains information about the customer's payment details.
+// Polymorphic object that contains payment card details.
 type SingleUseTokenPaymentMethod struct {
 	Type string
 	Card *CardPayload
@@ -47257,7 +47517,12 @@ func (s *SingleUseTokenPaymentMethod) validate() error {
 	return nil
 }
 
-// Object that contains information about the payment method that we tokenized.
+// Polymorphic object that contains the payment method that we tokenized.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
+// -	`card` - Payment card details
 type SingleUseTokenSource struct {
 	Type string
 	Ach  *AchSource
@@ -48498,11 +48763,11 @@ var (
 
 type SubscriptionPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
@@ -48517,14 +48782,14 @@ type SubscriptionPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SubscriptionPaginatedList) GetLimit() *float64 {
+func (s *SubscriptionPaginatedList) GetLimit() *int {
 	if s == nil {
 		return nil
 	}
 	return s.Limit
 }
 
-func (s *SubscriptionPaginatedList) GetCount() *float64 {
+func (s *SubscriptionPaginatedList) GetCount() *int {
 	if s == nil {
 		return nil
 	}
@@ -48565,14 +48830,14 @@ func (s *SubscriptionPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionPaginatedList) SetLimit(limit *float64) {
+func (s *SubscriptionPaginatedList) SetLimit(limit *int) {
 	s.Limit = limit
 	s.require(subscriptionPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionPaginatedList) SetCount(count *float64) {
+func (s *SubscriptionPaginatedList) SetCount(count *int) {
 	s.Count = count
 	s.require(subscriptionPaginatedListFieldCount)
 }
@@ -50022,13 +50287,19 @@ type SwipedCardDetails struct {
 	// If an offline transaction is not approved using the initial entry method, reprocess the transaction using a downgraded entry method.
 	// For example, a swiped transaction can be downgraded to a keyed transaction.
 	DowngradeTo *SwipedCardDetailsDowngradeTo `json:"downgradeTo,omitempty" url:"downgradeTo,omitempty"`
-	SwipedData  *SwipedCardDetailsSwipedData  `json:"swipedData" url:"swipedData"`
+	// Polymorphic object that contains payment card details that a device captured from the magnetic strip.
+	//
+	// The value of the dataFormat parameter determines which variant you should use:
+	// -	`encrypted` - Payment card details are encrypted.
+	// -	`plainText` - Payment card details are in plain text.
+	SwipedData *SwipedCardDetailsSwipedData `json:"swipedData" url:"swipedData"`
 	// Cardholder’s name.
 	CardholderName *string `json:"cardholderName,omitempty" url:"cardholderName,omitempty"`
 	// Cardholder's signature. For more information about how to format the signature, go to [How to send a signature to our gateway](https://docs.payroc.com/knowledge/basic-concepts/signature-capture).
-	CardholderSignature *string                      `json:"cardholderSignature,omitempty" url:"cardholderSignature,omitempty"`
-	PinDetails          *SwipedCardDetailsPinDetails `json:"pinDetails,omitempty" url:"pinDetails,omitempty"`
-	EbtDetails          *EbtDetailsWithVoucher       `json:"ebtDetails,omitempty" url:"ebtDetails,omitempty"`
+	CardholderSignature *string `json:"cardholderSignature,omitempty" url:"cardholderSignature,omitempty"`
+	// Polymorphic object that contains information about the customer's PIN.
+	PinDetails *SwipedCardDetailsPinDetails `json:"pinDetails,omitempty" url:"pinDetails,omitempty"`
+	EbtDetails *EbtDetailsWithVoucher       `json:"ebtDetails,omitempty" url:"ebtDetails,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -50195,6 +50466,7 @@ func (s SwipedCardDetailsDowngradeTo) Ptr() *SwipedCardDetailsDowngradeTo {
 	return &s
 }
 
+// Polymorphic object that contains information about the customer's PIN.
 type SwipedCardDetailsPinDetails struct {
 	DataFormat string
 	Dukpt      *DukptPinDetails
@@ -50288,6 +50560,11 @@ func (s *SwipedCardDetailsPinDetails) validate() error {
 	return nil
 }
 
+// Polymorphic object that contains payment card details that a device captured from the magnetic strip.
+//
+// The value of the dataFormat parameter determines which variant you should use:
+// -	`encrypted` - Payment card details are encrypted.
+// -	`plainText` - Payment card details are in plain text.
 type SwipedCardDetailsSwipedData struct {
 	DataFormat string
 	Encrypted  *EncryptedSwipedDataFormat
@@ -50405,7 +50682,11 @@ func (s *SwipedCardDetailsSwipedData) validate() error {
 	return nil
 }
 
-// Object that contains information about the tax details.
+// Polymorphic object that contains tax details.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`amount` - Tax is a fixed amount.
+// -	`rate` - Tax is a percentage.
 type Tax struct {
 	Type   string
 	Amount *TaxAmount
@@ -50767,7 +51048,7 @@ type TerminalOrder struct {
 	TerminalOrderId string `json:"terminalOrderId" url:"terminalOrderId"`
 	// Status of the terminal order.
 	//
-	// **Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+	// **Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 	Status TerminalOrderStatus `json:"status" url:"status"`
 	// Indicates who provides training to the merchant for the solution.
 	TrainingProvider *TerminalOrderTrainingProvider `json:"trainingProvider,omitempty" url:"trainingProvider,omitempty"`
@@ -50988,12 +51269,13 @@ type TerminalOrderOrderItemsItem struct {
 	// - `Axium Bundle`
 	SolutionTemplateId string `json:"solutionTemplateId" url:"solutionTemplateId"`
 	// Quantity of the solution.
-	SolutionQuantity *float64 `json:"solutionQuantity,omitempty" url:"solutionQuantity,omitempty"`
+	SolutionQuantity *int `json:"solutionQuantity,omitempty" url:"solutionQuantity,omitempty"`
 	// Indicates if the order contains a new item or a refurbished item.
 	DeviceCondition *OrderItemDeviceCondition `json:"deviceCondition,omitempty" url:"deviceCondition,omitempty"`
 	// Object that contains the settings for the solution, including gateway settings, device settings, and application settings.
-	SolutionSetup *OrderItemSolutionSetup      `json:"solutionSetup,omitempty" url:"solutionSetup,omitempty"`
-	Links         []*ProcessingTerminalSummary `json:"links,omitempty" url:"links,omitempty"`
+	SolutionSetup *OrderItemSolutionSetup `json:"solutionSetup,omitempty" url:"solutionSetup,omitempty"`
+	// Polymorphic object that contains information about the processing terminal that the order is linked to.
+	Links []*ProcessingTerminalSummary `json:"links,omitempty" url:"links,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -51016,7 +51298,7 @@ func (t *TerminalOrderOrderItemsItem) GetSolutionTemplateId() string {
 	return t.SolutionTemplateId
 }
 
-func (t *TerminalOrderOrderItemsItem) GetSolutionQuantity() *float64 {
+func (t *TerminalOrderOrderItemsItem) GetSolutionQuantity() *int {
 	if t == nil {
 		return nil
 	}
@@ -51071,7 +51353,7 @@ func (t *TerminalOrderOrderItemsItem) SetSolutionTemplateId(solutionTemplateId s
 
 // SetSolutionQuantity sets the SolutionQuantity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TerminalOrderOrderItemsItem) SetSolutionQuantity(solutionQuantity *float64) {
+func (t *TerminalOrderOrderItemsItem) SetSolutionQuantity(solutionQuantity *int) {
 	t.SolutionQuantity = solutionQuantity
 	t.require(terminalOrderOrderItemsItemFieldSolutionQuantity)
 }
@@ -51575,7 +51857,7 @@ func (t TerminalOrderShippingPreferencesMethod) Ptr() *TerminalOrderShippingPref
 
 // Status of the terminal order.
 //
-// **Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/integrate/event-subscriptions).
+// **Note**: You can subscribe to our terminalOrder.status.changed event to get notifications when we update the status of a terminal order. For more information about how to subscribe to events, go to [Event Subscriptions](https://docs.payroc.com/guides/board-merchants/event-subscriptions).
 type TerminalOrderStatus string
 
 const (
@@ -52068,7 +52350,11 @@ var (
 type Tiered3Fees struct {
 	// Object that contains the fees for Mastercard, Visa, and Discover transactions.
 	MastercardVisaDiscover *QualRates `json:"mastercardVisaDiscover" url:"mastercardVisaDiscover"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`optBlue` - Amex OptBlue pricing program.
+	// -	`direct` - Amex Direct pricing program.
 	Amex                       *Tiered3FeesAmex            `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                   `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -52201,7 +52487,11 @@ func (t *Tiered3Fees) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
+//
+// The value of the type field determines which variant you should use:
+// -	`optBlue` - Amex OptBlue pricing program.
+// -	`direct` - Amex Direct pricing program.
 type Tiered3FeesAmex struct {
 	Type    string
 	OptBlue *Tiered3AmexOptBlue
@@ -52603,7 +52893,11 @@ var (
 type Tiered4Fees struct {
 	// Object that contains the fees for Mastercard, Visa, and Discover transactions.
 	MastercardVisaDiscover *QualRatesWithPremium `json:"mastercardVisaDiscover" url:"mastercardVisaDiscover"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`optBlue` - Amex OptBlue pricing program.
+	// -	`direct` - Amex Direct pricing program.
 	Amex                       *Tiered4FeesAmex            `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                   `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -52736,7 +53030,11 @@ func (t *Tiered4Fees) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
+//
+// The value of the type field determines which variant you should use:
+// -	`optBlue` - Amex OptBlue pricing program.
+// -	`direct` - Amex Direct pricing program.
 type Tiered4FeesAmex struct {
 	Type    string
 	OptBlue *Tiered4AmexOptBlue
@@ -53138,7 +53436,11 @@ var (
 type Tiered6Fees struct {
 	// Object that contains the fees for Mastercard, Visa, and Discover transactions.
 	MastercardVisaDiscover *QualRatesWithPremiumAndRegulated `json:"mastercardVisaDiscover" url:"mastercardVisaDiscover"`
-	// Object that contains the fees for American Express transactions.
+	// Polymorphic object that contains fees for American Express transactions.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`optBlue` - Amex OptBlue pricing program.
+	// -	`direct` - Amex Direct pricing program.
 	Amex                       *Tiered6FeesAmex            `json:"amex,omitempty" url:"amex,omitempty"`
 	PinDebit                   *PinDebit                   `json:"pinDebit,omitempty" url:"pinDebit,omitempty"`
 	ElectronicBenefitsTransfer *ElectronicBenefitsTransfer `json:"electronicBenefitsTransfer,omitempty" url:"electronicBenefitsTransfer,omitempty"`
@@ -53271,7 +53573,11 @@ func (t *Tiered6Fees) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// Object that contains the fees for American Express transactions.
+// Polymorphic object that contains fees for American Express transactions.
+//
+// The value of the type field determines which variant you should use:
+// -	`optBlue` - Amex OptBlue pricing program.
+// -	`direct` - Amex Direct pricing program.
 type Tiered6FeesAmex struct {
 	Type    string
 	OptBlue *Tiered6AmexOptBlue
@@ -54961,8 +55267,8 @@ type TransactionSummary struct {
 	// Describes how the merchant received the payment details. If we can't match a dispute to a transaction, we don't return an entryMethod object.
 	EntryMethod *TransactionSummaryEntryMethod `json:"entryMethod,omitempty" url:"entryMethod,omitempty"`
 	// Total amount of the transaction. The value is in the currency's lowest denomination, for example, cents.
-	Amount *int  `json:"amount,omitempty" url:"amount,omitempty"`
-	Link   *Link `json:"link,omitempty" url:"link,omitempty"`
+	Amount *int64 `json:"amount,omitempty" url:"amount,omitempty"`
+	Link   *Link  `json:"link,omitempty" url:"link,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -54999,7 +55305,7 @@ func (t *TransactionSummary) GetEntryMethod() *TransactionSummaryEntryMethod {
 	return t.EntryMethod
 }
 
-func (t *TransactionSummary) GetAmount() *int {
+func (t *TransactionSummary) GetAmount() *int64 {
 	if t == nil {
 		return nil
 	}
@@ -55054,7 +55360,7 @@ func (t *TransactionSummary) SetEntryMethod(entryMethod *TransactionSummaryEntry
 
 // SetAmount sets the Amount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionSummary) SetAmount(amount *int) {
+func (t *TransactionSummary) SetAmount(amount *int64) {
 	t.Amount = amount
 	t.require(transactionSummaryFieldAmount)
 }

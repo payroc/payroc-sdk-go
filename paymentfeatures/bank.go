@@ -10,7 +10,11 @@ import (
 	big "math/big"
 )
 
-// Object that contains information about the bank account.
+// Polymorphic object that contains bank account information.
+//
+// The value of the type field determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
 type BankAccountVerificationRequestBankAccount struct {
 	Type string
 	Ach  *papisdkgo.AchPayload
@@ -139,8 +143,12 @@ type BankAccountVerificationRequest struct {
 	IdempotencyKey string `json:"-" url:"-"`
 	// Unique identifier that we assigned to the terminal.
 	ProcessingTerminalId string `json:"processingTerminalId" url:"-"`
-	// Object that contains information about the bank account.
-	BankAccount *BankAccountVerificationRequestBankAccount `json:"bankAccount,omitempty" url:"-"`
+	// Polymorphic object that contains bank account information.
+	//
+	// The value of the type field determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	BankAccount *BankAccountVerificationRequestBankAccount `json:"bankAccount" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -172,4 +180,25 @@ func (b *BankAccountVerificationRequest) SetProcessingTerminalId(processingTermi
 func (b *BankAccountVerificationRequest) SetBankAccount(bankAccount *BankAccountVerificationRequestBankAccount) {
 	b.BankAccount = bankAccount
 	b.require(bankAccountVerificationRequestFieldBankAccount)
+}
+
+func (b *BankAccountVerificationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler BankAccountVerificationRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BankAccountVerificationRequest(body)
+	return nil
+}
+
+func (b *BankAccountVerificationRequest) MarshalJSON() ([]byte, error) {
+	type embed BankAccountVerificationRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }

@@ -73,7 +73,7 @@ func (r *RawClient) Reverse(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -128,7 +128,7 @@ func (r *RawClient) CreateReferencedRefund(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -184,7 +184,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -236,7 +236,7 @@ func (r *RawClient) CreateUnreferencedRefund(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -288,7 +288,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -343,7 +343,7 @@ func (r *RawClient) Adjust(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -396,7 +396,7 @@ func (r *RawClient) ReverseRefund(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(cardpayments.ErrorCodes),
 		},
 	)
 	if err != nil {

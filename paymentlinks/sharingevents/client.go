@@ -102,7 +102,7 @@ func (c *Client) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentlinks.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err

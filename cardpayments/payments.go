@@ -25,8 +25,14 @@ type PaymentAdjustment struct {
 	PaymentId string `json:"-" url:"-"`
 	// Operator who adjusted the payment.
 	Operator *string `json:"operator,omitempty" url:"-"`
-	// Array of objects that contain information about the adjustments to the payment.
-	Adjustments []*PaymentAdjustmentAdjustmentsItem `json:"adjustments,omitempty" url:"-"`
+	// Array of polymorphic objects which contain information about adjustments to a payment.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`order` - Tip information.
+	// -	`status` - Status of the transaction.
+	// -	`customer` - Customer's contact information and shipping address.
+	// -	`signature` - Customer's signature.
+	Adjustments []*PaymentAdjustmentAdjustmentsItem `json:"adjustments" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -65,6 +71,27 @@ func (p *PaymentAdjustment) SetOperator(operator *string) {
 func (p *PaymentAdjustment) SetAdjustments(adjustments []*PaymentAdjustmentAdjustmentsItem) {
 	p.Adjustments = adjustments
 	p.require(paymentAdjustmentFieldAdjustments)
+}
+
+func (p *PaymentAdjustment) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentAdjustment
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PaymentAdjustment(body)
+	return nil
+}
+
+func (p *PaymentAdjustment) MarshalJSON() ([]byte, error) {
+	type embed PaymentAdjustment
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -143,6 +170,27 @@ func (p *PaymentCapture) SetBreakdown(breakdown *papisdkgo.ItemizedBreakdownRequ
 	p.require(paymentCaptureFieldBreakdown)
 }
 
+func (p *PaymentCapture) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentCapture
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PaymentCapture(body)
+	return nil
+}
+
+func (p *PaymentCapture) MarshalJSON() ([]byte, error) {
+	type embed PaymentCapture
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	paymentRequestFieldIdempotencyKey       = big.NewInt(1 << 0)
 	paymentRequestFieldChannel              = big.NewInt(1 << 1)
@@ -169,12 +217,22 @@ type PaymentRequest struct {
 	ProcessingTerminalId string `json:"processingTerminalId" url:"-"`
 	// Operator who ran the transaction.
 	Operator  *string                        `json:"operator,omitempty" url:"-"`
-	Order     *papisdkgo.PaymentOrderRequest `json:"order,omitempty" url:"-"`
+	Order     *papisdkgo.PaymentOrderRequest `json:"order" url:"-"`
 	Customer  *papisdkgo.Customer            `json:"customer,omitempty" url:"-"`
 	IpAddress *papisdkgo.IpAddress           `json:"ipAddress,omitempty" url:"-"`
-	// Object that contains information about the customer's payment details.
-	PaymentMethod *PaymentRequestPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
-	// Object that contains information for an authentication check on the customer's payment details using the 3-D Secure protocol.
+	// Polymorphic object that contains payment details.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`card` - Payment card details
+	// -	`secureToken` - Secure token details
+	// -	`digitalWallet` - Digital wallet details
+	// -	`singleUseToken` - Single-use token details
+	PaymentMethod *PaymentRequestPaymentMethod `json:"paymentMethod" url:"-"`
+	// Polymorphic object that contains authentication information from 3-D Secure.
+	//
+	// The value of the serviceProvider parameter determines which variant you should use:
+	// -	`gateway` - Use our gateway to run a 3-D Secure check.
+	// -	`thirdParty` - Use a third party to run a 3-D Secure check.
 	ThreeDSecure      *PaymentRequestThreeDSecure        `json:"threeDSecure,omitempty" url:"-"`
 	CredentialOnFile  *papisdkgo.SchemasCredentialOnFile `json:"credentialOnFile,omitempty" url:"-"`
 	OfflineProcessing *papisdkgo.OfflineProcessing       `json:"offlineProcessing,omitempty" url:"-"`
@@ -298,6 +356,27 @@ func (p *PaymentRequest) SetProcessAsSale(processAsSale *bool) {
 func (p *PaymentRequest) SetCustomFields(customFields []*papisdkgo.CustomField) {
 	p.CustomFields = customFields
 	p.require(paymentRequestFieldCustomFields)
+}
+
+func (p *PaymentRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PaymentRequest(body)
+	return nil
+}
+
+func (p *PaymentRequest) MarshalJSON() ([]byte, error) {
+	type embed PaymentRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -857,7 +936,13 @@ func (p PaymentRequestChannel) Ptr() *PaymentRequestChannel {
 	return &p
 }
 
-// Object that contains information about the customer's payment details.
+// Polymorphic object that contains payment details.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`card` - Payment card details
+// -	`secureToken` - Secure token details
+// -	`digitalWallet` - Digital wallet details
+// -	`singleUseToken` - Single-use token details
 type PaymentRequestPaymentMethod struct {
 	Type           string
 	Card           *papisdkgo.CardPayload
@@ -1023,7 +1108,11 @@ func (p *PaymentRequestPaymentMethod) validate() error {
 	return nil
 }
 
-// Object that contains information for an authentication check on the customer's payment details using the 3-D Secure protocol.
+// Polymorphic object that contains authentication information from 3-D Secure.
+//
+// The value of the serviceProvider parameter determines which variant you should use:
+// -	`gateway` - Use our gateway to run a 3-D Secure check.
+// -	`thirdParty` - Use a third party to run a 3-D Secure check.
 type PaymentRequestThreeDSecure struct {
 	ServiceProvider string
 	Gateway         *papisdkgo.GatewayThreeDSecure

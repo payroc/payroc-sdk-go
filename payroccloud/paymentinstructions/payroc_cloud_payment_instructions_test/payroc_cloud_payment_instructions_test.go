@@ -12,6 +12,7 @@ import (
 	payroccloud "github.com/payroc/payroc-sdk-go/payroccloud"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,11 +66,13 @@ func VerifyRequestCount(
 func TestPayrocCloudPaymentInstructionsSubmitWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payroccloud.PaymentInstructionRequest{
 		SerialNumber:   "1850010868",
@@ -76,7 +83,7 @@ func TestPayrocCloudPaymentInstructionsSubmitWithWireMock(
 		ProcessingTerminalId: "1234001",
 		Order: &payroc.PaymentInstructionOrder{
 			OrderId:  "OrderRef6543",
-			Amount:   4999,
+			Amount:   int64(4999),
 			Currency: payroc.CurrencyUsd,
 		},
 		CustomizationOptions: &payroc.CustomizationOptions{
@@ -101,11 +108,13 @@ func TestPayrocCloudPaymentInstructionsSubmitWithWireMock(
 func TestPayrocCloudPaymentInstructionsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payroccloud.RetrievePaymentInstructionsRequest{
 		PaymentInstructionId: "e743a9165d134678a9100ebba3b29597",
@@ -125,11 +134,13 @@ func TestPayrocCloudPaymentInstructionsRetrieveWithWireMock(
 func TestPayrocCloudPaymentInstructionsDeleteWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payroccloud.DeletePaymentInstructionsRequest{
 		PaymentInstructionId: "e743a9165d134678a9100ebba3b29597",

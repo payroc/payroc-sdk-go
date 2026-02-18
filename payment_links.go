@@ -853,7 +853,11 @@ var (
 type MultiUsePaymentLinkOrder struct {
 	// A brief description of the transaction.
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Indicates whether the merchant or the customer enters the amount for the transaction.
+	// Polymorphic object that indicates who enters the amount for the payment link.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`prompt` - Customer enters the amount.
+	// -	`preset` - Merchant sets the amount.
 	Charge *MultiUsePaymentLinkOrderCharge `json:"charge" url:"charge"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -941,7 +945,11 @@ func (m *MultiUsePaymentLinkOrder) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
-// Indicates whether the merchant or the customer enters the amount for the transaction.
+// Polymorphic object that indicates who enters the amount for the payment link.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`prompt` - Customer enters the amount.
+// -	`preset` - Merchant sets the amount.
 type MultiUsePaymentLinkOrderCharge struct {
 	Type   string
 	Prompt *PromptPaymentLinkCharge
@@ -1221,16 +1229,20 @@ var (
 
 type PaymentLinkPaginatedList struct {
 	// Maximum number of results that we return for each page.
-	Limit *float64 `json:"limit,omitempty" url:"limit,omitempty"`
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Number of results we returned on this page.
 	//
 	// **Note:** This might not be the total number of results that match your query.
-	Count *float64 `json:"count,omitempty" url:"count,omitempty"`
+	Count *int `json:"count,omitempty" url:"count,omitempty"`
 	// Indicates whether there is another page of results available.
 	HasMore *bool `json:"hasMore,omitempty" url:"hasMore,omitempty"`
 	// Reference links to navigate to the previous page of results or to the next page of results.
 	Links []*Link `json:"links,omitempty" url:"links,omitempty"`
-	// Array of payment links.
+	// Array of polymorphic objects that contains payment link information.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	'multiUse' - Create a link that the merchant can use to take multiple payments.
+	// -	'singleUse' - Create a link that the merchant can use for only one payment.
 	Data []*PaymentLinkPaginatedListDataItem `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1240,14 +1252,14 @@ type PaymentLinkPaginatedList struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaymentLinkPaginatedList) GetLimit() *float64 {
+func (p *PaymentLinkPaginatedList) GetLimit() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Limit
 }
 
-func (p *PaymentLinkPaginatedList) GetCount() *float64 {
+func (p *PaymentLinkPaginatedList) GetCount() *int {
 	if p == nil {
 		return nil
 	}
@@ -1288,14 +1300,14 @@ func (p *PaymentLinkPaginatedList) require(field *big.Int) {
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentLinkPaginatedList) SetLimit(limit *float64) {
+func (p *PaymentLinkPaginatedList) SetLimit(limit *int) {
 	p.Limit = limit
 	p.require(paymentLinkPaginatedListFieldLimit)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentLinkPaginatedList) SetCount(count *float64) {
+func (p *PaymentLinkPaginatedList) SetCount(count *int) {
 	p.Count = count
 	p.require(paymentLinkPaginatedListFieldCount)
 }
@@ -1952,7 +1964,11 @@ type SingleUsePaymentLinkOrder struct {
 	OrderId string `json:"orderId" url:"orderId"`
 	// A brief description of the transaction.
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Indicates whether the merchant or the customer enters the amount for the transaction.
+	// Polymorphic object that indicates who enters the amount for the payment link.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`prompt` - Customer enters the amount.
+	// -	`preset` - Merchant sets the amount.
 	Charge *SingleUsePaymentLinkOrderCharge `json:"charge" url:"charge"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2054,7 +2070,11 @@ func (s *SingleUsePaymentLinkOrder) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-// Indicates whether the merchant or the customer enters the amount for the transaction.
+// Polymorphic object that indicates who enters the amount for the payment link.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`prompt` - Customer enters the amount.
+// -	`preset` - Merchant sets the amount.
 type SingleUsePaymentLinkOrderCharge struct {
 	Type   string
 	Prompt *PromptPaymentLinkCharge

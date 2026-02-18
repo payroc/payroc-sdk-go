@@ -5,6 +5,7 @@ package boarding
 import (
 	json "encoding/json"
 	papisdkgo "github.com/payroc/payroc-sdk-go"
+	internal "github.com/payroc/payroc-sdk-go/internal"
 	big "math/big"
 )
 
@@ -18,9 +19,9 @@ var (
 type CreateMerchantAccount struct {
 	// Unique identifier that you generate for each request. You must use the [UUID v4 format](https://www.rfc-editor.org/rfc/rfc4122) for the identifier. For more information about the idempotency key, go to [Idempotency](https://docs.payroc.com/api/idempotency).
 	IdempotencyKey string              `json:"-" url:"-"`
-	Business       *papisdkgo.Business `json:"business,omitempty" url:"-"`
+	Business       *papisdkgo.Business `json:"business" url:"-"`
 	// Array of processingAccounts objects.
-	ProcessingAccounts []*papisdkgo.CreateProcessingAccount `json:"processingAccounts,omitempty" url:"-"`
+	ProcessingAccounts []*papisdkgo.CreateProcessingAccount `json:"processingAccounts" url:"-"`
 	// Object that you can send to include custom data in the request.
 	Metadata map[string]string `json:"metadata,omitempty" url:"-"`
 
@@ -61,6 +62,27 @@ func (c *CreateMerchantAccount) SetProcessingAccounts(processingAccounts []*papi
 func (c *CreateMerchantAccount) SetMetadata(metadata map[string]string) {
 	c.Metadata = metadata
 	c.require(createMerchantAccountFieldMetadata)
+}
+
+func (c *CreateMerchantAccount) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateMerchantAccount
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateMerchantAccount(body)
+	return nil
+}
+
+func (c *CreateMerchantAccount) MarshalJSON() ([]byte, error) {
+	type embed CreateMerchantAccount
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

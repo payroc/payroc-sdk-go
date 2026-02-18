@@ -83,6 +83,27 @@ func (h *HostedFieldsCreateSessionRequest) SetSecureTokenId(secureTokenId *strin
 	h.require(hostedFieldsCreateSessionRequestFieldSecureTokenId)
 }
 
+func (h *HostedFieldsCreateSessionRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler HostedFieldsCreateSessionRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*h = HostedFieldsCreateSessionRequest(body)
+	return nil
+}
+
+func (h *HostedFieldsCreateSessionRequest) MarshalJSON() ([]byte, error) {
+	type embed HostedFieldsCreateSessionRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*h),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	hostedFieldsCreateSessionResponseFieldProcessingTerminalId = big.NewInt(1 << 0)
 	hostedFieldsCreateSessionResponseFieldToken                = big.NewInt(1 << 1)

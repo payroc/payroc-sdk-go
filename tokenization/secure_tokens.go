@@ -41,9 +41,19 @@ type TokenizationRequest struct {
 	MitAgreement *TokenizationRequestMitAgreement `json:"mitAgreement,omitempty" url:"-"`
 	Customer     *papisdkgo.Customer              `json:"customer,omitempty" url:"-"`
 	IpAddress    *papisdkgo.IpAddress             `json:"ipAddress,omitempty" url:"-"`
-	// Object that contains information about the payment method to tokenize.
-	Source *TokenizationRequestSource `json:"source,omitempty" url:"-"`
-	// Object that contains information for an authentication check on the customer's payment details using the 3-D Secure protocol.
+	// Polymorphic object that contains the payment method to tokenize.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`ach` - Automated Clearing House (ACH) details
+	// -	`pad` - Pre-authorized debit (PAD) details
+	// -	`card` - Payment card details
+	// -	`singleUseToken` - Single-use token details
+	Source *TokenizationRequestSource `json:"source" url:"-"`
+	// Polymorphic object that contains authentication information from 3-D Secure.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`gatewayThreeDSecure` - Use our gateway to run a 3-D Secure check.
+	// -	`thirdPartyThreeDSecure` - Use a third party to run a 3-D Secure check.
 	ThreeDSecure *TokenizationRequestThreeDSecure `json:"threeDSecure,omitempty" url:"-"`
 	// Array of customField objects.
 	CustomFields []*papisdkgo.CustomField `json:"customFields,omitempty" url:"-"`
@@ -127,6 +137,27 @@ func (t *TokenizationRequest) SetThreeDSecure(threeDSecure *TokenizationRequestT
 func (t *TokenizationRequest) SetCustomFields(customFields []*papisdkgo.CustomField) {
 	t.CustomFields = customFields
 	t.require(tokenizationRequestFieldCustomFields)
+}
+
+func (t *TokenizationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler TokenizationRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*t = TokenizationRequest(body)
+	return nil
+}
+
+func (t *TokenizationRequest) MarshalJSON() ([]byte, error) {
+	type embed TokenizationRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -421,7 +452,13 @@ func (t TokenizationRequestMitAgreement) Ptr() *TokenizationRequestMitAgreement 
 	return &t
 }
 
-// Object that contains information about the payment method to tokenize.
+// Polymorphic object that contains the payment method to tokenize.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`ach` - Automated Clearing House (ACH) details
+// -	`pad` - Pre-authorized debit (PAD) details
+// -	`card` - Payment card details
+// -	`singleUseToken` - Single-use token details
 type TokenizationRequestSource struct {
 	Type           string
 	Ach            *papisdkgo.AchPayload
@@ -587,7 +624,11 @@ func (t *TokenizationRequestSource) validate() error {
 	return nil
 }
 
-// Object that contains information for an authentication check on the customer's payment details using the 3-D Secure protocol.
+// Polymorphic object that contains authentication information from 3-D Secure.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`gatewayThreeDSecure` - Use our gateway to run a 3-D Secure check.
+// -	`thirdPartyThreeDSecure` - Use a third party to run a 3-D Secure check.
 type TokenizationRequestThreeDSecure struct {
 	Type                   string
 	GatewayThreeDSecure    *papisdkgo.GatewayThreeDSecure

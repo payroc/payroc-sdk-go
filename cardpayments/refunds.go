@@ -25,8 +25,12 @@ type RefundAdjustment struct {
 	RefundId string `json:"-" url:"-"`
 	// Operator who requested the adjustment to the refund.
 	Operator *string `json:"operator,omitempty" url:"-"`
-	// Array of objects that contain information about the adjustments to the refund.
-	Adjustments []*RefundAdjustmentAdjustmentsItem `json:"adjustments,omitempty" url:"-"`
+	// Array of polymorphic objects that contain information about adjustments to the refund.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`status` - Status of the transaction.
+	// -	`customer` - Customer's contact information and shipping address.
+	Adjustments []*RefundAdjustmentAdjustmentsItem `json:"adjustments" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -65,6 +69,27 @@ func (r *RefundAdjustment) SetOperator(operator *string) {
 func (r *RefundAdjustment) SetAdjustments(adjustments []*RefundAdjustmentAdjustmentsItem) {
 	r.Adjustments = adjustments
 	r.require(refundAdjustmentFieldAdjustments)
+}
+
+func (r *RefundAdjustment) UnmarshalJSON(data []byte) error {
+	type unmarshaler RefundAdjustment
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RefundAdjustment(body)
+	return nil
+}
+
+func (r *RefundAdjustment) MarshalJSON() ([]byte, error) {
+	type embed RefundAdjustment
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -133,6 +158,27 @@ func (r *ReferencedRefund) SetDescription(description string) {
 	r.require(referencedRefundFieldDescription)
 }
 
+func (r *ReferencedRefund) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReferencedRefund
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = ReferencedRefund(body)
+	return nil
+}
+
+func (r *ReferencedRefund) MarshalJSON() ([]byte, error) {
+	type embed ReferencedRefund
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	unreferencedRefundFieldIdempotencyKey       = big.NewInt(1 << 0)
 	unreferencedRefundFieldChannel              = big.NewInt(1 << 1)
@@ -154,11 +200,15 @@ type UnreferencedRefund struct {
 	ProcessingTerminalId string `json:"processingTerminalId" url:"-"`
 	// Operator who initiated the request.
 	Operator  *string                `json:"operator,omitempty" url:"-"`
-	Order     *papisdkgo.RefundOrder `json:"order,omitempty" url:"-"`
+	Order     *papisdkgo.RefundOrder `json:"order" url:"-"`
 	Customer  *papisdkgo.Customer    `json:"customer,omitempty" url:"-"`
 	IpAddress *papisdkgo.IpAddress   `json:"ipAddress,omitempty" url:"-"`
-	// Object that contains information about how the merchant refunds the customer.
-	RefundMethod *UnreferencedRefundRefundMethod `json:"refundMethod,omitempty" url:"-"`
+	// Polymorphic object that contains information about the payment method that the merchant uses to refund the customer.
+	//
+	// The value of the type parameter determines which variant you should use:
+	// -	`card` - Payment card details
+	// -	`secureToken` - Secure token details
+	RefundMethod *UnreferencedRefundRefundMethod `json:"refundMethod" url:"-"`
 	// Array of customField objects.
 	CustomFields []*papisdkgo.CustomField `json:"customFields,omitempty" url:"-"`
 
@@ -234,6 +284,27 @@ func (u *UnreferencedRefund) SetRefundMethod(refundMethod *UnreferencedRefundRef
 func (u *UnreferencedRefund) SetCustomFields(customFields []*papisdkgo.CustomField) {
 	u.CustomFields = customFields
 	u.require(unreferencedRefundFieldCustomFields)
+}
+
+func (u *UnreferencedRefund) UnmarshalJSON(data []byte) error {
+	type unmarshaler UnreferencedRefund
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UnreferencedRefund(body)
+	return nil
+}
+
+func (u *UnreferencedRefund) MarshalJSON() ([]byte, error) {
+	type embed UnreferencedRefund
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -487,6 +558,27 @@ func (p *PaymentReversal) SetOperator(operator *string) {
 func (p *PaymentReversal) SetAmount(amount *int64) {
 	p.Amount = amount
 	p.require(paymentReversalFieldAmount)
+}
+
+func (p *PaymentReversal) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentReversal
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PaymentReversal(body)
+	return nil
+}
+
+func (p *PaymentReversal) MarshalJSON() ([]byte, error) {
+	type embed PaymentReversal
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -755,7 +847,11 @@ func (u UnreferencedRefundChannel) Ptr() *UnreferencedRefundChannel {
 	return &u
 }
 
-// Object that contains information about how the merchant refunds the customer.
+// Polymorphic object that contains information about the payment method that the merchant uses to refund the customer.
+//
+// The value of the type parameter determines which variant you should use:
+// -	`card` - Payment card details
+// -	`secureToken` - Secure token details
 type UnreferencedRefundRefundMethod struct {
 	Type        string
 	Card        *papisdkgo.CardPayload

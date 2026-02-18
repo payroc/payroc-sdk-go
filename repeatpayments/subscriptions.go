@@ -37,8 +37,8 @@ type SubscriptionRequest struct {
 	SubscriptionId string `json:"subscriptionId" url:"-"`
 	// Unique identifier that the merchant assigned to the payment plan.
 	PaymentPlanId string `json:"paymentPlanId" url:"-"`
-	// Object that contains information about the customer's payment details.
-	PaymentMethod *SubscriptionRequestPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
+	// Polymorphic object that contains information about the secure token.
+	PaymentMethod *SubscriptionRequestPaymentMethod `json:"paymentMethod" url:"-"`
 	// Name of the subscription.
 	// This value replaces the name inherited from the payment plan.
 	Name *string `json:"name,omitempty" url:"-"`
@@ -447,7 +447,7 @@ type SubscriptionPaymentRequest struct {
 	// Operator who initiated the request.
 	Operator *string `json:"operator,omitempty" url:"-"`
 	// Object that contains information about the payment.
-	Order *papisdkgo.SubscriptionPaymentOrder `json:"order,omitempty" url:"-"`
+	Order *papisdkgo.SubscriptionPaymentOrder `json:"order" url:"-"`
 	// Array of customField objects.
 	CustomFields []*papisdkgo.CustomField `json:"customFields,omitempty" url:"-"`
 
@@ -502,6 +502,27 @@ func (s *SubscriptionPaymentRequest) SetOrder(order *papisdkgo.SubscriptionPayme
 func (s *SubscriptionPaymentRequest) SetCustomFields(customFields []*papisdkgo.CustomField) {
 	s.CustomFields = customFields
 	s.require(subscriptionPaymentRequestFieldCustomFields)
+}
+
+func (s *SubscriptionPaymentRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler SubscriptionPaymentRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = SubscriptionPaymentRequest(body)
+	return nil
+}
+
+func (s *SubscriptionPaymentRequest) MarshalJSON() ([]byte, error) {
+	type embed SubscriptionPaymentRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -635,7 +656,7 @@ func (l ListSubscriptionsRequestStatus) Ptr() *ListSubscriptionsRequestStatus {
 	return &l
 }
 
-// Object that contains information about the customer's payment details.
+// Polymorphic object that contains information about the secure token.
 type SubscriptionRequestPaymentMethod struct {
 	Type        string
 	SecureToken *papisdkgo.SecureTokenPayload

@@ -1,3 +1,6 @@
+//go:build smoke
+// +build smoke
+
 package refunds_test
 
 import (
@@ -72,7 +75,7 @@ func TestCreateRefund(t *testing.T) {
 						KeyedData: &payroc.KeyedCardDetailsKeyedData{
 							PlainText: &payroc.PlainTextKeyedDataFormat{
 								CardNumber: "4111111111111111", // Test card
-								ExpiryDate: payroc.String("1225"),
+								ExpiryDate: payroc.String("1230"),
 								Cvv:        payroc.String("123"),
 							},
 						},

@@ -74,7 +74,7 @@ func (r *RawClient) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -126,7 +126,7 @@ func (r *RawClient) Create(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -178,7 +178,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -230,7 +230,7 @@ func (r *RawClient) Update(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Request:         request,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -280,7 +280,7 @@ func (r *RawClient) Delete(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -332,7 +332,7 @@ func (r *RawClient) ListAccounts(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -387,7 +387,7 @@ func (r *RawClient) CreateAccount(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -439,7 +439,7 @@ func (r *RawClient) ListOwners(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -494,7 +494,7 @@ func (r *RawClient) CreateOwner(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(funding.ErrorCodes),
 		},
 	)
 	if err != nil {

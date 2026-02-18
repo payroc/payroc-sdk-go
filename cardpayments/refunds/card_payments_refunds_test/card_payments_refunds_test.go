@@ -12,6 +12,7 @@ import (
 	option "github.com/payroc/payroc-sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
+	os "os"
 	testing "testing"
 )
 
@@ -23,7 +24,11 @@ func VerifyRequestCount(
 	queryParams map[string]string,
 	expected int,
 ) {
-	WiremockAdminURL := "http://localhost:8080/__admin"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WiremockAdminURL := "http://localhost:" + wiremockPort + "/__admin"
 	var reqBody bytes.Buffer
 	reqBody.WriteString(`{"method":"`)
 	reqBody.WriteString(method)
@@ -61,17 +66,19 @@ func VerifyRequestCount(
 func TestCardPaymentsRefundsReverseWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.PaymentReversal{
 		PaymentId:      "M2MJOG6O2Y",
 		IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
 		Amount: payroc.Int64(
-			4999,
+			int64(4999),
 		),
 	}
 	_, invocationErr := client.CardPayments.Refunds.Reverse(
@@ -89,16 +96,18 @@ func TestCardPaymentsRefundsReverseWithWireMock(
 func TestCardPaymentsRefundsCreateReferencedRefundWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.ReferencedRefund{
 		PaymentId:      "M2MJOG6O2Y",
 		IdempotencyKey: "8e03978e-40d5-43e8-bc93-6894a57f9324",
-		Amount:         4999,
+		Amount:         int64(4999),
 		Description:    "Refund for order OrderRef6543",
 	}
 	_, invocationErr := client.CardPayments.Refunds.CreateReferencedRefund(
@@ -116,11 +125,13 @@ func TestCardPaymentsRefundsCreateReferencedRefundWithWireMock(
 func TestCardPaymentsRefundsListWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.ListRefundsRequest{
 		ProcessingTerminalId: payroc.String(
@@ -183,11 +194,13 @@ func TestCardPaymentsRefundsListWithWireMock(
 func TestCardPaymentsRefundsCreateUnreferencedRefundWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.UnreferencedRefund{
 		IdempotencyKey:       "8e03978e-40d5-43e8-bc93-6894a57f9324",
@@ -201,7 +214,7 @@ func TestCardPaymentsRefundsCreateUnreferencedRefundWithWireMock(
 				"Refund for order OrderRef6543",
 			),
 			Amount: payroc.Int64(
-				4999,
+				int64(4999),
 			),
 			Currency: payroc.CurrencyUsd.Ptr(),
 		},
@@ -240,11 +253,13 @@ func TestCardPaymentsRefundsCreateUnreferencedRefundWithWireMock(
 func TestCardPaymentsRefundsRetrieveWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.RetrieveRefundsRequest{
 		RefundId: "CD3HN88U9F",
@@ -264,11 +279,13 @@ func TestCardPaymentsRefundsRetrieveWithWireMock(
 func TestCardPaymentsRefundsAdjustWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.RefundAdjustment{
 		RefundId:       "CD3HN88U9F",
@@ -297,11 +314,13 @@ func TestCardPaymentsRefundsAdjustWithWireMock(
 func TestCardPaymentsRefundsReverseRefundWithWireMock(
 	t *testing.T,
 ) {
-	WireMockBaseURL := "http://localhost:8080"
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
 	client := client.NewPayrocClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
+		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &cardpayments.ReverseRefundRefundsRequest{
 		RefundId:       "CD3HN88U9F",

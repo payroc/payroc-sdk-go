@@ -70,7 +70,7 @@ func (r *RawClient) VerifyCard(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentfeatures.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -121,7 +121,7 @@ func (r *RawClient) ViewEbtBalance(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentfeatures.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -172,7 +172,7 @@ func (r *RawClient) LookupBin(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentfeatures.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -223,7 +223,7 @@ func (r *RawClient) RetrieveFxRates(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(paymentfeatures.ErrorCodes),
 		},
 	)
 	if err != nil {

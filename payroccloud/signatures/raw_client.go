@@ -4,7 +4,6 @@ package signatures
 
 import (
 	context "context"
-	payroc "github.com/payroc/payroc-sdk-go"
 	core "github.com/payroc/payroc-sdk-go/core"
 	internal "github.com/payroc/payroc-sdk-go/internal"
 	option "github.com/payroc/payroc-sdk-go/option"
@@ -70,7 +69,7 @@ func (r *RawClient) Retrieve(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payroccloud.ErrorCodes),
 		},
 	)
 	if err != nil {

@@ -101,7 +101,7 @@ func (c *Client) List(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &pageResponse,
-			ErrorDecoder:    internal.NewErrorDecoder(payroc.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(notifications.ErrorCodes),
 		})
 		if err != nil {
 			return nil, err
@@ -137,7 +137,7 @@ func (c *Client) Create(
 //
 // In your request, include the subscriptionId that we sent to you when we created the event subscription.
 //
-// **Note:** If you don't know the subscriptionId of the event subscription, go to [List event subscriptions](#listEventSubscriptions).
+// **Note:** If you don't know the subscriptionId of the event subscription, go to [List event subscriptions](https://docs.payroc.com/api/schema/notifications/event-subscriptions/list).
 func (c *Client) Retrieve(
 	ctx context.Context,
 	request *notifications.RetrieveEventSubscriptionsRequest,

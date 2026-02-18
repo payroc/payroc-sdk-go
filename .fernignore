@@ -7,12 +7,18 @@ client/client.go
 core/inferred_auth.go
 core/oauth.go
 
+auth/oauth_wire_test/oauth_wire_test.go  # Will be removed once inferred auth is configured in generator
+
 README.md
 go.mod
 go.sum
 .gitignore
+.github/CODEOWNERS
 CONTRIBUTING.md
 LICENSE
-scripts
+pipelines/
+scripts/
 readme_examples_test.go
 test_integration
+.previewignore
+SECURITY.md

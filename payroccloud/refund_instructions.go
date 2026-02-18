@@ -3,7 +3,9 @@
 package payroccloud
 
 import (
+	json "encoding/json"
 	papisdkgo "github.com/payroc/payroc-sdk-go"
+	internal "github.com/payroc/payroc-sdk-go/internal"
 	big "math/big"
 )
 
@@ -79,7 +81,7 @@ type RefundInstructionRequest struct {
 	Operator *string `json:"operator,omitempty" url:"-"`
 	// Unique identifier that we assigned to the terminal.
 	ProcessingTerminalId string                            `json:"processingTerminalId" url:"-"`
-	Order                *papisdkgo.RefundInstructionOrder `json:"order,omitempty" url:"-"`
+	Order                *papisdkgo.RefundInstructionOrder `json:"order" url:"-"`
 	Customer             *papisdkgo.Customer               `json:"customer,omitempty" url:"-"`
 	IpAddress            *papisdkgo.IpAddress              `json:"ipAddress,omitempty" url:"-"`
 	CustomizationOptions *papisdkgo.CustomizationOptions   `json:"customizationOptions,omitempty" url:"-"`
@@ -149,4 +151,25 @@ func (r *RefundInstructionRequest) SetIpAddress(ipAddress *papisdkgo.IpAddress) 
 func (r *RefundInstructionRequest) SetCustomizationOptions(customizationOptions *papisdkgo.CustomizationOptions) {
 	r.CustomizationOptions = customizationOptions
 	r.require(refundInstructionRequestFieldCustomizationOptions)
+}
+
+func (r *RefundInstructionRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler RefundInstructionRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RefundInstructionRequest(body)
+	return nil
+}
+
+func (r *RefundInstructionRequest) MarshalJSON() ([]byte, error) {
+	type embed RefundInstructionRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
